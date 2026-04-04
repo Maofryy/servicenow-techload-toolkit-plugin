@@ -104,39 +104,45 @@
     padding: clamp(40px, 6vh, 80px) clamp(40px, 8vw, 120px);
     isolation: isolate;
     opacity: 0;
-    transform: translateY(40px) scale(0.98);
+    will-change: opacity;
+    scroll-snap-stop: always;
     transition:
-      opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-      transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      opacity          0.6s cubic-bezier(0.16, 1, 0.3, 1),
+      background-color 0.5s ease,
+      background-image 0.5s ease;
   }
 
   .slide.visible {
     opacity: 1;
-    transform: none;
   }
 
-  .slide .reveal {
+  /* Child reveals — @keyframes + fill-mode:both locks the final state
+     permanently. :not(.visible) scoping means once .visible is added
+     to the slide the hidden rule vanishes entirely — zero cascade
+     conflict possible, elements can never drop back. */
+  @keyframes revealUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .slide:not(.visible) .reveal {
     opacity: 0;
-    transform: translateY(20px);
-    transition:
-      opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
-      transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: translateY(16px);
   }
 
-  .slide.visible .reveal { opacity: 1; transform: none; }
-  .slide.visible .reveal:nth-child(1) { transition-delay: 0.1s; }
-  .slide.visible .reveal:nth-child(2) { transition-delay: 0.2s; }
-  .slide.visible .reveal:nth-child(3) { transition-delay: 0.3s; }
-  .slide.visible .reveal:nth-child(4) { transition-delay: 0.4s; }
-  .slide.visible .reveal:nth-child(5) { transition-delay: 0.5s; }
-  .slide.visible .reveal:nth-child(6) { transition-delay: 0.6s; }
+  .slide.visible .reveal {
+    animation: revealUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .slide.visible .reveal:nth-child(1) { animation-delay: 0.08s; }
+  .slide.visible .reveal:nth-child(2) { animation-delay: 0.16s; }
+  .slide.visible .reveal:nth-child(3) { animation-delay: 0.24s; }
+  .slide.visible .reveal:nth-child(4) { animation-delay: 0.32s; }
+  .slide.visible .reveal:nth-child(5) { animation-delay: 0.40s; }
+  .slide.visible .reveal:nth-child(6) { animation-delay: 0.48s; }
 
   @media (prefers-reduced-motion: reduce) {
-    .slide, .slide .reveal {
-      opacity: 1 !important;
-      transform: none !important;
-      transition: none !important;
-    }
+    .slide  { opacity: 1 !important; transform: none !important; transition: none !important; }
+    .reveal { opacity: 1 !important; animation: none !important; }
   }
 
   /* ============ NAV CHROME ============ */
@@ -375,45 +381,111 @@
   .slide--diagram .mermaid .node polygon { stroke-width: 2px; }
   .slide--diagram .mermaid .edge-pattern-solid { stroke-width: 2px; }
 
-  /* ============ SLIDE TYPE: DASHBOARD ============ */
-  .slide--dashboard .slide__kpis {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(clamp(140px, 20vw, 220px), 1fr));
-    gap: clamp(12px, 2vw, 24px);
+  /* ============ SLIDE TYPE: DASHBOARD ============
+     McKinsey hairline grid: gap:1px on a border-bright background
+     creates clean dividers without card borders. Numbers are the hero
+     — category label at top, hairline sep, metric label at bottom.
+     Use slide__kpi--primary/secondary/neutral for top accent rule. */
+  .slide--dashboard {
+    padding-bottom: clamp(32px, 5vh, 60px);
   }
-
+  .slide--dashboard .slide__header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-shrink: 0;
+  }
+  .slide__context {
+    font-family: var(--font-mono);
+    font-size: clamp(10px, 1vw, 12px);
+    color: var(--text-dim);
+    letter-spacing: 0.5px;
+  }
+  .slide__kpis {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(clamp(120px, 18vw, 200px), 1fr));
+    gap: 1px;
+    background: var(--border-bright);
+    border: 1px solid var(--border-bright);
+    border-radius: 8px;
+    overflow: hidden;
+    flex: 1;
+    min-height: 0;
+    margin-top: clamp(16px, 2.5vh, 28px);
+  }
   .slide__kpi {
     background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: clamp(16px, 3vh, 32px) clamp(16px, 2vw, 24px);
+    padding: clamp(18px, 3vh, 36px) clamp(18px, 2.2vw, 28px);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    border-top: 3px solid transparent;
     min-width: 0;
-    overflow: hidden;
   }
-
+  .slide__kpi--primary   { border-top-color: var(--accent); }
+  .slide__kpi--secondary { border-top-color: var(--accent-2, var(--text-dim)); }
+  .slide__kpi--neutral   { border-top-color: var(--border-bright); }
+  .slide__kpi-cat {
+    font-family: var(--font-mono);
+    font-size: clamp(8px, 0.9vw, 10px);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.8px;
+    color: var(--text-dim);
+    margin-bottom: clamp(10px, 1.8vh, 20px);
+  }
+  .slide__kpi-val-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 6px;
+    flex: 1;
+    min-height: 0;
+  }
   .slide__kpi-val {
-    font-size: clamp(36px, 6vw, 64px);
-    font-weight: 400;
-    letter-spacing: -1.5px;
-    line-height: 1.1;
+    font-size: clamp(36px, 6vw, 76px);
+    font-weight: 800;
+    letter-spacing: -3px;
+    line-height: 0.9;
     font-variant-numeric: tabular-nums;
+  }
+  .slide__kpi-trend {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    font-family: var(--font-mono);
+    font-size: clamp(9px, 0.95vw, 11px);
+    font-weight: 700;
+    padding: 3px 7px;
+    border-radius: 3px;
+    margin-bottom: 5px;
+    flex-shrink: 0;
     white-space: nowrap;
   }
-
+  .slide__kpi-trend--up   { color: #22c55e; background: rgba(34,197,94,0.12); }
+  .slide__kpi-trend--down { color: #f87171; background: rgba(248,113,113,0.12); }
+  .slide__kpi-trend--flat { color: var(--text-dim); background: var(--accent-dim); }
+  .slide__kpi-spark {
+    width: clamp(36px, 4.5vw, 60px);
+    height: clamp(20px, 3vh, 32px);
+    opacity: 0.7;
+    flex-shrink: 0;
+    overflow: visible;
+    margin-left: auto;
+    align-self: center;
+  }
+  .slide__kpi-sep {
+    height: 1px;
+    background: var(--border);
+    margin: clamp(10px, 1.6vh, 18px) 0 clamp(8px, 1.2vh, 12px);
+  }
   .slide__kpi-label {
     font-family: var(--font-mono);
-    font-size: clamp(9px, 1.2vw, 13px);
+    font-size: clamp(8px, 0.95vw, 11px);
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 1.5px;
+    letter-spacing: 2px;
     color: var(--text-dim);
-    margin-top: 8px;
-  }
-
-  .slide__kpi-trend {
-    font-family: var(--font-mono);
-    font-size: 12px;
-    margin-top: 4px;
+    line-height: 1.3;
   }
 
   /* ============ SLIDE TYPE: TABLE ============ */
@@ -558,6 +630,120 @@
   }
   .slide--bleed .slide__heading { color: #ffffff; }
   .slide--bleed .slide__subtitle { color: rgba(255,255,255,0.7); }
+
+  /* ============ SLIDE TYPE: TIMELINE ============
+     Horizontal alternating above/below layout. CSS Grid 1fr/auto/1fr
+     per item ensures dot is always at exact 50% of item height —
+     track at top:50% hits every dot regardless of card content height.
+     Never use Mermaid for timelines. Max 5-6 milestones. */
+  .slide--timeline {
+    padding: clamp(36px, 5.5vh, 68px) clamp(40px, 8vw, 120px);
+  }
+  .timeline {
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    flex: 1;
+    min-height: 0;
+    margin-top: clamp(20px, 3vh, 36px);
+  }
+  /* Track uses --text-dim for reliable visibility across all presets */
+  .timeline__track {
+    position: absolute;
+    top: 50%;
+    left: 0; right: 0;
+    height: 1.5px;
+    background: var(--text-dim);
+    opacity: 0.22;
+    transform: translateY(-50%);
+    z-index: 0;
+  }
+  /* 1fr auto 1fr: dot (auto row) always at vertical center of item */
+  .timeline__item {
+    flex: 1;
+    display: grid;
+    grid-template-rows: 1fr auto 1fr;
+    justify-items: center;
+    min-width: 0;
+    padding: 0 clamp(6px, 1vw, 14px);
+    position: relative;
+    z-index: 1;
+  }
+  /* --above: content in row 1 (upper half), dot in row 2 (center) */
+  .timeline__item--above .timeline__content {
+    grid-row: 1;
+    align-self: end;
+    margin-bottom: clamp(14px, 2vh, 22px);
+    width: 100%;
+  }
+  .timeline__item--above .timeline__dot { grid-row: 2; }
+  /* --below: dot in row 2 (center), content in row 3 (lower half) */
+  .timeline__item--below .timeline__dot { grid-row: 2; }
+  .timeline__item--below .timeline__content {
+    grid-row: 3;
+    align-self: start;
+    margin-top: clamp(14px, 2vh, 22px);
+    width: 100%;
+  }
+  .timeline__dot {
+    width: clamp(13px, 1.6vw, 18px);
+    height: clamp(13px, 1.6vw, 18px);
+    border-radius: 50%;
+    background: var(--accent);
+    border: 3px solid var(--bg);
+    box-shadow: 0 0 0 2px var(--accent);
+    flex-shrink: 0;
+    z-index: 2;
+  }
+  .timeline__content {
+    background: var(--surface);
+    border: 1px solid var(--border-bright);
+    border-radius: 10px;
+    padding: clamp(16px, 2.8vh, 28px) clamp(16px, 2vw, 22px);
+    min-width: 0;
+    overflow-wrap: break-word;
+  }
+  .timeline__date {
+    font-family: var(--font-mono);
+    font-size: clamp(9px, 1vw, 12px);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: var(--accent);
+    margin-bottom: clamp(8px, 1.2vh, 14px);
+  }
+  .timeline__title {
+    font-size: clamp(14px, 1.6vw, 20px);
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: clamp(6px, 1vh, 10px);
+  }
+  .timeline__desc {
+    font-size: clamp(11px, 1.2vw, 14px);
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+  @media (max-width: 768px) {
+    .timeline { flex-direction: column; gap: 0; }
+    .timeline__track { top: 0; bottom: 0; left: 20px; width: 1.5px; height: auto; transform: none; }
+    .timeline__item,
+    .timeline__item--above,
+    .timeline__item--below {
+      display: flex; flex-direction: row;
+      align-items: flex-start;
+      grid-template-rows: unset;
+      gap: 18px; padding: 0;
+      padding-bottom: clamp(16px, 2.5vh, 24px);
+    }
+    .timeline__item--above .timeline__content,
+    .timeline__item--below .timeline__content {
+      grid-row: unset; align-self: unset; margin: 0; width: auto; flex: 1;
+    }
+    .timeline__item--above .timeline__dot,
+    .timeline__item--below .timeline__dot { grid-row: unset; margin-top: 2px; }
+    .slide--timeline { padding-left: clamp(20px, 5vw, 48px); padding-right: clamp(20px, 5vw, 48px); }
+  }
 
   /* ============ RESPONSIVE ============ */
   @media (max-height: 700px) {
@@ -708,29 +894,55 @@ graph LR
     </div>
   </section>
 
-  <!-- SLIDE 7: DASHBOARD -->
-  <section class="slide slide--dashboard" style="background-image:radial-gradient(ellipse at 70% 30%, var(--accent-dim) 0%, transparent 40%);">
-    <h2 class="slide__heading reveal">Performance Impact</h2>
-    <div class="slide__kpis">
-      <div class="slide__kpi reveal">
-        <div class="slide__kpi-val" style="color:var(--accent);">12ms</div>
+  <!-- SLIDE 7: DASHBOARD — McKinsey hairline grid -->
+  <section class="slide slide--dashboard">
+    <div class="slide__header reveal">
+      <div>
+        <p class="slide__label" style="margin-bottom:4px;">Performance Impact</p>
+        <h2 class="slide__heading">Edge Migration Results</h2>
+      </div>
+      <div class="slide__context">Post-cutover · Week 6</div>
+    </div>
+    <div class="slide__kpis reveal">
+      <div class="slide__kpi slide__kpi--primary">
+        <div class="slide__kpi-cat">Latency</div>
+        <div class="slide__kpi-val-row">
+          <div class="slide__kpi-val" style="color:var(--accent);">12ms</div>
+          <span class="slide__kpi-trend slide__kpi-trend--up">▲ −130ms</span>
+          <svg class="slide__kpi-spark" viewBox="0 0 60 32" preserveAspectRatio="none">
+            <polyline points="0,28 15,22 30,16 45,8 60,3" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round"/>
+            <polyline points="0,28 15,22 30,16 45,8 60,3 60,32 0,32" fill="var(--accent-dim)" stroke="none"/>
+          </svg>
+        </div>
+        <div class="slide__kpi-sep"></div>
         <div class="slide__kpi-label">P99 Latency</div>
-        <div class="slide__kpi-trend" style="color:var(--green);">&darr; from 142ms</div>
       </div>
-      <div class="slide__kpi reveal">
-        <div class="slide__kpi-val" style="color:var(--green);">99.97%</div>
+      <div class="slide__kpi slide__kpi--primary">
+        <div class="slide__kpi-cat">Availability</div>
+        <div class="slide__kpi-val-row">
+          <div class="slide__kpi-val" style="color:var(--accent);">99.97%</div>
+          <span class="slide__kpi-trend slide__kpi-trend--up">▲ +0.77pts</span>
+        </div>
+        <div class="slide__kpi-sep"></div>
         <div class="slide__kpi-label">Uptime</div>
-        <div class="slide__kpi-trend" style="color:var(--green);">&uarr; from 99.2%</div>
       </div>
-      <div class="slide__kpi reveal">
-        <div class="slide__kpi-val" style="color:var(--blue);">340</div>
+      <div class="slide__kpi slide__kpi--secondary">
+        <div class="slide__kpi-cat">Reach</div>
+        <div class="slide__kpi-val-row">
+          <div class="slide__kpi-val" style="color:var(--blue, var(--accent-2, var(--text)));">340</div>
+          <span class="slide__kpi-trend slide__kpi-trend--flat">→ global</span>
+        </div>
+        <div class="slide__kpi-sep"></div>
         <div class="slide__kpi-label">Edge Locations</div>
-        <div class="slide__kpi-trend" style="color:var(--text-dim);">global coverage</div>
       </div>
-      <div class="slide__kpi reveal">
-        <div class="slide__kpi-val" style="color:var(--accent);">$0.02</div>
+      <div class="slide__kpi slide__kpi--neutral">
+        <div class="slide__kpi-cat">Cost</div>
+        <div class="slide__kpi-val-row">
+          <div class="slide__kpi-val" style="color:var(--text); font-size:clamp(28px,4.5vw,58px);">$0.02</div>
+          <span class="slide__kpi-trend slide__kpi-trend--up">▲ −68%</span>
+        </div>
+        <div class="slide__kpi-sep"></div>
         <div class="slide__kpi-label">Per 10K Requests</div>
-        <div class="slide__kpi-trend" style="color:var(--green);">&darr; 68% cost reduction</div>
       </div>
     </div>
   </section>
@@ -790,6 +1002,47 @@ graph LR
       <p class="slide__label reveal" style="color:rgba(255,255,255,0.6);">Next Steps</p>
       <h2 class="slide__heading reveal">Ship Shadow Mode This Week</h2>
       <p class="slide__subtitle reveal" style="color:rgba(255,255,255,0.6); margin-top:12px;">Full cutover targeted for end of Q1</p>
+    </div>
+  </section>
+
+  <!-- SLIDE 12: TIMELINE — grid 1fr/auto/1fr dots always on track -->
+  <section class="slide slide--timeline">
+    <p class="slide__label reveal">Migration Timeline</p>
+    <h2 class="slide__heading reveal">Rollout Phases</h2>
+    <div class="timeline reveal">
+      <div class="timeline__track"></div>
+      <div class="timeline__item timeline__item--above">
+        <div class="timeline__content">
+          <div class="timeline__date">Week 1–2</div>
+          <div class="timeline__title">Shadow Mode</div>
+          <div class="timeline__desc">Mirror traffic to edge, compare responses without user impact</div>
+        </div>
+        <div class="timeline__dot"></div>
+      </div>
+      <div class="timeline__item timeline__item--below">
+        <div class="timeline__dot"></div>
+        <div class="timeline__content">
+          <div class="timeline__date">Week 3</div>
+          <div class="timeline__title">Canary 5%</div>
+          <div class="timeline__desc">First live traffic, error monitoring, rollback ready</div>
+        </div>
+      </div>
+      <div class="timeline__item timeline__item--above">
+        <div class="timeline__content">
+          <div class="timeline__date">Week 4–5</div>
+          <div class="timeline__title">Gradual Shift</div>
+          <div class="timeline__desc">25% → 50% → 75%, performance validated at each step</div>
+        </div>
+        <div class="timeline__dot"></div>
+      </div>
+      <div class="timeline__item timeline__item--below">
+        <div class="timeline__dot"></div>
+        <div class="timeline__content">
+          <div class="timeline__date">Week 6</div>
+          <div class="timeline__title">Full Cutover</div>
+          <div class="timeline__desc">100% traffic, decommission proxy, cleanup feature flags</div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -879,7 +1132,7 @@ graph LR
     this.slides.forEach(function(_,i){var d=document.createElement('button');d.className='deck-dot';d.title='Slide '+(i+1);d.onclick=function(){self.goTo(i);};dots.appendChild(d);});
     document.body.appendChild(dots);this.dots=[].slice.call(dots.children);
     var ctr=document.createElement('div');ctr.className='deck-counter';document.body.appendChild(ctr);this.counter=ctr;
-    var hints=document.createElement('div');hints.className='deck-hints';hints.textContent='\u2190 \u2192 or scroll to navigate';document.body.appendChild(hints);this.hints=hints;
+    var hints=document.createElement('div');hints.className='deck-hints';hints.textContent='\u2190 \u2191 \u2192 \u2193 or scroll to navigate \u00b7 F to fullscreen';document.body.appendChild(hints);this.hints=hints;
     this.hintTimer=setTimeout(function(){hints.classList.add('faded');},4000);
   };
   SlideEngine.prototype.bindEvents=function(){
@@ -890,6 +1143,7 @@ graph LR
       else if(['ArrowUp','ArrowLeft','PageUp'].indexOf(e.key)>-1){e.preventDefault();self.prev();}
       else if(e.key==='Home'){e.preventDefault();self.goTo(0);}
       else if(e.key==='End'){e.preventDefault();self.goTo(self.total-1);}
+      else if(e.key==='f'||e.key==='F'){self.toggleFullscreen();}
       self.fadeHints();
     });
     var tY;
@@ -910,6 +1164,201 @@ graph LR
     this.counter.textContent=(this.current+1)+' / '+this.total;
   };
   SlideEngine.prototype.fadeHints=function(){clearTimeout(this.hintTimer);this.hints.classList.add('faded');};
+  SlideEngine.prototype.toggleFullscreen=function(){
+    if(!document.fullscreenElement){
+      (document.documentElement.requestFullscreen||document.documentElement.webkitRequestFullscreen||document.documentElement.mozRequestFullScreen).call(document.documentElement);
+    } else {
+      (document.exitFullscreen||document.webkitExitFullscreen||document.mozCancelFullScreen).call(document);
+    }
+  };
+</script>
+
+<!-- ══════════════════════════════════════════════════════════════════════
+  ThemeSwitcher — floating design-system switcher, bottom-left corner.
+  Self-contained: injects its own CSS, no external deps.
+  Defines all 8 presets as JS variable maps + font URLs.
+  Detects the active preset from the page's current --accent value.
+  Applies variables to :root inline style; loads Google Fonts on demand.
+  Does NOT interfere with SlideEngine keyboard navigation.
+  Always include this script in generated slide decks.
+══════════════════════════════════════════════════════════════════════ -->
+<script>
+(function(){
+  var PRESETS=[
+    {id:'midnight-editorial',name:'Midnight Editorial',dark:true,
+     bg:'#0f1729',accent:'#d4a73a',
+     fonts:'https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;600&display=swap',
+     vars:{'--font-body':"'Instrument Serif', Georgia, serif",'--font-mono':"'JetBrains Mono','SF Mono',monospace",
+      '--bg':'#0f1729','--surface':'#162040','--surface2':'#1d2b52','--surface-elevated':'#243362',
+      '--border':'rgba(200,180,140,0.08)','--border-bright':'rgba(200,180,140,0.16)',
+      '--text':'#e8e4d8','--text-dim':'#9a9484',
+      '--accent':'#d4a73a','--accent-dim':'rgba(212,167,58,0.1)','--accent-2':'#e8c4a0',
+      '--code-bg':'#0a0f1e','--code-text':'#d4d0c4'}},
+    {id:'warm-signal',name:'Warm Signal',dark:false,
+     bg:'#faf6f0',accent:'#c2410c',
+     fonts:'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Azeret+Mono:wght@400;600&display=swap',
+     vars:{'--font-body':"'Plus Jakarta Sans',system-ui,sans-serif",'--font-mono':"'Azeret Mono','SF Mono',monospace",
+      '--bg':'#faf6f0','--surface':'#ffffff','--surface2':'#f5ece0','--surface-elevated':'#fffdf5',
+      '--border':'rgba(60,40,20,0.08)','--border-bright':'rgba(60,40,20,0.16)',
+      '--text':'#2c2a25','--text-dim':'#7c756a',
+      '--accent':'#c2410c','--accent-dim':'rgba(194,65,12,0.08)','--accent-2':'#92400e',
+      '--code-bg':'#2c2520','--code-text':'#f5ece0'}},
+    {id:'terminal-mono',name:'Terminal Mono',dark:true,
+     bg:'#0a0e14',accent:'#50fa7b',
+     fonts:'https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;600;700&display=swap',
+     vars:{'--font-body':"'Geist Mono','SF Mono',Consolas,monospace",'--font-mono':"'Geist Mono','SF Mono',Consolas,monospace",
+      '--bg':'#0a0e14','--surface':'#12161e','--surface2':'#1a1f2a','--surface-elevated':'#222836',
+      '--border':'rgba(80,250,123,0.06)','--border-bright':'rgba(80,250,123,0.12)',
+      '--text':'#c8d6e5','--text-dim':'#5a6a7a',
+      '--accent':'#50fa7b','--accent-dim':'rgba(80,250,123,0.08)','--accent-2':'#8be9fd',
+      '--code-bg':'#060a10','--code-text':'#c8d6e5'}},
+    {id:'swiss-clean',name:'Swiss Clean',dark:false,
+     bg:'#ffffff',accent:'#0055ff',
+     fonts:'https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap',
+     vars:{'--font-body':"'DM Sans',system-ui,sans-serif",'--font-mono':"'Fira Code','SF Mono',monospace",
+      '--bg':'#ffffff','--surface':'#f8f8f8','--surface2':'#f0f0f0','--surface-elevated':'#ffffff',
+      '--border':'rgba(0,0,0,0.08)','--border-bright':'rgba(0,0,0,0.16)',
+      '--text':'#111111','--text-dim':'#666666',
+      '--accent':'#0055ff','--accent-dim':'rgba(0,85,255,0.06)','--accent-2':'#0099cc',
+      '--code-bg':'#18181b','--code-text':'#e4e4e7'}},
+    {id:'velvet-editorial',name:'Velvet Editorial',dark:true,
+     bg:'#160810',accent:'#c9956c',
+     fonts:'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Fira+Code:wght@400;500;600&display=swap',
+     vars:{'--font-body':"'Cormorant Garamond',Georgia,serif",'--font-mono':"'Fira Code','SF Mono',monospace",
+      '--bg':'#160810','--surface':'#211020','--surface2':'#2c1530','--surface-elevated':'#371a3c',
+      '--border':'rgba(200,148,108,0.08)','--border-bright':'rgba(200,148,108,0.18)',
+      '--text':'#f0e6ea','--text-dim':'#9a7585',
+      '--accent':'#c9956c','--accent-dim':'rgba(201,149,108,0.1)','--accent-2':'#e8c4b0',
+      '--code-bg':'#0e0508','--code-text':'#e8d4dc'}},
+    {id:'bauhaus',name:'Bauhaus',dark:false,
+     bg:'#f5f4ef',accent:'#d62828',
+     fonts:'https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap',
+     vars:{'--font-body':"'Space Grotesk',system-ui,sans-serif",'--font-mono':"'Space Mono','SF Mono',monospace",
+      '--bg':'#f5f4ef','--surface':'#ffffff','--surface2':'#ebebE4','--surface-elevated':'#ffffff',
+      '--border':'rgba(0,0,0,0.12)','--border-bright':'rgba(0,0,0,0.25)',
+      '--text':'#111111','--text-dim':'#555555',
+      '--accent':'#d62828','--accent-dim':'rgba(214,40,40,0.08)','--accent-2':'#f7b731',
+      '--code-bg':'#111111','--code-text':'#f5f4ef'}},
+    {id:'fog-minimalist',name:'Fog Minimalist',dark:false,
+     bg:'#f5f0eb',accent:'#7a8c7e',
+     fonts:'https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=Noto+Sans+Mono:wght@400;600&display=swap',
+     vars:{'--font-body':"'Source Serif 4',Georgia,serif",'--font-mono':"'Noto Sans Mono','SF Mono',monospace",
+      '--bg':'#f5f0eb','--surface':'#faf8f5','--surface2':'#ede8e3','--surface-elevated':'#fdfcfa',
+      '--border':'rgba(44,38,32,0.08)','--border-bright':'rgba(44,38,32,0.14)',
+      '--text':'#2c2620','--text-dim':'#8c8078',
+      '--accent':'#7a8c7e','--accent-dim':'rgba(122,140,126,0.1)','--accent-2':'#a0b0a4',
+      '--code-bg':'#1e1c18','--code-text':'#e8e4de'}},
+    {id:'elo-blue',name:'ELO Blue',dark:true,
+     bg:'#020c1e',accent:'#0db2ef',
+     fonts:'https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500;600&display=swap',
+     vars:{'--font-body':"'Bricolage Grotesque',system-ui,sans-serif",'--font-mono':"'IBM Plex Mono','SF Mono',monospace",
+      '--bg':'#020c1e','--surface':'#051828','--surface2':'#091f36','--surface-elevated':'#0d2544',
+      '--border':'rgba(13,178,239,0.08)','--border-bright':'rgba(13,178,239,0.18)',
+      '--text':'#e0eaf8','--text-dim':'#4d7aaa',
+      '--accent':'#0db2ef','--accent-dim':'rgba(13,178,239,0.10)','--accent-2':'#f5e400',
+      '--code-bg':'#020a16','--code-text':'#c0d8f0'}},
+    {id:'elo-light',name:'ELO Light',dark:false,
+     bg:'#f6f9ff',accent:'#053574',
+     fonts:'https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500;600&display=swap',
+     vars:{'--font-body':"'Bricolage Grotesque',system-ui,sans-serif",'--font-mono':"'IBM Plex Mono','SF Mono',monospace",
+      '--bg':'#f6f9ff','--surface':'#ffffff','--surface2':'#edf2fc','--surface-elevated':'#ffffff',
+      '--border':'rgba(5,53,116,0.08)','--border-bright':'rgba(5,53,116,0.16)',
+      '--text':'#030d1e','--text-dim':'#3d5a8a',
+      '--accent':'#053574','--accent-dim':'rgba(5,53,116,0.07)','--accent-2':'#f5e400',
+      '--code-bg':'#030d1e','--code-text':'#c0d8f0'}},
+  ];
+
+  function ThemeSwitcher(){
+    this.current=this._detect();
+    this._loaded={};
+    this._build();
+    this._apply(this.current,false);
+  }
+
+  ThemeSwitcher.prototype._detect=function(){
+    var v=getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
+    for(var i=0;i<PRESETS.length;i++){
+      if(PRESETS[i].vars['--accent']===v||PRESETS[i].accent===v)return i;
+    }
+    return 0;
+  };
+
+  ThemeSwitcher.prototype._build=function(){
+    var self=this;
+    var s=document.createElement('style');
+    s.textContent=[
+      '.ts-btn{position:fixed;bottom:clamp(12px,2vh,24px);left:clamp(12px,2vw,24px);z-index:200;width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,0.18);background:rgba(10,12,18,0.82);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);cursor:pointer;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.7);transition:border-color .2s,transform .2s;box-shadow:0 2px 14px rgba(0,0,0,0.5);}',
+      '.ts-btn:hover{border-color:rgba(255,255,255,0.45);transform:scale(1.08);}',
+      '.ts-btn svg{pointer-events:none;}',
+      '.ts-panel{position:fixed;bottom:calc(clamp(12px,2vh,24px) + 52px);left:clamp(12px,2vw,24px);z-index:200;background:rgba(8,10,16,0.94);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.10);border-radius:16px;padding:14px;width:280px;box-shadow:0 12px 48px rgba(0,0,0,0.7);transform-origin:bottom left;transition:opacity .18s ease,transform .2s cubic-bezier(.16,1,.3,1);}',
+      '.ts-panel.ts-off{opacity:0;transform:scale(0.88) translateY(10px);pointer-events:none;}',
+      '.ts-head{font:700 10px/1 "SF Mono","Fira Code",monospace;text-transform:uppercase;letter-spacing:1.8px;color:rgba(255,255,255,0.3);margin-bottom:11px;padding:0 2px;}',
+      '.ts-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;}',
+      '.ts-card{display:flex;align-items:center;gap:8px;padding:8px 9px;border-radius:9px;border:1px solid rgba(255,255,255,0.06);cursor:pointer;transition:border-color .15s,background .15s;background:rgba(255,255,255,0.02);}',
+      '.ts-card:hover{background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.2);}',
+      '.ts-card.ts-on{border-color:rgba(255,255,255,0.38);background:rgba(255,255,255,0.09);}',
+      '.ts-sw{width:30px;height:30px;border-radius:7px;flex-shrink:0;border:1.5px solid rgba(255,255,255,0.12);position:relative;overflow:hidden;}',
+      '.ts-sw-bg{position:absolute;inset:0;}',
+      '.ts-sw-dot{position:absolute;bottom:4px;right:4px;width:9px;height:9px;border-radius:50%;border:1px solid rgba(0,0,0,0.25);}',
+      '.ts-nm{font:600 10.5px/1.3 "SF Mono","Fira Code",monospace;color:rgba(255,255,255,0.68);letter-spacing:-.1px;flex:1;min-width:0;}',
+      '.ts-card.ts-on .ts-nm{color:rgba(255,255,255,0.96);}',
+      '.ts-ck{flex-shrink:0;color:rgba(255,255,255,0.65);display:none;}',
+      '.ts-card.ts-on .ts-ck{display:block;}',
+    ].join('');
+    document.head.appendChild(s);
+
+    // Toggle button
+    var btn=document.createElement('button');
+    btn.className='ts-btn';btn.title='Switch design system (all 8 presets)';
+    btn.innerHTML='<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="13.5" r="2.5"/><circle cx="8.5" cy="18.5" r="2.5"/><circle cx="6" cy="8" r="2.5"/></svg>';
+    document.body.appendChild(btn);
+    this.btn=btn;
+
+    // Panel
+    var panel=document.createElement('div');
+    panel.className='ts-panel ts-off';
+    var head=document.createElement('div');head.className='ts-head';head.textContent='Design System';
+    var grid=document.createElement('div');grid.className='ts-grid';
+    panel.appendChild(head);panel.appendChild(grid);
+    document.body.appendChild(panel);
+    this.panel=panel;
+
+    this.cards=PRESETS.map(function(p,idx){
+      var card=document.createElement('div');
+      card.className='ts-card'+(idx===self.current?' ts-on':'');
+      card.innerHTML=
+        '<div class="ts-sw"><div class="ts-sw-bg" style="background:'+p.bg+'"></div>'+
+        '<div class="ts-sw-dot" style="background:'+p.accent+'"></div></div>'+
+        '<span class="ts-nm">'+p.name+'</span>'+
+        '<svg class="ts-ck" width="11" height="11" viewBox="0 0 11 11"><polyline points="1.5,5.5 4.5,8.5 9.5,2.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+      card.addEventListener('click',function(){self._apply(idx,true);});
+      grid.appendChild(card);
+      return card;
+    });
+
+    btn.addEventListener('click',function(e){e.stopPropagation();panel.classList.toggle('ts-off');});
+    document.addEventListener('click',function(e){if(!panel.contains(e.target)&&e.target!==btn)panel.classList.add('ts-off');});
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')panel.classList.add('ts-off');});
+  };
+
+  ThemeSwitcher.prototype._apply=function(idx,animate){
+    var p=PRESETS[idx],root=document.documentElement,self=this;
+    Object.keys(p.vars).forEach(function(k){root.style.setProperty(k,p.vars[k]);});
+    if(!this._loaded[p.id]){
+      var lk=document.createElement('link');lk.rel='stylesheet';lk.href=p.fonts;
+      document.head.appendChild(lk);this._loaded[p.id]=true;
+    }
+    this.cards.forEach(function(c,i){c.classList.toggle('ts-on',i===idx);});
+    if(animate){
+      var deck=document.querySelector('.deck');
+      if(deck){deck.style.transition='opacity .14s';deck.style.opacity='0.55';setTimeout(function(){deck.style.opacity='1';},140);}
+    }
+    this.current=idx;
+    this.panel.classList.add('ts-off');
+  };
+
+  document.addEventListener('DOMContentLoaded',function(){new ThemeSwitcher();});
+})();
 </script>
 
 </body>

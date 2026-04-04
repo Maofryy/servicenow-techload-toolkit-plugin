@@ -57,4 +57,3 @@ Focus on "Total Cost of Ownership" (TCO) and "Upgradeability."
 ## Reference Files
 - `../../knowledge-commons/templates/health-snippet-template.md`
 - `../../knowledge-commons/templates/business-value-pitch-template.md`
-- `../../knowledge-commons/standards/business-glossary.md` (New Suggestion: A list of 'ServiceNow-to-English' terms for the agent to use consistently)

@@ -60,4 +60,3 @@ List decisions that MUST be resolved before the **Solution Architect Agent** can
 ## Reference Files
 - `../../knowledge-commons/templates/gap-analysis-template.md`
 - `../../knowledge-commons/templates/edge-case-checklist.md`
-- `../../knowledge-commons/templates/definition-of-ready.md` (Optional: Create this to define your 1-10 scale)

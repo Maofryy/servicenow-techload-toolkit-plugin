@@ -49,4 +49,3 @@ Produce the TDD Lite, but add these **"Lead Insights"** at the bottom of each se
 - `../../knowledge-commons/templates/tdd-template.md`
 - `../../knowledge-commons/templates/oob-vs-custom-template.md`
 - `../../knowledge-commons/standards/oob-module-index.md`
-- `../../knowledge-commons/standards/naming-conventions.md` (New Suggestion: Add this to your library)

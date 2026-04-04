@@ -74,32 +74,6 @@ sys_ids are auto-generated per instance and will differ between your development
 
 ---
 
-### Example 3 — Missing Null Check on Reference Chain
-
-🚩 **Issue**
-Line 9: `current.requested_for.manager.email` — this chain will throw a null pointer exception if `requested_for` has no manager assigned.
-
-💡 **The Better Way**
-```javascript
-var managerEmail = '';
-if (!current.requested_for.nil()) {
-    var managerRef = current.requested_for.getRefRecord();
-    if (!managerRef.manager.nil()) {
-        managerEmail = managerRef.manager.getRefRecord().email.toString();
-    } else {
-        gs.log('No manager found for user: ' + current.requested_for.getDisplayValue(), 'ApprovalUtils');
-        // Handle fallback — e.g., route to group instead
-    }
-}
-```
-
-📖 **Why It Matters**
-Any user without a manager (contractors, new hires, deprovisioned accounts) will break this flow. This is one of the most common causes of silent flow failures in production — the record gets stuck with no approval and no error.
-
-🔗 **Reference**: See `technical-standards.md` Rule #6
-
----
-
 ## Tips for Delivery
 - Always use the Teaching Moment format for 🔴 Critical and 🟡 Warning items
 - For 🔵 Suggestions: a brief comment is fine — save the full template for items that really need it
