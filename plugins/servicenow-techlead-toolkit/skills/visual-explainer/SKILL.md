@@ -14,6 +14,10 @@ Generate self-contained HTML files for technical diagrams, visualizations, and d
 
 **Proactive table rendering.** When you're about to present tabular data as an ASCII box-drawing table in the terminal (comparisons, audits, feature matrices, status reports, any structured rows/columns), generate an HTML page instead. The threshold: if the table has 4+ rows or 3+ columns, it belongs in the browser. Don't wait for the user to ask — render it as HTML automatically and tell them the file path. You can still include a brief text summary in the chat, but the table itself should be the HTML page.
 
+## Language Awareness
+
+Detect the language of the user's prompt. All text content inside the generated HTML — titles, card text, labels, headings, tooltips, legend entries, and any visible text — must be written in that language. The skill instructions and reference files are in English for internal reference only; the delivered HTML page is always in the user's language.
+
 ## Workflow
 
 ### 1. Think (5 seconds, not 5 minutes)
