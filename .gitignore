@@ -2,3 +2,7 @@ logs/
 *.log
 .DS_Store
 Thumbs.db
+
+.claude/
+docs/
+CLAUDE.md
