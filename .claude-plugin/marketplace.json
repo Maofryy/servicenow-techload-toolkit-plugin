@@ -1,14 +1,14 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "servicenow-techload-toolkit-plugin",
-  "description": "ServiceNow TechLead Toolkit — six specialized skills for the full ServiceNow delivery lifecycle",
+  "description": "ServiceNow TechLead Toolkit — ten specialized skills for the full ServiceNow delivery lifecycle",
   "owner": {
     "name": "Maori"
   },
   "plugins": [
     {
       "name": "servicenow-techlead-toolkit",
-      "description": "Six specialized skills covering the full ServiceNow delivery lifecycle: requirement stress-testing, solution architecture, code review, executive communication, visual diagrams, and slide decks.",
+      "description": "Ten specialized skills covering the full ServiceNow delivery lifecycle: design challenging, requirement stress-testing, platform blueprinting, code review, executive communication, written communication drafting, meeting documentation, effort estimation, visual diagrams, and slide decks.",
       "source": "./plugins/servicenow-techlead-toolkit",
       "category": "development",
       "homepage": "https://github.com/Maofryy/servicenow-techload-toolkit-plugin"
