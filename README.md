@@ -1,6 +1,6 @@
 # ServiceNow TechLead Toolkit — Claude Code Plugin Marketplace
 
-A Claude Code plugin marketplace containing the ServiceNow Tech Lead Agent Library — six specialized skills covering the full delivery lifecycle.
+A Claude Code plugin marketplace containing the ServiceNow Tech Lead Agent Library — nine specialized skills covering the full delivery lifecycle.
 
 ## Install
 
@@ -17,8 +17,11 @@ claude plugins install servicenow-techlead-toolkit@servicenow-techload-toolkit-p
 |---|---|---|
 | Requirement Stress-Tester | "stress test this requirement", "review this user story", "find gaps in this requirement" | Phase I — Discovery |
 | Solution Architect | "create a TDD", "design the solution for", "OOB vs custom", "flow designer vs business rule" | Phase II — Architecture |
+| Estimation Wizard | "estimate this story", "size this requirement", "work breakdown", "point this ticket" | Phase II→III — Estimation |
 | Code Coach | "review my code", "code review", "check this script", "peer review" | Phase III — Code Quality |
 | Executive Translator | "translate this for the PM", "elevator pitch", "weekly health report" | Phase III — Communication |
+| Communication Drafter | "draft a Jira ticket", "email the client about", "reject this requirement" | Cross-Phase — Communication |
+| Meeting Scribe | "meeting minutes", "write up the meeting notes", "structure these notes" | Cross-Phase — Documentation |
 | Visual Explainer | "make a diagram", "show this visually", "create a flowchart" | Utility |
 | HTML Slides Agent | "create a slide deck", "build a presentation", "make slides" | Utility |
 
@@ -48,4 +51,4 @@ plugins/
 
 ## Version
 
-0.1.0 — Initial release
+0.2.0 — Added Communication Drafter, Meeting Scribe, and Estimation Wizard skills
