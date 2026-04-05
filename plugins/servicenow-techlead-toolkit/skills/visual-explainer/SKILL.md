@@ -1,11 +1,15 @@
 ---
 name: visual-explainer
 description: >
-  Use this skill when the user asks for a diagram, architecture overview, diff review,
-  plan review, project recap, comparison table, or any visual explanation of technical
-  concepts. Also use proactively when about to render a complex ASCII table (4+ rows
-  or 3+ columns) — present it as a styled HTML page instead. Trigger on "visual explainer",
-  "make a diagram", "show this visually", "create a flowchart", or "draw this out".
+    Use this skill when the user asks for a diagram, architecture overview, diff review,
+    plan review, project recap, comparison table, or any visual explanation of technical
+    concepts. Also use proactively when about to render a complex ASCII table (4+ rows
+    or 3+ columns) — present it as a styled HTML page instead. Trigger on "visual explainer",
+    "make a diagram", "show this visually", "create a flowchart", or "draw this out".
+metadata:
+    version: "1.0.0"
+    author: "Maori"
+    phase: "Global — Visual presentation"
 ---
 
 # Visual Explainer
@@ -38,21 +42,21 @@ For prose accents, see "Prose Page Elements" in `../../knowledge-commons/visual/
 
 **Constrained aesthetics (prefer these):**
 
--   Blueprint (technical drawing feel, subtle grid background, deep slate/blue palette, monospace labels, precise borders) — see `websocket-implementation-plan.html` for reference
--   Editorial (serif headlines like Instrument Serif or Crimson Pro, generous whitespace, muted earth tones or deep navy + gold)
--   Paper/ink (warm cream `#faf7f5` background, terracotta/sage accents, informal feel)
--   Monochrome terminal (green/amber on near-black, monospace everything, CRT glow optional)
+- Blueprint (technical drawing feel, subtle grid background, deep slate/blue palette, monospace labels, precise borders) — see `websocket-implementation-plan.html` for reference
+- Editorial (serif headlines like Instrument Serif or Crimson Pro, generous whitespace, muted earth tones or deep navy + gold)
+- Paper/ink (warm cream `#faf7f5` background, terracotta/sage accents, informal feel)
+- Monochrome terminal (green/amber on near-black, monospace everything, CRT glow optional)
 
 **Flexible aesthetics (use with caution):**
 
--   IDE-inspired (borrow a real, named color scheme: Dracula, Nord, Catppuccin Mocha/Latte, Solarized Dark/Light, Gruvbox, One Dark, Rosé Pine) — commit to the actual palette, don't approximate
--   Data-dense (small type, tight spacing, maximum information, muted colors)
+- IDE-inspired (borrow a real, named color scheme: Dracula, Nord, Catppuccin Mocha/Latte, Solarized Dark/Light, Gruvbox, One Dark, Rosé Pine) — commit to the actual palette, don't approximate
+- Data-dense (small type, tight spacing, maximum information, muted colors)
 
 **Explicitly forbidden:**
 
--   Neon dashboard (cyan + magenta + purple on dark) — always produces AI slop
--   Gradient mesh (pink/purple/cyan blobs) — too generic
--   Any combination of Inter font + violet/indigo accents + gradient text
+- Neon dashboard (cyan + magenta + purple on dark) — always produces AI slop
+- Gradient mesh (pink/purple/cyan blobs) — too generic
+- Any combination of Inter font + violet/indigo accents + gradient text
 
 Vary the choice each time. If the last diagram was dark and technical, make the next one light and editorial. The swap test: if you replaced your styling with a generic dark theme and nobody would notice the difference, you haven't designed anything.
 
@@ -60,11 +64,11 @@ Vary the choice each time. If the last diagram was dark and technical, make the 
 
 **Read the reference material** before generating. Don't memorize it — read it each time to absorb the patterns.
 
--   For text-heavy architecture overviews (card content matters more than topology): read `../../knowledge-commons/visual/templates/architecture.html`
--   For flowcharts, sequence diagrams, ER, state machines, mind maps, class diagrams, C4: read `../../knowledge-commons/visual/templates/mermaid-flowchart.html`
--   For data tables, comparisons, audits, feature matrices: read `../../knowledge-commons/visual/templates/data-table.html`
--   For slide deck presentations (when `--slides` flag is present or `/generate-slides` is invoked): read `../../knowledge-commons/visual/templates/slide-deck.html` and `../../knowledge-commons/visual/references/slide-patterns.md`
--   For prose-heavy publishable pages (READMEs, articles, blog posts, essays): read the "Prose Page Elements" section in `../../knowledge-commons/visual/references/css-patterns.md` and "Typography by Content Voice" in `../../knowledge-commons/visual/references/libraries.md`
+- For text-heavy architecture overviews (card content matters more than topology): read `../../knowledge-commons/visual/templates/architecture.html`
+- For flowcharts, sequence diagrams, ER, state machines, mind maps, class diagrams, C4: read `../../knowledge-commons/visual/templates/mermaid-flowchart.html`
+- For data tables, comparisons, audits, feature matrices: read `../../knowledge-commons/visual/templates/data-table.html`
+- For slide deck presentations (when `--slides` flag is present or `/generate-slides` is invoked): read `../../knowledge-commons/visual/templates/slide-deck.html` and `../../knowledge-commons/visual/references/slide-patterns.md`
+- For prose-heavy publishable pages (READMEs, articles, blog posts, essays): read the "Prose Page Elements" section in `../../knowledge-commons/visual/references/css-patterns.md` and "Typography by Content Voice" in `../../knowledge-commons/visual/references/libraries.md`
 
 **For CSS/layout patterns and SVG connectors**, read `../../knowledge-commons/visual/references/css-patterns.md`.
 
@@ -135,11 +139,11 @@ Apply these principles to every diagram:
 
 **Good pairings (use these):**
 
--   DM Sans + Fira Code (technical, precise)
--   Instrument Serif + JetBrains Mono (editorial, refined)
--   IBM Plex Sans + IBM Plex Mono (reliable, readable)
--   Bricolage Grotesque + Fragment Mono (bold, characterful)
--   Plus Jakarta Sans + Azeret Mono (rounded, approachable)
+- DM Sans + Fira Code (technical, precise)
+- Instrument Serif + JetBrains Mono (editorial, refined)
+- IBM Plex Sans + IBM Plex Mono (reliable, readable)
+- Bricolage Grotesque + Fragment Mono (bold, characterful)
+- Plus Jakarta Sans + Azeret Mono (rounded, approachable)
 
 Load via `<link>` in `<head>`. Include a system font fallback in the `font-family` stack for offline resilience.
 
@@ -149,11 +153,11 @@ Load via `<link>` in `<head>`. Include a system font fallback in the `font-famil
 
 **Good accent palettes (use these):**
 
--   Terracotta + sage (`#c2410c`, `#65a30d`) — warm, earthy
--   Teal + slate (`#0891b2`, `#0369a1`) — technical, precise
--   Rose + cranberry (`#be123c`, `#881337`) — editorial, refined
--   Amber + emerald (`#d97706`, `#059669`) — data-focused
--   Deep blue + gold (`#1e3a5f`, `#d4a73a`) — premium, sophisticated
+- Terracotta + sage (`#c2410c`, `#65a30d`) — warm, earthy
+- Teal + slate (`#0891b2`, `#0369a1`) — technical, precise
+- Rose + cranberry (`#be123c`, `#881337`) — editorial, refined
+- Amber + emerald (`#d97706`, `#059669`) — data-focused
+- Deep blue + gold (`#1e3a5f`, `#d4a73a`) — premium, sophisticated
 
 Put your primary aesthetic in `:root` and the alternate in the media query:
 
@@ -191,9 +195,9 @@ Put your primary aesthetic in `:root` and the alternate in the media query:
 
 **Forbidden animations:**
 
--   Animated glowing box-shadows (`@keyframes glow { box-shadow: 0 0 20px... }`) — this is AI slop
--   Pulsing/breathing effects on static content
--   Continuous animations that run after page load (except for progress indicators)
+- Animated glowing box-shadows (`@keyframes glow { box-shadow: 0 0 20px... }`) — this is AI slop
+- Pulsing/breathing effects on static content
+- Continuous animations that run after page load (except for progress indicators)
 
 Keep animations purposeful: entrance reveals, hover feedback, and user-initiated interactions. Nothing should glow or pulse on its own.
 
@@ -203,8 +207,8 @@ Keep animations purposeful: entrance reveals, hover feedback, and user-initiated
 
 **Open in browser:**
 
--   macOS: `open ~/.agent/diagrams/filename.html`
--   Linux: `xdg-open ~/.agent/diagrams/filename.html`
+- macOS: `open ~/.agent/diagrams/filename.html`
+- Linux: `xdg-open ~/.agent/diagrams/filename.html`
 
 **Tell the user** the file path so they can re-open or share it.
 
@@ -264,26 +268,26 @@ Use a real `<table>` element — not CSS Grid pretending to be a table. Tables g
 
 Layout patterns:
 
--   Sticky `<thead>` so headers stay visible when scrolling long tables
--   Alternating row backgrounds via `tr:nth-child(even)` (subtle, 2-3% lightness shift)
--   First column optionally sticky for wide tables with horizontal scroll
--   Responsive wrapper with `overflow-x: auto` for tables wider than the viewport
--   Column width hints via `<colgroup>` or `th` widths — let text-heavy columns breathe
--   Row hover highlight for scanability
+- Sticky `<thead>` so headers stay visible when scrolling long tables
+- Alternating row backgrounds via `tr:nth-child(even)` (subtle, 2-3% lightness shift)
+- First column optionally sticky for wide tables with horizontal scroll
+- Responsive wrapper with `overflow-x: auto` for tables wider than the viewport
+- Column width hints via `<colgroup>` or `th` widths — let text-heavy columns breathe
+- Row hover highlight for scanability
 
 Status indicators (use styled `<span>` elements, never emoji):
 
--   Match/pass/yes: colored dot or checkmark with green background
--   Gap/fail/no: colored dot or cross with red background
--   Partial/warning: amber indicator
--   Neutral/info: dim text or muted badge
+- Match/pass/yes: colored dot or checkmark with green background
+- Gap/fail/no: colored dot or cross with red background
+- Partial/warning: amber indicator
+- Neutral/info: dim text or muted badge
 
 Cell content:
 
--   Wrap long text naturally — don't truncate or force single-line
--   Use `<code>` for technical references within cells
--   Secondary detail text in `<small>` with dimmed color
--   Keep numeric columns right-aligned with `tabular-nums`
+- Wrap long text naturally — don't truncate or force single-line
+- Use `<code>` for technical references within cells
+- Secondary detail text in `<small>` with dimmed color
+- Keep numeric columns right-aligned with `tabular-nums`
 
 ### Timeline / Roadmap Views
 
@@ -299,9 +303,9 @@ For visualizing implementation plans, extension designs, or feature specificatio
 
 **Don't dump full files.** Displaying entire source files inline overwhelms the page and defeats the purpose of a visual explanation. Instead:
 
--   Show **file structure with descriptions** — list functions/exports with one-line explanations
--   Show **key snippets only** — the 5-10 lines that illustrate the core logic
--   Use **collapsible sections** for full code if truly needed
+- Show **file structure with descriptions** — list functions/exports with one-line explanations
+- Show **key snippets only** — the 5-10 lines that illustrate the core logic
+- Use **collapsible sections** for full code if truly needed
 
 **Code blocks require explicit formatting.** Without `white-space: pre-wrap`, code runs together into an unreadable wall. See the "Code Blocks" section in `../../knowledge-commons/visual/references/css-patterns.md` for the correct pattern.
 
@@ -334,10 +338,10 @@ Don't just format the prose — transform it. A feature list becomes a card grid
 
 Use these sparingly within visual pages to highlight key points or provide breathing room. See "Prose Page Elements" in `../../knowledge-commons/visual/references/css-patterns.md` for CSS patterns.
 
--   **Lead paragraph** — larger intro text to set context before diving into cards/grids
--   **Pull quote** — highlight a key insight; one per page maximum
--   **Callout box** — warnings, tips, important notes
--   **Section divider** — visual break between major sections
+- **Lead paragraph** — larger intro text to set context before diving into cards/grids
+- **Pull quote** — highlight a key insight; one per page maximum
+- **Callout box** — warnings, tips, important notes
+- **Section divider** — visual break between major sections
 
 **When to use:** A visual page explaining an essay might use a lead paragraph for the thesis, then cards for key arguments. A README visualization might use callout boxes for warnings but otherwise stay card/table-focused.
 
@@ -414,25 +418,25 @@ bash <skill-base-dir> (use the path shown in "Base directory for this skill:" ab
 
 **Requirements:**
 
--   vercel-deploy skill (should be pre-installed; if not: `pi install npm:vercel-deploy`)
+- vercel-deploy skill (should be pre-installed; if not: `pi install npm:vercel-deploy`)
 
 **Notes:**
 
--   Deployments are public — anyone with the URL can view
--   Preview deployments have configurable retention (default: 30 days)
--   Claim URL lets you transfer the deployment to your Vercel account
+- Deployments are public — anyone with the URL can view
+- Preview deployments have configurable retention (default: 30 days)
+- Claim URL lets you transfer the deployment to your Vercel account
 
 ## Quality Checks
 
 Before delivering, verify:
 
--   **The squint test**: Blur your eyes. Can you still perceive hierarchy? Are sections visually distinct?
--   **The swap test**: Would replacing your fonts and colors with a generic dark theme make this indistinguishable from a template? If yes, push the aesthetic further.
--   **Both themes**: Toggle your OS between light and dark mode. Both should look intentional, not broken.
--   **Information completeness**: Does the diagram actually convey what the user asked for? Pretty but incomplete is a failure.
--   **No overflow**: Resize the browser to different widths. No content should clip or escape its container. Every grid and flex child needs `min-width: 0`. Side-by-side panels need `overflow-wrap: break-word`. Never use `display: flex` on `<li>` for marker characters — it creates anonymous flex items that can't shrink, causing lines with many inline `<code>` badges to overflow. Use absolute positioning for markers instead. See the Overflow Protection section in `../../knowledge-commons/visual/references/css-patterns.md`.
--   **Mermaid zoom controls**: Every `.mermaid-wrap` container must have zoom controls (+/−/reset/expand buttons), Ctrl/Cmd+scroll zoom, click-and-drag panning, and click-to-expand (clicking without dragging opens the diagram full-size in a new tab). The expand button (⛶) provides the same functionality. See `../../knowledge-commons/visual/references/css-patterns.md` for the full pattern including the `openMermaidInNewTab()` function.
--   **File opens cleanly**: No console errors, no broken font loads, no layout shifts.
+- **The squint test**: Blur your eyes. Can you still perceive hierarchy? Are sections visually distinct?
+- **The swap test**: Would replacing your fonts and colors with a generic dark theme make this indistinguishable from a template? If yes, push the aesthetic further.
+- **Both themes**: Toggle your OS between light and dark mode. Both should look intentional, not broken.
+- **Information completeness**: Does the diagram actually convey what the user asked for? Pretty but incomplete is a failure.
+- **No overflow**: Resize the browser to different widths. No content should clip or escape its container. Every grid and flex child needs `min-width: 0`. Side-by-side panels need `overflow-wrap: break-word`. Never use `display: flex` on `<li>` for marker characters — it creates anonymous flex items that can't shrink, causing lines with many inline `<code>` badges to overflow. Use absolute positioning for markers instead. See the Overflow Protection section in `../../knowledge-commons/visual/references/css-patterns.md`.
+- **Mermaid zoom controls**: Every `.mermaid-wrap` container must have zoom controls (+/−/reset/expand buttons), Ctrl/Cmd+scroll zoom, click-and-drag panning, and click-to-expand (clicking without dragging opens the diagram full-size in a new tab). The expand button (⛶) provides the same functionality. See `../../knowledge-commons/visual/references/css-patterns.md` for the full pattern including the `openMermaidInNewTab()` function.
+- **File opens cleanly**: No console errors, no broken font loads, no layout shifts.
 
 ## Anti-Patterns (AI Slop)
 
@@ -442,9 +446,9 @@ These patterns are explicitly forbidden. They signal "AI-generated template" and
 
 **Forbidden fonts as primary `--font-body`:**
 
--   Inter — the single most overused AI default
--   Roboto, Arial, Helvetica — generic system fallbacks promoted to primary
--   system-ui, sans-serif alone — no character, no intent
+- Inter — the single most overused AI default
+- Roboto, Arial, Helvetica — generic system fallbacks promoted to primary
+- system-ui, sans-serif alone — no character, no intent
 
 **Required:** Pick from the font pairings in `../../knowledge-commons/visual/references/libraries.md`. Every generation should use a different pairing from the last.
 
@@ -452,15 +456,15 @@ These patterns are explicitly forbidden. They signal "AI-generated template" and
 
 **Forbidden accent colors:**
 
--   Indigo-500/violet-500 (`#8b5cf6`, `#7c3aed`, `#a78bfa`) — Tailwind's default purple range
--   The cyan + magenta + pink neon gradient combination (`#06b6d4` → `#d946ef` → `#f472b6`)
--   Any palette that could be described as "Tailwind defaults with purple/pink/cyan accents"
+- Indigo-500/violet-500 (`#8b5cf6`, `#7c3aed`, `#a78bfa`) — Tailwind's default purple range
+- The cyan + magenta + pink neon gradient combination (`#06b6d4` → `#d946ef` → `#f472b6`)
+- Any palette that could be described as "Tailwind defaults with purple/pink/cyan accents"
 
 **Forbidden color effects:**
 
--   Gradient text on headings (`background: linear-gradient(...); background-clip: text;`) — this screams AI-generated
--   Animated glowing box-shadows on cards (`box-shadow: 0 0 20px var(--glow); animation: glow 2s...`)
--   Multiple overlapping radial glows in accent colors creating a "neon haze"
+- Gradient text on headings (`background: linear-gradient(...); background-clip: text;`) — this screams AI-generated
+- Animated glowing box-shadows on cards (`box-shadow: 0 0 20px var(--glow); animation: glow 2s...`)
+- Multiple overlapping radial glows in accent colors creating a "neon haze"
 
 **Required:** Build palettes from the reference templates (terracotta/sage, teal/cyan, rose/cranberry, slate/blue) or derive from real IDE themes (Dracula, Nord, Solarized, Gruvbox, Catppuccin). Accents should feel intentional, not default.
 
@@ -468,8 +472,8 @@ These patterns are explicitly forbidden. They signal "AI-generated template" and
 
 **Forbidden:**
 
--   Emoji icons in section headers (🏗️, ⚙️, 📁, 💻, 📅, 🔗, ⚡, 🔧, 📦, 🚀, etc.)
--   Section headers that all use the same icon-in-rounded-box pattern
+- Emoji icons in section headers (🏗️, ⚙️, 📁, 💻, 📅, 🔗, ⚡, 🔧, 📦, 🚀, etc.)
+- Section headers that all use the same icon-in-rounded-box pattern
 
 **Required:** Use styled monospace labels with colored dot indicators (see `.section-label` in templates), numbered badges (`section__num` pattern), or asymmetric section dividers. If an icon is genuinely needed, use an inline SVG that matches the palette — not emoji.
 
@@ -477,10 +481,10 @@ These patterns are explicitly forbidden. They signal "AI-generated template" and
 
 **Forbidden:**
 
--   Perfectly centered everything with uniform padding
--   All cards styled identically with the same border-radius, shadow, and spacing
--   Every section getting equal visual treatment — no hero/primary vs. secondary distinction
--   Symmetric layouts where left and right halves mirror each other
+- Perfectly centered everything with uniform padding
+- All cards styled identically with the same border-radius, shadow, and spacing
+- Every section getting equal visual treatment — no hero/primary vs. secondary distinction
+- Symmetric layouts where left and right halves mirror each other
 
 **Required:** Vary visual weight. Hero sections should dominate (larger type, more padding, accent-tinted background). Reference sections should feel compact. Use the depth tiers (hero → elevated → default → recessed). Asymmetric layouts create interest.
 
@@ -488,10 +492,10 @@ These patterns are explicitly forbidden. They signal "AI-generated template" and
 
 **Forbidden:**
 
--   Three-dot window chrome (red/yellow/green dots) on code blocks — this is a cliché
--   KPI cards where every metric has identical gradient text treatment
--   "Neon Dashboard" as an aesthetic choice — it always produces generic results
--   Gradient meshes with pink/purple/cyan blobs in the background
+- Three-dot window chrome (red/yellow/green dots) on code blocks — this is a cliché
+- KPI cards where every metric has identical gradient text treatment
+- "Neon Dashboard" as an aesthetic choice — it always produces generic results
+- Gradient meshes with pink/purple/cyan blobs in the background
 
 **Required:** Code blocks use a simple header with filename or language label. KPI cards vary by importance — hero numbers for the primary metric, subdued treatment for supporting metrics. Pick aesthetics with natural constraints: Blueprint (must feel technical/precise), Editorial (must have generous whitespace and serif typography), Paper/ink (must feel warm and informal).
 

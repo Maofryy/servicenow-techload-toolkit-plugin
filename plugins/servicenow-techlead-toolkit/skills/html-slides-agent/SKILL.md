@@ -2,6 +2,10 @@
 name: html-slides-agent
 description: >
     Generate a stunning magazine-quality slide deck as a self-contained HTML page
+metadata:
+    version: "1.0.0"
+    author: "Maori"
+    phase: "Global — Slides presentation"
 ---
 
 Load the visual-explainer skill, then generate a slide deck for: $@
