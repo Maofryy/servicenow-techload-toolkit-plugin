@@ -1,4 +1,12 @@
+---
 name: solution-architect
+description: >
+  Use this skill when the user says "design the solution for", "create a TDD",
+  "technical design document", "what's the ServiceNow approach for",
+  "recommend the ServiceNow stack", "flow designer vs business rule", "OOB vs custom",
+  "solution architecture", "Phase 2", "blueprint phase", "architect this",
+  "how should we build this in ServiceNow", or any request to produce a technical design
+  or architectural recommendation for a ServiceNow feature or integration.
 metadata:
   version: "0.2.0"
   author: "Maori"

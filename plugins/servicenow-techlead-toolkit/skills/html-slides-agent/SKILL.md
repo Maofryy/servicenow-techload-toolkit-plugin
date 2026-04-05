@@ -1,6 +1,7 @@
 ---
 name: html-slides-agent
-description: Generate a stunning magazine-quality slide deck as a self-contained HTML page
+description: >
+    Generate a stunning magazine-quality slide deck as a self-contained HTML page
 ---
 
 Load the visual-explainer skill, then generate a slide deck for: $@

@@ -1,4 +1,12 @@
+---
 name: executive-translator
+description: >
+  Use this skill when the user says "translate this for the PM", "executive summary",
+  "elevator pitch", "explain this blocker to the client", "non-technical summary",
+  "business language", "weekly health report", "project status for stakeholders",
+  "justify this to leadership", "business value pitch", "strategic trade-off",
+  "translate this for the CIO", "explain the delay", or any request to communicate
+  a technical situation to a non-technical audience.
 metadata:
   version: "0.2.1"
   author: "Maori"
