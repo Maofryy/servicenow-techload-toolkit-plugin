@@ -24,8 +24,8 @@ Use this structure for Layer 2 of the ACL Logic Architect output. Produce one ta
 
 **`{table.field}` — {operation} ({Allow If / Deny Unless}):**
 > {Plain-English translation. Frame with decision type:}
-> - Allow If: "Grants access when [what the script checks]"
-> - Deny Unless: "Blocks access unless [what the script checks]"
+> - Allow If: "Grants access when [what the condition and/or script checks]"
+> - Deny Unless: "Blocks access unless [what the condition and/or script checks]"
 
 Risk flags:
 <!-- 🔴 if: script has no `answer = false` default at the top

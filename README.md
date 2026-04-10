@@ -1,6 +1,6 @@
 # ServiceNow TechLead Toolkit — Claude Code Plugin Marketplace
 
-A Claude Code plugin marketplace containing the ServiceNow Tech Lead Agent Library — ten specialized skills covering the full delivery lifecycle.
+A Claude Code plugin marketplace containing the ServiceNow Tech Lead Agent Library — eleven specialized skills covering the full delivery lifecycle.
 
 ## Install
 
@@ -96,4 +96,4 @@ plugins/
 
 ## Version
 
-0.3.0 — Replaced solution-architect with design-challenger and platform-blueprint for sharper phase ownership
+0.4.0 — Added acl-logic-architect skill for ServiceNow security auditing

@@ -7,7 +7,12 @@
       "Bash(claude plugin:*)",
       "Bash(sed -i 's|knowledge-commons/visual/|../../knowledge-commons/visual/|g' \"/mnt/c/Users/benha/Documents/Work/Claude Skills/TechLead Plugin/plugins/servicenow-techlead-toolkit/skills/visual-explainer/SKILL.md\")",
       "Bash(sed -i 's|{{skill_dir}}|<skill-base-dir> \\(use the path shown in \"\"\"\"Base directory for this skill:\"\"\"\" above\\)|g' \"/mnt/c/Users/benha/Documents/Work/Claude Skills/TechLead Plugin/plugins/servicenow-techlead-toolkit/skills/visual-explainer/SKILL.md\")",
-      "Read(//tmp/**)"
+      "Read(//tmp/**)",
+      "Read(//ELO/**)",
+      "Bash(ls /ELO)",
+      "WebSearch",
+      "WebFetch(domain:docs.servicenow.com)",
+      "WebFetch(domain:www.servicenow.com)"
     ]
   }
 }
