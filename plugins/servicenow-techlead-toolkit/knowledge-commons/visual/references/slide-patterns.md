@@ -2215,52 +2215,109 @@ Deep navy, ELO brand cyan electric, platform-precision typography. Colors extrac
 
 Background: very deep navy `#020c1e` with a tight directional beam at top-left in the ELO cyan (`background: linear-gradient(135deg, rgba(13,178,239,0.12) 0%, transparent 38%)`). Title slides use a 3px cyan border rule at top, the large display text in white, and a ghost "ELO" monogram in `--border-bright` at mega scale (opacity 0.05) as a watermark behind the headline. Section dividers replace the oversized ghost number with a thin horizontal rule in `--accent` + a small filled circle — closer to the ELO sphere motif. KPI cards get a left border in `--accent` (primary metric) or `--accent-2` (secondary). The `--with-grid` dot pattern reads as technical platform feel consistent with the ServiceNow UI aesthetic. Avoid decorative gradients or warm glows — ELO Blue is precise, not atmospheric.
 
-**Usage note:** This preset is purpose-built for ELO Consulting deliverables. The keywords `ELO`, `ELO Blue`, or `pour ELO` in the user prompt should trigger this preset as the default. Title slides may include the ELO logotype as an `<img>` reference. Avoid Velvet Editorial or Bauhaus in an ELO client context.
+**Usage note:** This preset is purpose-built for ELO Consulting deliverables. The keywords `ELO`, `ELO Blue`, or `pour ELO` in the user prompt should trigger this preset as the default. Always include the ELO Logo Overlay (see section below) when this preset is active. Avoid Velvet Editorial or Bauhaus in an ELO client context.
 
-### ELO Light
+### ELO Light (ELO Velvet · Calcaire)
 
-White foundation, ELO navy `#053574` as primary accent, ELO yellow `#F5E400` as secondary highlight, ELO cyan `#0db2ef` as tertiary. Same brand, opposite luminosity to ELO Blue. Use when presenting in bright meeting rooms, for printed decks, or when the client context calls for a cleaner, more accessible look. Light-first.
+Warm parchment foundation, ELO navy `#053574` as primary accent, ELO cyan `#0db2ef` as secondary accent. Calcaire ("limestone") tones — `#f4f2ee` base with layered off-white surfaces — give a warm, editorial quality distinct from clinical white. Typography is serif-led: Cormorant Garamond for display, Source Serif 4 for body, IBM Plex Mono for code and labels. Use when presenting in client-facing settings, for workshop support decks, or when the context calls for a warmer, more editorial feel than ELO Blue.
+
+**Font import (add to `<head>`):**
+```html
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600;1,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,300;1,8..60,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+```
 
 ```css
 :root {
-    --font-body: "Bricolage Grotesque", system-ui, sans-serif;
+    --font-body: "Source Serif 4", Georgia, serif;
+    --font-display: "Cormorant Garamond", Georgia, serif;
     --font-mono: "IBM Plex Mono", "SF Mono", monospace;
-    --bg: #f6f9ff;
-    --surface: #ffffff;
-    --surface2: #edf2fc;
-    --surface-elevated: #ffffff;
-    --border: rgba(5, 53, 116, 0.08);
-    --border-bright: rgba(5, 53, 116, 0.16);
+    --bg: #f4f2ee;
+    --surface: #eceae4;
+    --surface2: #e2dfd7;
+    --surface-elevated: #f8f7f3;
+    --panel-secondary-bg: #faf9f5;
+    --panel-secondary-border: 4px solid #0db2ef;
+    --border: rgba(5, 53, 116, 0.09);
+    --border-bright: rgba(5, 53, 116, 0.18);
     --text: #030d1e;
-    --text-dim: #3d5a8a;
-    --accent: #053574; /* ELO navy — sphere body */
-    --accent-dim: rgba(5, 53, 116, 0.07);
-    --accent-2: #f5e400; /* ELO yellow — logo sphere accent */
+    --text-dim: #4a5870;
+    --accent: #053574;       /* ELO navy — sphere body */
+    --accent-dim: rgba(5, 53, 116, 0.08);
+    --accent-glow: rgba(5, 53, 116, 0.04);
+    --accent-2: #0db2ef;     /* ELO cyan — sphere highlight */
     --code-bg: #030d1e;
     --code-text: #c0d8f0;
-}
-@media (prefers-color-scheme: dark) {
-    :root {
-        --bg: #020c1e;
-        --surface: #051828;
-        --surface2: #091f36;
-        --surface-elevated: #0d2544;
-        --border: rgba(13, 178, 239, 0.08);
-        --border-bright: rgba(13, 178, 239, 0.18);
-        --text: #e0eaf8;
-        --text-dim: #4d7aaa;
-        --accent: #0db2ef; /* ELO cyan — visible on dark */
-        --accent-dim: rgba(13, 178, 239, 0.1);
-        --accent-2: #f5e400; /* yellow unchanged — works on dark too */
-        --code-bg: #020a16;
-        --code-text: #c0d8f0;
-    }
+    --green: #167a4a;
+    --green-dim: rgba(22, 122, 74, 0.09);
+    --red: #c0302a;
+    --red-dim: rgba(192, 48, 42, 0.09);
 }
 ```
 
-Background: clean white or very light blue-tinted white `#f6f9ff` — no gradients, no glow. Structure comes from `--accent` (navy) borders and text, not from lighting. Title slides use a full-width 4px navy top border (the ELO sphere blue at full opacity) + the display heading in `#030d1e` at max weight. Section dividers use a thin navy horizontal rule with a small filled cyan dot (`#0db2ef`) — the sphere motif in miniature. The yellow `--accent-2` is reserved for high-emphasis badges, alert-like KPI values, and CTA borders — used sparingly (one element per slide maximum) as it reads as urgency or importance on a light background. The `--with-grid` dot pattern is appropriate. Code slides use the dark `--code-bg` creating a strong contrast inset against the white surface.
+Background: warm parchment `#f4f2ee` — calcaire tones with gentle layering, no pure white. Title slides use radial glows (`var(--accent-glow)`) and the display text in `var(--accent)` navy. Section dividers use an oversized ghost number at opacity 0.05 in `var(--accent)`. Split slides use `--panel-secondary-bg` on the secondary panel with a `4px solid #0db2ef` left border — the cyan bar makes the two-panel composition immediately readable. Code slides use `--code-bg` (`#030d1e`) for strong contrast inset against the warm surface.
 
-**Pairing note:** ELO Light and ELO Blue are complementary variants — switching between them in the Design System Switcher lets you compare presentation styles for the same deck content. The same fonts (Bricolage Grotesque + IBM Plex Mono) and `--accent-2` yellow are shared between both presets, maintaining brand consistency across modes.
+The `slide__heading` and `slide__display` classes should declare `font-family: var(--font-display, var(--font-body))` to pick up Cormorant Garamond automatically when this preset is active.
+
+**ELO Logo:** Always include the ELO logo overlay when this preset is active. See the **ELO Logo Overlay** section below.
+
+**Pairing note:** ELO Light and ELO Blue are complementary variants — switching between them in the Design System Switcher shows the same deck in dark-technical vs. warm-editorial modes. ELO Light swaps yellow `--accent-2` from ELO Blue for cyan — both are brand colours; the Calcaire palette foregrounds the cyan in split-panel borders and secondary labels.
+
+## ELO Logo Overlay
+
+**When to apply:** Any deck using the ELO Blue or ELO Light (Calcaire) preset. Inject the ELO logo onto every slide — bottom-left by default, top-left on the title slide.
+
+### CSS
+
+Add to the `<style>` block alongside the preset:
+
+```css
+/* ELO logo — bottom-left on all slides, top-left on title */
+.slide__logo {
+    position: absolute;
+    bottom: clamp(18px, 2.8vh, 32px);
+    left: clamp(28px, 5vw, 60px);
+    width: clamp(54px, 5.5vw, 80px);
+    opacity: 0.5;
+    z-index: 10;
+    pointer-events: none;
+    display: block;
+}
+.slide--title .slide__logo {
+    bottom: auto;
+    top: clamp(24px, 3.5vh, 40px);
+    opacity: 0.8;
+}
+```
+
+### JS injection
+
+Add this `<script>` block after the SlideEngine script (before `</body>`). It appends the logo `<img>` to every `.slide` on DOMContentLoaded — no manual markup per slide needed:
+
+```html
+<!-- ELO logo overlay — bottom-left all slides, top-left title slide -->
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var LOGO = 'https://www.elo.blue/wp-content/uploads/2019/10/ELO_Flat_web_petit.png';
+    document.querySelectorAll('.slide').forEach(function (s) {
+        var img = document.createElement('img');
+        img.src = LOGO;
+        img.alt = 'ELO';
+        img.className = 'slide__logo';
+        img.loading = 'lazy';
+        s.appendChild(img);
+    });
+});
+</script>
+```
+
+**Positioning rules:**
+- All slides → `bottom` + `left` at `opacity: 0.5` — present but unobtrusive
+- `.slide--title` → `top` + `left` at `opacity: 0.8` — more prominent on the cover slide
+- The logo sits at `z-index: 10` so it renders above background decorations but below navigation chrome (`z-index: 100`)
+
+**Design System Switcher interaction:** When the ThemeSwitcher is present, the logo overlay is always visible regardless of the active preset — but only include the JS injection when generating a deck that starts in an ELO theme. If the user switches to a non-ELO preset, the logo remains; this is intentional (the deck is still an ELO deliverable).
+
+---
 
 ## Design System Switcher
 
@@ -2584,22 +2641,26 @@ const PRESETS = [
     },
     {
         id: "elo-light",
-        name: "ELO Light",
-        swatches: ["#f6f9ff", "#053574", "#030d1e", "#f5e400"],
+        name: "ELO Velvet · Calcaire",
+        swatches: ["#f4f2ee", "#053574", "#0db2ef", "#030d1e"],
         vars: {
-            "--font-body": "'Bricolage Grotesque',system-ui,sans-serif",
+            "--font-body": "'Source Serif 4',Georgia,serif",
+            "--font-display": "'Cormorant Garamond',Georgia,serif",
             "--font-mono": "'IBM Plex Mono','SF Mono',monospace",
-            "--bg": "#f6f9ff",
-            "--surface": "#ffffff",
-            "--surface2": "#edf2fc",
-            "--surface-elevated": "#ffffff",
-            "--border": "rgba(5,53,116,0.08)",
-            "--border-bright": "rgba(5,53,116,0.16)",
+            "--bg": "#f4f2ee",
+            "--surface": "#eceae4",
+            "--surface2": "#e2dfd7",
+            "--surface-elevated": "#f8f7f3",
+            "--panel-secondary-bg": "#faf9f5",
+            "--panel-secondary-border": "4px solid #0db2ef",
+            "--border": "rgba(5,53,116,0.09)",
+            "--border-bright": "rgba(5,53,116,0.18)",
             "--text": "#030d1e",
-            "--text-dim": "#3d5a8a",
+            "--text-dim": "#4a5870",
             "--accent": "#053574",
-            "--accent-dim": "rgba(5,53,116,0.07)",
-            "--accent-2": "#f5e400",
+            "--accent-dim": "rgba(5,53,116,0.08)",
+            "--accent-glow": "rgba(5,53,116,0.04)",
+            "--accent-2": "#0db2ef",
             "--code-bg": "#030d1e",
             "--code-text": "#c0d8f0",
         },
@@ -2671,4 +2732,97 @@ try {
 - Google Fonts for all 8 presets must be preloaded in `<head>` for instant font switching. Add all families to a single `<link>` tag (see the demo file for the full import string).
 - The switcher defaults to `'elo-blue'` — change the fallback string to any preset `id` to change the default.
 - `sessionStorage` persists the choice across page reloads within the same browser tab.
+
+---
+
+## PM Slides
+
+Reference template: `../templates/pm-deck.html`
+
+Use PM slides when the request involves any of: project status, sprint review, sprint scorecard, roadmap, kanban, kanban board, retrospective, retro, flash report, project health, timeline, burndown, phases, carry-over, velocity report. Load `pm-deck.html` as the reference template (instead of or alongside `slide-deck.html`) and follow the per-slide guidance below.
+
+### RAG Status Colors
+
+Always use these exact values — they respect the forbidden palette rules:
+
+| Status | Color | Background |
+|---|---|---|
+| Red (critical / blocked) | `#dc2626` | `color-mix(in srgb, #dc2626 10%, surface)` |
+| Amber (at-risk / delayed) | `#d97706` | `color-mix(in srgb, #d97706 10%, surface)` |
+| Green (on-track) | `#16a34a` | `color-mix(in srgb, #16a34a 10%, surface)` |
+
+Blockers are rendered as red risks — no separate "blockers" field. Severity determines dot color.
+
+### Flash Report (`slide--flash-report`)
+
+**When to use:** One-slide project health snapshot for leadership, steering committee, or weekly status meetings.
+
+**Layout:** Full-width RAG header band → 3-column body → full-width budget footer.
+
+**Required fields:** RAG status, project name, date, sprint/phase progress, top risks, upcoming milestones, budget bar.
+
+**Two modes:**
+- *Sprint mode:* Left column shows a story table with status icons (✓ done, ⟳ in progress, ○ todo, ✕ blocked) and point estimate per story.
+- *Phase mode:* Left column shows project phases with individual progress bars. Use when the audience is program-level rather than sprint-level.
+
+**Risks:** Top 2–3 risks with colored dot (red = blocked/critical, amber = at-risk). No separate blockers field — blockers appear as red risks.
+
+**Milestones:** Show next 3–5 milestones with right-aligned dates in mono font. Most imminent at top.
+
+### Timeline (`slide--timeline`)
+
+**When to use:** Show project phases over calendar time, milestone positions, and current progress point.
+
+**Key rules:**
+- Use CSS `grid-column: start / span N` to position phase bars — not pixel widths.
+- Always include a today marker (vertical red line at current date column, injected via JS after layout).
+- Phase opacity: done = 0.55 (muted green), active = 0.9 (bright accent), future = 0.3 (faded accent).
+- Milestone row sits below phase rows with rotated diamond markers and labels.
+- Quarter labels span 3 month columns each with 2px bottom border in accent color.
+
+### Kanban Board (`slide--kanban`)
+
+**When to use:** Visualize WIP distribution, in-progress stories, and blocked items.
+
+**Standard columns:** Backlog → In Progress → Review → Done. Adjust column names to match the team's actual workflow.
+
+**Done column:** Show a large count summary (stories completed + total points) rather than individual cards. Done is history, not active work.
+
+**Blocked cards:** Add `kb-card--blocked` class (red 3px left border) to any card with an active blocker. Include blocker reason inline in the points/meta field.
+
+**Card limit:** Show at most 5–6 cards per column. If more, show top cards and a "+ N more" label.
+
+### Sprint Scorecard (`slide--scorecard`)
+
+**When to use:** End-of-sprint review, stakeholder velocity summary, or sprint retrospective opener.
+
+**Three columns with colored top borders:** Delivered (green), Carry-Over (red), Next Sprint (accent blue).
+
+**Delivered column:** Total points delivered vs committed as big stat + progress bar + story list with icons.
+
+**Carry-Over column:** List undelivered stories with a red-tinted callout explaining the reason.
+
+**Burndown footer:** Use Chart.js with two datasets — Ideal (dashed, neutral color) and Actual (solid accent blue, filled). Keep chart height ≤ 65px in footer. Font: IBM Plex Mono at 9px.
+
+### Roadmap (`slide--roadmap`)
+
+**When to use:** Quarterly or monthly plan overview for program managers, sponsors, or cross-team coordination.
+
+**Grid:** Label column (120px) + 9 time columns (3 per quarter). Epic rows use `grid-column: start / span N` for bar positioning.
+
+**Bar styles:** Done = green 55% opacity, Active = accent 88% opacity, Future = accent 28% opacity.
+
+**Milestone row:** Last row in the grid. Use rotated text labels on diamond markers. Place diamonds at the month column where the milestone falls.
+
+**Quarter headers:** Span 3 month columns each, use accent color at 65% opacity with 2px bottom border to separate quarters without dominating.
+
+### Retrospective (`slide--retro`)
+
+**When to use:** Sprint retrospective output, team ceremony documentation, or stakeholder update on team health.
+
+**Three equal columns:** Went Well (green tint), To Improve (amber tint), Actions (accent tint). Always show all three.
+
+**Card tinting:** Each column's header background and cards get a subtle tint: `color-mix(in srgb, color 7%, surface)` for header, `color-mix(in srgb, color 5%, surface-2)` for cards.
+
+**Action cards:** Must include an `Owner` field and a `Due` date rendered in mono font below the action text. Actions without owners are decorative, not executable.
 - **When to include:** Always include in ELO pre-sales and pitch decks. Optionally omit for final deliverables sent to clients where switching is not needed.

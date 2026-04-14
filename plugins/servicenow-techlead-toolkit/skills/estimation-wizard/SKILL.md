@@ -78,5 +78,5 @@ Produce output that matches the template structure. Sections in order: WORK BREA
 
 ## Reference Files
 
-- `../../knowledge-commons/templates/estimation-breakdown-template.md`
-- `../../knowledge-commons/templates/tdd-template.md`
+- `../../knowledge-commons/templates/estimation-breakdown-template.md` — primary output template
+- `../../knowledge-commons/templates/tdd-template.md` — if the user provides a TDD as input, read it using the Read tool for context on scope, artifacts, and constraints before estimating

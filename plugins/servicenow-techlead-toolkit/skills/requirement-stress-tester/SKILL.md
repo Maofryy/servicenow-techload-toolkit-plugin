@@ -26,18 +26,26 @@ Detect the language of the user's prompt. All output — scorecard sections, gap
     - **Acceptance Criteria (AC):** Are they measurable? (Given/When/Then format?)
     - **Use Cases:** Are different personas/contexts addressed?
     - **Test Scenarios:** Is there a defined "Success" and "Failure" path?
-2. **Gap Analysis** — Use `../../knowledge-commons/templates/gap-analysis-template.md`.
-3. **Edge Case Scan** — Use `../../knowledge-commons/templates/edge-case-checklist.md`.
+2. **Gap Analysis** — Read `../../knowledge-commons/templates/gap-analysis-template.md` using the Read tool and apply its structure. (Resolve relative to this skill's base directory: two levels up from the path shown in "Base directory for this skill:" above.)
+3. **Edge Case Scan** — Read `../../knowledge-commons/templates/edge-case-checklist.md` using the Read tool and check each item.
 4. **OOB Feasibility Pulse** — Briefly flag if this requirement sounds like it contradicts Out-of-the-Box (OOB) logic (e.g., "The user wants to skip the Approval engine").
 
 ## Output Format
 
 ### 📊 Definition of Ready (DoR) Scorecard
 
-Provide a score from 1-10 based on clarity and completeness.
+Score each dimension out of 2, then sum for the total (max 10):
+
+| Dimension | 0 | 1 | 2 |
+|---|---|---|---|
+| **Acceptance Criteria** | None | Present but vague / untestable | Specific, testable, Given/When/Then |
+| **Personas & Use Cases** | No users defined | One persona, single path | Multiple personas and contexts addressed |
+| **Failure / Edge Cases** | None considered | 1–2 flagged | Systematic edge case coverage |
+| **OOB Feasibility** | No platform awareness | Partial OOB consideration | OOB-first; customization explicitly justified |
+| **Technical Pre-conditions** | Critical unknowns unresolved | Some blockers identified | All architectural blockers resolved or flagged |
 
 - **Score:** [X/10]
-- **Status:** [Ready for Design / Needs Refinement / Incomplete]
+- **Status:** 1–4 = Incomplete · 5–6 = Needs Refinement · 7–8 = Ready for Design · 9–10 = Certified ✅
 
 ### ✅ What Is Clear
 

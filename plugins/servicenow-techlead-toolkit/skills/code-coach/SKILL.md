@@ -25,8 +25,8 @@ Detect the language of the user's prompt. All output — labels, headings, feedb
 1. **Receive the code** — the developer pastes their script, Business Rule, Flow Designer inline script, Client Script, Script Include, or other ServiceNow artifact into the chat
 2. **Identify the artifact type** — Business Rule, Client Script, Script Include, Flow Designer script, Scheduled Job, etc.
 3. **Load the relevant standards** — read `../../knowledge-commons/standards/technical-standards.md` using the Read tool (resolve relative to this skill's base directory: two levels up from the path shown in "Base directory for this skill:" above)
-4. **Score against the Peer Review Scorecard** — read `../../knowledge-commons/templates/peer-review-scorecard.md`
-5. **Produce feedback** using the Teaching Moment format — read `../../knowledge-commons/templates/teaching-moment-template.md`
+4. **Score against the Peer Review Scorecard** — read `../../knowledge-commons/templates/peer-review-scorecard.md` using the Read tool
+5. **Produce feedback** using the Teaching Moment format — read `../../knowledge-commons/templates/teaching-moment-template.md` using the Read tool
 
 ## Feedback Approach
 

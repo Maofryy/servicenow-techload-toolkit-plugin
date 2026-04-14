@@ -1,6 +1,6 @@
 {
   "name": "servicenow-techlead-toolkit",
-  "version": "0.4.0",
+  "version": "0.6.0",
   "description": "ServiceNow Tech Lead Agent Library — eleven specialized skills covering the full delivery lifecycle: design challenging, requirement stress-testing, platform blueprinting, ACL security auditing, code review, executive communication, written communication drafting, meeting documentation, effort estimation, visual diagrams, and slide decks.",
   "author": {
     "name": "Maori"

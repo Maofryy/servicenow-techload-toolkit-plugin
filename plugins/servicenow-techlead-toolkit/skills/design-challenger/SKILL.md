@@ -52,7 +52,7 @@ If the input is too vague to answer these, ask one focused clarifying question b
 
 Run the input through the "OOB-First Gate":
 
-1. **Can OOB solve 80%+ of this?** Consult `../../knowledge-commons/standards/oob-module-index.md` before proposing any custom development.
+1. **Can OOB solve 80%+ of this?** Read `../../knowledge-commons/standards/oob-module-index.md` using the Read tool before proposing any custom development. (Resolve relative to this skill's base directory: two levels up from the path shown in "Base directory for this skill:" above.)
 2. **What configuration already exists?** (catalog items, workflows, approval policies, roles, SLA definitions)
 3. **What is the minimum viable customization?** If OOB covers 80%, design only the remaining 20% as custom.
 4. **Challenge scope creep.** Flag any requested feature that adds complexity without clear business value.
@@ -89,7 +89,7 @@ Out of Scope (explicitly):
 
 **B) TDD Skeleton**
 
-Populate the early sections of the TDD template (`../../knowledge-commons/templates/tdd-template.md`):
+Read `../../knowledge-commons/templates/tdd-template.md` using the Read tool, then populate the early sections:
 - Section 1: Business Context
 - Section 2: Scope (In / Out / Assumptions)
 - Section 3: Data Model (high level — table strategy only, not full field list)

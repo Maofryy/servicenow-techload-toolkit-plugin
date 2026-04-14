@@ -4,8 +4,9 @@ description: >
   Use this skill when the user says "write up the meeting notes", "structure these notes", "meeting minutes",
   "clean up this transcript", "document what we agreed", "sprint planning notes",
   "retrospective notes", "incident call summary", "architecture review minutes",
-  "format these notes", "turn this into minutes", or provides a raw transcript or agenda with notes
-  and asks for a structured output.
+  "format these notes", "turn this into minutes", "pre-meeting template", "blank minutes for tomorrow's call",
+  or provides a raw transcript or agenda with notes and asks for a structured output.
+  Also trigger when the user shares only an agenda and wants a blank minutes shell ready to fill in live.
 metadata:
   version: "0.1.0"
   author: "Maori"
@@ -36,7 +37,7 @@ If the input is ambiguous — attendees unclear, date missing, decisions not dis
 2. **Every action item has an owner and a due date** — if absent from the input, flag it: "Owner: TBD — to confirm at next touchpoint."
 3. **Nothing is dropped silently** — unresolved topics, deferred items, and open questions go to OPEN ITEMS.
 4. **Written for the absent reader** — assume the recipient was not in the room and has no prior context.
-5. **Email-paste ready** — no complex markdown, no tables, no code blocks. Output must survive copy-paste into Gmail or Outlook without breaking.
+5. **Email-paste ready** — no complex markdown, no code blocks. Prefer plain prose; avoid multi-column tables. A simple two-column action item list (Owner | Action | Due) is acceptable if it genuinely improves scannability — but it must survive copy-paste into Gmail or Outlook without breaking.
 
 ## Output Format
 

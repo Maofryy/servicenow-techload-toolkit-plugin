@@ -5,6 +5,8 @@ description: >
   "who can see what on this table", "security matrix", "ACL review",
   "check my access controls", "ACL Logic Architect", "review my ACLs",
   "map my permissions", or pastes ServiceNow ACL XML for security analysis.
+  Also trigger for any ServiceNow access control question, permission audit,
+  or "who can see/edit this record" inquiry — even without these exact phrases.
 metadata:
   version: "0.1.0"
   author: "Maori"

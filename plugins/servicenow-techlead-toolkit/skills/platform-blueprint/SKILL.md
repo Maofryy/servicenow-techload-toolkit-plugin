@@ -30,7 +30,21 @@ Design Challenger ⟷ Requirement Stress-Tester → Platform Blueprint
   "Shape it"             "Certify it"              "Specify it"
 ```
 
-**Gate:** Confirm the input has a Requirement Stress-Tester DoR score of 7+/10. If not, return the story to Design Challenger and flag as "Preliminary Blueprint — pending certification."
+## Prerequisite Gate
+
+Before proceeding, confirm the input carries a Requirement Stress-Tester DoR score of 7+/10. If the score is absent or below 7, stop and respond:
+
+> "This story has not been certified by the Requirement Stress-Tester (or scored below 7/10). I can produce a preliminary sketch, but building a full blueprint on an uncertified story creates rework risk. Please run it through the Requirement Stress-Tester first, then return here with the certified story."
+>
+> **Preliminary Blueprint — pending certification:** [flag the specific gaps that must close before full blueprinting]
+
+## Reference Materials
+
+Before starting the blueprint, read the following using the Read tool (resolve relative to this skill's base directory: two levels up from the path shown in "Base directory for this skill:" above):
+- `../../knowledge-commons/templates/tdd-template.md` — full TDD structure (complete all 10 sections)
+- `../../knowledge-commons/standards/oob-module-index.md` — OOB capabilities (confirm no custom duplication)
+- `../../knowledge-commons/standards/technical-standards.md` — naming conventions and technical standards
+- `../../knowledge-commons/templates/oob-vs-custom-template.md` — OOB vs custom decision framework
 
 ## Input
 

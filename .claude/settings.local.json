@@ -12,7 +12,10 @@
       "Bash(ls /ELO)",
       "WebSearch",
       "WebFetch(domain:docs.servicenow.com)",
-      "WebFetch(domain:www.servicenow.com)"
+      "WebFetch(domain:www.servicenow.com)",
+      "Bash(python3 skills/ui-ux-pro-max/scripts/search.py \"executive dashboard project status flash report corporate\" --design-system -p \"PM Flash Report\")",
+      "Bash(python3 ui-ux-pro-max/2.5.0/skills/ui-ux-pro-max/scripts/search.py \"executive dashboard project status flash report corporate\" --design-system -p \"PM Flash Report\")",
+      "Bash(python3 /home/benha/.claude/plugins/cache/ui-ux-pro-max-skill/ui-ux-pro-max/2.5.0/src/ui-ux-pro-max/scripts/search.py \"executive dashboard status report corporate B2B\" --design-system -p \"PM Flash Report\")"
     ]
   }
 }
