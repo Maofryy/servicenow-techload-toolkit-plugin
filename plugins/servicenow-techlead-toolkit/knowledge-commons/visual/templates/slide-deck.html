@@ -10,13 +10,14 @@
   Distinctly different from the terracotta (architecture), teal (mermaid),
   and rose (data-table) templates so agents absorb variety.
   Key patterns demonstrated:
-  - All 10 slide types in a cohesive narrative
+  - All 11 slide types in a cohesive narrative (incl. estimation)
   - SlideEngine JS: keyboard/touch/wheel nav, progress bar, dots, counter, hints
   - Cinematic transitions: fade + translateY + scale, staggered child reveals
   - Per-slide background variation (gradient direction, accent glow position)
   - Decorative SVG accents (corner marks, quote mark, divider)
   - Typography scale: 120px display → 48px heading → 22px body → 14px label
   - Compositional variety: centered, left-heavy, split, full-bleed
+  - Estimation slide: KPI header + phases×profiles table + risk badges
   - Mermaid at presentation scale (18px labels, 2px edges, 8 nodes)
   - Dark-first with light mode via prefers-color-scheme
   - Responsive height breakpoints for projection and small viewports
@@ -533,6 +534,73 @@
     padding: 1px 5px; border-radius: 3px;
   }
 
+  /* ============ SLIDE TYPE: ESTIMATION ============
+     Combines KPI header strip + estimation table.
+     Same padding as slide--table. KPI strip is flex:0 so table
+     gets all remaining height. Reuse .slide__kpi and .data-table.
+     Risk badge colors map to existing --green/--accent/--red tokens. */
+  .slide--estimation {
+    padding: clamp(24px, 4vh, 48px) clamp(24px, 4vw, 60px);
+  }
+  .slide--estimation .slide__kpis {
+    flex: 0 0 auto;
+    margin-top: clamp(8px, 1.2vh, 16px);
+  }
+  .slide--estimation .table-wrap {
+    flex: 1;
+    min-height: 0;
+    margin-top: clamp(8px, 1.2vh, 16px);
+  }
+
+  /* TOTAL column — slightly elevated surface + mono bold */
+  .est-total-col {
+    background: var(--surface-elevated);
+    font-family: var(--font-mono);
+    font-weight: 600;
+  }
+  th.est-total-col {
+    background: var(--surface-elevated);
+  }
+
+  /* Risk badge — inline pill using existing color tokens */
+  .est-risk-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-family: var(--font-mono);
+    font-size: clamp(9px, 0.9vw, 11px);
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+    letter-spacing: 0.5px;
+  }
+  .est-risk-badge--confident { color: var(--green); background: var(--green-dim); }
+  .est-risk-badge--uncertain { color: var(--accent); background: var(--accent-dim); }
+  .est-risk-badge--high      { color: var(--red);   background: var(--red-dim);   }
+
+  /* Uniform font for all cells in the estimation table */
+  .slide--estimation .data-table th,
+  .slide--estimation .data-table td {
+    font-family: var(--font-mono);
+    font-size: clamp(11px, 1.25vw, 14px);
+  }
+
+  /* Footer TOTAL row */
+  .est-footer td {
+    background: var(--surface-elevated);
+    font-family: var(--font-mono);
+    font-size: clamp(11px, 1.25vw, 14px);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: none;
+    border-top: 2px solid var(--border-bright);
+  }
+  .est-footer .est-total-col {
+    color: var(--accent);
+  }
+
   /* ============ SLIDE TYPE: CODE ============ */
   .slide--code { align-items: center; }
 
@@ -1042,6 +1110,103 @@ graph LR
           <div class="timeline__title">Full Cutover</div>
           <div class="timeline__desc">100% traffic, decommission proxy, cleanup feature flags</div>
         </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- SLIDE: ESTIMATION SYNTHÈSE
+       Template for fixed-price project estimation.
+       Columns: Phase | Chef de Projet | Architecte | Tech Lead | Développeur | Total | Risque
+       Reuse this slide for task-level detail — replace phase rows with task rows.
+       KPI values and table data are hardcoded per deck. -->
+  <section class="slide slide--estimation" style="background-image:radial-gradient(ellipse at 80% 20%, var(--accent-dim) 0%, transparent 40%);">
+    <div class="slide__header reveal" style="display:flex; justify-content:space-between; align-items:flex-start;">
+      <div>
+        <p class="slide__label">Chiffrage au Forfait &middot; v1.0</p>
+        <h2 class="slide__heading">Estimation par Phase &amp; Profil</h2>
+      </div>
+    </div>
+    <div class="slide__kpis reveal">
+      <div class="slide__kpi slide__kpi--primary">
+        <div class="slide__kpi-cat">Total Projet</div>
+        <div class="slide__kpi-val-row">
+          <div class="slide__kpi-val" style="color:var(--accent);">87<span style="font-size:0.4em;letter-spacing:0;margin-left:4px;font-weight:400;">j</span></div>
+        </div>
+        <div class="slide__kpi-sep"></div>
+        <div class="slide__kpi-label">Jours Estim&eacute;s</div>
+      </div>
+      <div class="slide__kpi slide__kpi--secondary">
+        <div class="slide__kpi-cat">Phases</div>
+        <div class="slide__kpi-val-row">
+          <div class="slide__kpi-val" style="color:var(--blue,var(--accent));">6</div>
+        </div>
+        <div class="slide__kpi-sep"></div>
+        <div class="slide__kpi-label">Phases Actives</div>
+      </div>
+      <div class="slide__kpi slide__kpi--neutral">
+        <div class="slide__kpi-cat">Profils</div>
+        <div class="slide__kpi-val-row">
+          <div class="slide__kpi-val">4</div>
+        </div>
+        <div class="slide__kpi-sep"></div>
+        <div class="slide__kpi-label">R&ocirc;les Mobilis&eacute;s</div>
+      </div>
+    </div>
+    <div class="table-wrap reveal">
+      <div class="table-scroll">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Phase</th>
+              <th>Chef de Projet</th>
+              <th>Architecte</th>
+              <th>Tech Lead</th>
+              <th>D&eacute;veloppeur</th>
+              <th class="est-total-col">Total</th>
+              <th>Risque</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Cadrage</td><td>5j</td><td>3j</td><td>2j</td><td>0j</td>
+              <td class="est-total-col">10j</td>
+              <td><span class="est-risk-badge est-risk-badge--confident">&#9679; Confident</span></td>
+            </tr>
+            <tr>
+              <td>Design</td><td>2j</td><td>5j</td><td>5j</td><td>3j</td>
+              <td class="est-total-col">15j</td>
+              <td><span class="est-risk-badge est-risk-badge--confident">&#9679; Confident</span></td>
+            </tr>
+            <tr>
+              <td>Build</td><td>3j</td><td>2j</td><td>8j</td><td>20j</td>
+              <td class="est-total-col">33j</td>
+              <td><span class="est-risk-badge est-risk-badge--uncertain">&#9679; Uncertain</span></td>
+            </tr>
+            <tr>
+              <td>Tests</td><td>2j</td><td>0j</td><td>4j</td><td>8j</td>
+              <td class="est-total-col">14j</td>
+              <td><span class="est-risk-badge est-risk-badge--uncertain">&#9679; Uncertain</span></td>
+            </tr>
+            <tr>
+              <td>D&eacute;ploiement</td><td>2j</td><td>1j</td><td>2j</td><td>3j</td>
+              <td class="est-total-col">8j</td>
+              <td><span class="est-risk-badge est-risk-badge--confident">&#9679; Confident</span></td>
+            </tr>
+            <tr>
+              <td>Hypercare</td><td>3j</td><td>0j</td><td>2j</td><td>2j</td>
+              <td class="est-total-col">7j</td>
+              <td><span class="est-risk-badge est-risk-badge--confident">&#9679; Confident</span></td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr class="est-footer">
+              <td>Total</td><td>17j</td><td>11j</td><td>23j</td><td>36j</td>
+              <td class="est-total-col">87j</td>
+              <td></td>
+            </tr>
+          </tfoot>
+        </table>
       </div>
     </div>
   </section>

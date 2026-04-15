@@ -18,6 +18,14 @@ Follow the visual-explainer skill workflow. Read the reference template at `../.
 
 **PM Slides detection:** When the request mentions any of — project status, sprint review, sprint scorecard, roadmap, kanban, kanban board, retrospective, retro, flash report, project health, timeline, burndown, phases, carry-over, velocity report — read `../../knowledge-commons/visual/templates/pm-deck.html` as the reference template (instead of or alongside `slide-deck.html`) and follow the `## PM Slides` section of `slide-patterns.md` for per-slide layout guidance.
 
+**Estimation Slides detection:** When the request mentions any of — chiffrage, estimation, forfait, work breakdown, jours par profil, effort estimation, sizing, phases et profils, plan de charge, répartition des charges — include one or more `.slide--estimation` slides in the deck. For each such slide:
+- Read the `<!-- SLIDE: ESTIMATION SYNTHÈSE -->` block at the end of `../../knowledge-commons/visual/templates/slide-deck.html` as the canonical reference — copy its HTML structure and CSS classes verbatim, only replace content (phase labels, day values, risk levels).
+- Structure: 3 KPI cards (total jours, nb phases, nb profils) + a `data-table` with columns Phase | Chef de Projet | Architecte | Tech Lead | Développeur | Total | Risque.
+- Day values always include the unit suffix `j` (e.g. `5j`, `20j`).
+- Risk badge per row uses `.est-risk-badge--confident` (green), `.est-risk-badge--uncertain` (orange/gold), or `.est-risk-badge--high` (red) based on confidence level.
+- Footer row uses `.est-footer` with totals per profile + grand total, all with `j` suffix.
+- For a task-level detail slide, reuse the identical structure — replace phase rows with task rows, no other change needed.
+
 **Slide output is always opt-in.** Only generate slides when this command is invoked or the user explicitly asks for a slide deck.
 
 **Aesthetic:** Pick a distinctive direction from the 9 slide presets in slide-patterns.md (Midnight Editorial, Warm Signal, Terminal Mono, Swiss Clean, Velvet Editorial, Bauhaus Constructivist, Fog Minimalist, ELO Blue, ELO Light / ELO Velvet · Calcaire) or riff on the existing aesthetic directions adapted for slides. Vary from previous decks. Commit to one direction and carry it through every slide. **When the context is ELO Consulting** (client pitch, pre-sales, project review), default to the ELO Blue preset unless ELO Light or another is explicitly requested.
