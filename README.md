@@ -96,4 +96,6 @@ plugins/
 
 ## Version
 
+0.7.0 — Added wbs-estimation skill for full-project WBS plan de charge with per-profile J/H breakdown
+
 0.4.0 — Added acl-logic-architect skill for ServiceNow security auditing

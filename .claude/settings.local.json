@@ -15,7 +15,11 @@
       "WebFetch(domain:www.servicenow.com)",
       "Bash(python3 skills/ui-ux-pro-max/scripts/search.py \"executive dashboard project status flash report corporate\" --design-system -p \"PM Flash Report\")",
       "Bash(python3 ui-ux-pro-max/2.5.0/skills/ui-ux-pro-max/scripts/search.py \"executive dashboard project status flash report corporate\" --design-system -p \"PM Flash Report\")",
-      "Bash(python3 /home/benha/.claude/plugins/cache/ui-ux-pro-max-skill/ui-ux-pro-max/2.5.0/src/ui-ux-pro-max/scripts/search.py \"executive dashboard status report corporate B2B\" --design-system -p \"PM Flash Report\")"
+      "Bash(python3 /home/benha/.claude/plugins/cache/ui-ux-pro-max-skill/ui-ux-pro-max/2.5.0/src/ui-ux-pro-max/scripts/search.py \"executive dashboard status report corporate B2B\" --design-system -p \"PM Flash Report\")",
+      "Bash(python3 -c ' *)",
+      "Bash(python3 -m scripts.aggregate_benchmark '/mnt/c/Users/benha/Documents/Work/Claude Skills/TechLead Plugin/wbs-estimation-workspace/iteration-1' --skill-name wbs-estimation)",
+      "Bash(python3 -m json.tool)",
+      "Bash(python3 *)"
     ]
   }
 }
