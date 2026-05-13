@@ -381,12 +381,12 @@ body {
   padding: 8px 11px;
   background: var(--surface-2);
   border-radius: var(--radius-sm);
-  border-left: 3px solid transparent;
+  border: 1px solid var(--border);
   font-size: clamp(11px, 1.25vw, 13px);
   line-height: 1.4;
 }
-.fr-alert--red   { border-left-color: var(--rag-red); }
-.fr-alert--amber { border-left-color: var(--rag-amber); }
+.fr-alert--red   { background: var(--rag-red-bg);   border-color: color-mix(in srgb, var(--rag-red)   20%, transparent); }
+.fr-alert--amber { background: var(--rag-amber-bg); border-color: color-mix(in srgb, var(--rag-amber) 20%, transparent); }
 .fr-alert__badge {
   font-family: var(--font-mono); font-size: 8px; font-weight: 700;
   letter-spacing: 0.5px; text-transform: uppercase;
@@ -571,7 +571,7 @@ body {
   padding: 9px 11px;
   display: flex; flex-direction: column; gap: 6px;
 }
-.kb-card--blocked { border-left: 3px solid var(--rag-red); }
+.kb-card--blocked { background: var(--rag-red-bg); border-color: color-mix(in srgb, var(--rag-red) 25%, transparent); }
 .kb-card__name {
   font-size: clamp(11px, 1.25vw, 13px);
   font-weight: 500; line-height: 1.3; color: var(--text);
@@ -649,7 +649,7 @@ body {
   padding: 8px 10px;
   background: var(--rag-red-bg);
   border-radius: var(--radius-sm);
-  border-left: 3px solid var(--rag-red);
+  border: 1px solid color-mix(in srgb, var(--rag-red) 20%, transparent);
   line-height: 1.4;
 }
 .ss-focus {
@@ -657,7 +657,7 @@ body {
   padding: 8px 10px;
   background: var(--accent-dim);
   border-radius: var(--radius-sm);
-  border-left: 3px solid var(--accent);
+  border: 1px solid color-mix(in srgb, var(--accent) 20%, transparent);
   line-height: 1.4;
 }
 
@@ -782,6 +782,18 @@ body {
 
 .rt-card__text  { font-size: clamp(11px, 1.25vw, 13px); line-height: 1.4; font-weight: 500; }
 .rt-card__owner { font-family: var(--font-mono); font-size: 10px; color: var(--text-dim); }
+
+@media (max-width: 768px) {
+  .fr-kpis { grid-template-columns: repeat(2, 1fr); }
+  .fr-body  { grid-template-columns: 1fr; }
+  .ss-body  { grid-template-columns: 1fr; }
+  .rt-board { grid-template-columns: 1fr; }
+  .kb-board { grid-template-columns: repeat(2, 1fr); }
+  .tl-grid  { overflow-x: auto; min-width: 600px; }
+  .rm-grid  { overflow-x: auto; min-width: 700px; }
+  .slide--timeline .tl-grid,
+  .slide--roadmap  .rm-grid { width: max-content; }
+}
 
 </style>
 </head>
@@ -1134,22 +1146,22 @@ body {
           <li class="ss-story">
             <span class="ss-story__name">Auth module</span>
             <span class="ss-story__pts">8 pts</span>
-            <span class="ss-story__icon">✅</span>
+            <span class="ss-story__icon" aria-hidden="true">✅</span>
           </li>
           <li class="ss-story">
             <span class="ss-story__name">Data pipeline</span>
             <span class="ss-story__pts">13 pts</span>
-            <span class="ss-story__icon">✅</span>
+            <span class="ss-story__icon" aria-hidden="true">✅</span>
           </li>
           <li class="ss-story">
             <span class="ss-story__name">UI components</span>
             <span class="ss-story__pts">5 pts</span>
-            <span class="ss-story__icon">✅</span>
+            <span class="ss-story__icon" aria-hidden="true">✅</span>
           </li>
           <li class="ss-story">
             <span class="ss-story__name">User roles setup</span>
             <span class="ss-story__pts">8 pts</span>
-            <span class="ss-story__icon">✅</span>
+            <span class="ss-story__icon" aria-hidden="true">✅</span>
           </li>
         </ul>
       </div>
@@ -1162,12 +1174,12 @@ body {
           <li class="ss-story">
             <span class="ss-story__name">API Gateway integration</span>
             <span class="ss-story__pts">13 pts</span>
-            <span class="ss-story__icon">🚫</span>
+            <span class="ss-story__icon" aria-hidden="true">🚫</span>
           </li>
           <li class="ss-story">
             <span class="ss-story__name">Notifications service</span>
             <span class="ss-story__pts">8 pts</span>
-            <span class="ss-story__icon">🚫</span>
+            <span class="ss-story__icon" aria-hidden="true">🚫</span>
           </li>
         </ul>
         <div class="ss-reason">Blocked: partner team API SLA breach. ETA Apr 16. Escalated to delivery manager.</div>
@@ -1308,7 +1320,7 @@ body {
       <!-- Went Well -->
       <div class="rt-col rt-col--well">
         <div class="rt-col__header">
-          <span class="rt-col__icon">✓</span>
+          <span class="rt-col__icon" aria-hidden="true">✓</span>
           <span class="rt-col__name">Went Well</span>
         </div>
         <div class="rt-cards">
@@ -1330,7 +1342,7 @@ body {
       <!-- To Improve -->
       <div class="rt-col rt-col--improve">
         <div class="rt-col__header">
-          <span class="rt-col__icon">△</span>
+          <span class="rt-col__icon" aria-hidden="true">△</span>
           <span class="rt-col__name">To Improve</span>
         </div>
         <div class="rt-cards">
@@ -1352,7 +1364,7 @@ body {
       <!-- Actions -->
       <div class="rt-col rt-col--actions">
         <div class="rt-col__header">
-          <span class="rt-col__icon">→</span>
+          <span class="rt-col__icon" aria-hidden="true">→</span>
           <span class="rt-col__name">Actions</span>
         </div>
         <div class="rt-cards">
@@ -1440,9 +1452,11 @@ body {
 (function initBurndown() {
   const canvas = document.getElementById('burndown-chart');
   if (!canvas || typeof Chart === 'undefined') return;
-  const dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  const gridColor = dark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.05)';
-  const textColor = dark ? '#888882' : '#6b6b67';
+  const cs = getComputedStyle(document.documentElement);
+  const gridColor  = cs.getPropertyValue('--border').trim()    || 'rgba(0,0,0,0.05)';
+  const textColor  = cs.getPropertyValue('--text-dim').trim()  || '#6b6b67';
+  const accentColor = cs.getPropertyValue('--accent').trim()   || '#2563eb';
+  const accentDim   = cs.getPropertyValue('--accent-dim').trim() || 'rgba(37,99,235,0.07)';
 
   new Chart(canvas, {
     type: 'line',
@@ -1461,11 +1475,11 @@ body {
         {
           label: 'Actual',
           data: [42, 40, 38, 34, 30, 26, 22, 18, 14, 8],
-          borderColor: '#2563eb',
-          backgroundColor: 'rgba(37,99,235,0.07)',
+          borderColor: accentColor,
+          backgroundColor: accentDim,
           fill: true,
           pointRadius: 3,
-          pointBackgroundColor: '#2563eb',
+          pointBackgroundColor: accentColor,
           borderWidth: 2,
           tension: 0.3,
         },

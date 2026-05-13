@@ -1,0 +1,2239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ServiceNow Platform Consolidation — Consulting Reference Deck</title>
+<!--
+  Reference template for the visual-explainer skill: consulting slide decks.
+  Default preset: Consulting Blue — Plus Jakarta Sans, IBM Plex Mono, navy accent.
+
+  KEY DIFFERENCES FROM slide-deck.html
+  - 3-zone contract: slide__header / slide__body / slide__footer on every slide
+  - Action title: headlines state the insight, not the topic (≤2 lines, bold)
+  - Exhibit labels: "Exhibit N · Title" above every diagram/chart
+  - Source footnotes: auto-injected from data-source attribute on the slide
+  - Lead-word bullets: <strong>Category.</strong> Supporting detail
+  - Insight box (.insight-box): isolated "so what" callout
+  - Harvey balls (.harvey-ball .hb-0/25/50/75/100): fill-state comparison ratings
+  - RAG badges (.rag-badge .rag--red/amber/green): unified status pills
+  - slide--scorecard replaces slide--dashboard
+  - slide--matrix: 2×2 priority/effort framework (NEW)
+  - slide--comparison: criteria × options with Harvey balls and winner col (NEW)
+
+  SLIDE TYPES (14)
+  1.  slide--title       Centered display, no header/footer
+  2.  slide--divider     Section break, ghost number, no header/footer
+  3.  slide--content     3-zone, bullets with lead-word pattern + insight box
+  4.  slide--split       3-zone, two equal panels with hairline divider
+  5.  slide--diagram     3-zone, exhibit label + mermaid + zoom controls
+  6.  slide--scorecard   3-zone, KPI grid with RAG badges
+  7.  slide--table       3-zone, data table, tighter rows, numeric alignment
+  8.  slide--estimation  3-zone, KPI strip + phases×profiles breakdown
+  9.  slide--code        3-zone, code block with filename label
+  10. slide--quote       Centered pull quote, no header/footer
+  11. slide--bleed       Full-bleed closing slide, no header/footer
+  12. slide--timeline    3-zone, horizontal alternating above/below timeline
+  13. slide--matrix      3-zone, 2×2 prioritisation matrix (NEW)
+  14. slide--comparison  3-zone, criteria comparison with Harvey balls (NEW)
+
+  CONSULTING CONVENTIONS
+  - Action titles: complete insight sentence, ≤2 lines
+  - Bullet lead-word: <strong>Term.</strong> Elaboration — bolded first word
+  - Exhibit label: .slide__exhibit above any diagram or table
+  - Source footnote: set data-source on the slide element
+  - Insight box: .insight-box for the key "so what" message
+  - Harvey ball: 5 states hb-0 hb-25 hb-50 hb-75 hb-100
+  - RAG badge: .rag-badge with .rag--red .rag--amber .rag--green
+
+  ThemeSwitcher included. 10 presets: Consulting Blue + Night first,
+  then 8 editorial/design presets. All presets from slide-deck.html preserved.
+  Color themes are applied by the skill — this file defines structure and typography.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* ============ THEME: Consulting Blue (default) ============ */
+  :root {
+    --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    --font-mono: 'IBM Plex Mono', 'SF Mono', Consolas, monospace;
+    --bg: #f4f7fc;
+    --surface: #fafcff;
+    --surface2: #edf0f7;
+    --surface-elevated: #fafcff;
+    --border: rgba(0, 53, 120, 0.09);
+    --border-bright: rgba(0, 53, 120, 0.18);
+    --text: #0a1628;
+    --text-dim: #4d6680;
+    --accent: #00407a;
+    --accent-dim: rgba(0, 64, 122, 0.07);
+    --accent-2: #e8820c;
+    --code-bg: #0a1628;
+    --code-text: #c2d8f0;
+    --green: #16a34a;
+    --green-dim: rgba(22, 163, 74, 0.08);
+    --red: #dc2626;
+    --red-dim: rgba(220, 38, 38, 0.08);
+    --blue: #2563eb;
+    --blue-dim: rgba(37, 99, 235, 0.08);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: var(--font-body);
+    color: var(--text);
+    background: var(--bg);
+    overflow: hidden;
+  }
+
+  /* ============ DECK ENGINE ============ */
+  .deck {
+    height: 100dvh;
+    overflow-y: auto;
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .slide {
+    height: 100dvh;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    isolation: isolate;
+    opacity: 0;
+    transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .slide.visible { opacity: 1; }
+
+  /* ============ REVEAL ANIMATIONS ============ */
+  @keyframes revealUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .slide:not(.visible) .reveal {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+
+  .slide.visible .reveal {
+    animation: revealUp 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .slide.visible .reveal:nth-child(1) { animation-delay: 0.06s; }
+  .slide.visible .reveal:nth-child(2) { animation-delay: 0.12s; }
+  .slide.visible .reveal:nth-child(3) { animation-delay: 0.18s; }
+  .slide.visible .reveal:nth-child(4) { animation-delay: 0.24s; }
+  .slide.visible .reveal:nth-child(5) { animation-delay: 0.30s; }
+  .slide.visible .reveal:nth-child(6) { animation-delay: 0.36s; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .slide  { opacity: 1 !important; transition: none !important; }
+    .reveal { opacity: 1 !important; animation: none !important; }
+  }
+
+  /* ============ NAV CHROME ============ */
+  .deck-progress {
+    position: fixed; top: 0; left: 0; height: 3px;
+    background: var(--accent); z-index: 100;
+    transition: width 0.3s ease; pointer-events: none;
+  }
+
+  .deck-dots {
+    position: fixed; right: clamp(12px, 2vw, 24px); top: 50%;
+    transform: translateY(-50%); display: flex; flex-direction: column;
+    gap: 8px; z-index: 100; padding: 8px;
+    background: color-mix(in srgb, var(--bg) 70%, transparent 30%);
+    border-radius: 20px;
+    backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+  }
+
+  .deck-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--text-dim); opacity: 0.3; border: none; padding: 0;
+    cursor: pointer; transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+  .deck-dot:hover { opacity: 0.6; }
+  .deck-dot.active { opacity: 1; transform: scale(1.5); background: var(--accent); }
+
+  .deck-counter {
+    position: fixed; bottom: clamp(12px, 2vh, 24px); right: clamp(12px, 2vw, 24px);
+    font-family: var(--font-mono); font-size: 12px; color: var(--text-dim);
+    z-index: 100; font-variant-numeric: tabular-nums;
+  }
+
+  .deck-hints {
+    position: fixed; bottom: clamp(12px, 2vh, 24px); left: 50%;
+    transform: translateX(-50%); font-family: var(--font-mono);
+    font-size: 11px; color: var(--text-dim); opacity: 0.5; z-index: 100;
+    transition: opacity 0.5s ease; white-space: nowrap;
+  }
+  .deck-hints.faded { opacity: 0; pointer-events: none; }
+
+  /* ============ 3-ZONE CONTRACT ============
+     All informational slides: header (label + action title) /
+     body (content, flex:1) / footer (source footnote).
+     Structural slides (title, divider, quote, bleed) suppress both zones. */
+  .slide__header {
+    flex-shrink: 0;
+    padding: clamp(20px, 3vh, 36px) clamp(40px, 7vw, 100px) clamp(14px, 2vh, 24px);
+    border-bottom: 1px solid var(--border);
+    border-top: 3px solid var(--accent);
+  }
+
+  .slide__body {
+    flex: 1;
+    min-height: 0;
+    padding: clamp(16px, 2.5vh, 32px) clamp(40px, 7vw, 100px);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .slide__footer {
+    flex-shrink: 0;
+    padding: clamp(7px, 1vh, 12px) clamp(40px, 7vw, 100px);
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 32px;
+  }
+
+  .slide--no-header .slide__header { display: none; }
+  .slide--no-footer .slide__footer { display: none; }
+
+  /* ============ SHARED ELEMENTS ============ */
+  .slide__display {
+    font-size: clamp(44px, 9.5vw, 112px);
+    font-weight: 800;
+    letter-spacing: -2px;
+    line-height: 0.95;
+    text-wrap: balance;
+  }
+
+  .slide__action-title {
+    font-size: clamp(18px, 2.4vw, 28px);
+    font-weight: 700;
+    letter-spacing: -0.3px;
+    line-height: 1.25;
+    text-wrap: balance;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+
+  .slide__body-text {
+    font-size: clamp(15px, 1.8vw, 20px);
+    line-height: 1.65;
+    color: var(--text-dim);
+    text-wrap: pretty;
+  }
+
+  .slide__subtitle {
+    font-family: var(--font-mono);
+    font-size: clamp(11px, 1.4vw, 15px);
+    color: var(--text-dim);
+    letter-spacing: 0.5px;
+  }
+
+  .slide__label {
+    font-family: var(--font-mono);
+    font-size: clamp(9px, 1vw, 11px);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.8px;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+
+  .slide__source {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-dim);
+    opacity: 0.7;
+    letter-spacing: 0.3px;
+  }
+
+  .slide__exhibit {
+    font-family: var(--font-mono);
+    font-size: clamp(9px, 1vw, 11px);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text-dim);
+    margin-bottom: clamp(8px, 1.2vh, 14px);
+    flex-shrink: 0;
+  }
+
+  /* ============ SLIDE TYPE: TITLE ============ */
+  .slide--title {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-image: radial-gradient(ellipse at 50% 30%, var(--accent-dim) 0%, transparent 55%);
+  }
+
+  .slide--title .slide__body {
+    justify-content: center;
+    align-items: center;
+    padding: clamp(40px, 8vw, 120px);
+  }
+
+  .slide--title .slide__display { color: var(--accent); }
+
+  .slide__meta {
+    font-family: var(--font-mono);
+    font-size: clamp(10px, 1.2vw, 13px);
+    color: var(--text-dim);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-top: clamp(20px, 3vh, 36px);
+  }
+
+  /* ============ SLIDE TYPE: DIVIDER ============ */
+  .slide--divider { background-image: radial-gradient(ellipse at 80% 60%, var(--accent-dim) 0%, transparent 40%); }
+
+  .slide--divider .slide__body {
+    justify-content: center;
+    padding: clamp(40px, 8vw, 120px);
+  }
+
+  .slide--divider .slide__number {
+    font-size: clamp(90px, 18vw, 220px);
+    font-weight: 800;
+    line-height: 0.85;
+    opacity: 0.05;
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -55%);
+    pointer-events: none;
+    font-variant-numeric: tabular-nums;
+    color: var(--accent);
+    letter-spacing: -4px;
+  }
+
+  /* ============ SLIDE TYPE: CONTENT ============ */
+  .slide--content .slide__inner {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    gap: clamp(24px, 4vw, 56px);
+    align-items: start;
+    flex: 1;
+    min-height: 0;
+  }
+
+  .slide__bullets {
+    list-style: none;
+    padding: 0;
+    margin-top: clamp(8px, 1.5vh, 16px);
+  }
+
+  .slide__bullets li {
+    padding: clamp(8px, 1.4vh, 14px) 0 clamp(8px, 1.4vh, 14px) 20px;
+    position: relative;
+    font-size: clamp(14px, 1.8vw, 20px);
+    line-height: 1.55;
+    color: var(--text-dim);
+    border-bottom: 1px solid var(--border);
+  }
+  .slide__bullets li:last-child { border-bottom: none; }
+
+  .slide__bullets li::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 50%;
+    margin-top: -3px;
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+
+  .slide__bullets li strong {
+    color: var(--text);
+    font-weight: 700;
+  }
+
+  .slide__aside {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: clamp(16px, 2vh, 28px);
+  }
+
+  /* ============ SLIDE TYPE: SPLIT ============ */
+  .slide--split .slide__body {
+    padding: 0;
+    flex-direction: row;
+    min-height: 0;
+  }
+
+  .slide--split .slide__panels {
+    display: flex;
+    flex: 1;
+    min-height: 0;
+  }
+
+  .slide--split .slide__panel {
+    flex: 1;
+    padding: clamp(24px, 4vh, 48px) clamp(32px, 4vw, 60px);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: clamp(8px, 1.2vh, 14px);
+  }
+
+  .slide--split .slide__panel + .slide__panel {
+    border-left: 1px solid var(--border-bright);
+  }
+
+  /* ============ SLIDE TYPE: DIAGRAM ============ */
+  .slide--diagram .slide__body {
+    padding-bottom: clamp(12px, 2vh, 24px);
+  }
+
+  .mermaid-wrap {
+    position: relative;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    overflow: auto;
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+    cursor: grab;
+  }
+  .mermaid-wrap::-webkit-scrollbar { width: 5px; height: 5px; }
+  .mermaid-wrap::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  .mermaid-wrap.is-panning { cursor: grabbing; user-select: none; }
+
+  .zoom-controls {
+    position: absolute; top: 8px; right: 8px;
+    display: flex; gap: 2px; z-index: 10;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 6px; padding: 2px;
+  }
+  .zoom-controls button {
+    width: 28px; height: 28px; border: none; background: transparent;
+    color: var(--text-dim); font-family: var(--font-mono); font-size: 14px;
+    cursor: pointer; border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s, color 0.15s;
+  }
+  .zoom-controls button:hover { background: var(--border); color: var(--text); }
+
+  .slide--diagram .mermaid svg { width: 100% !important; height: auto !important; max-width: 100% !important; }
+  .slide--diagram .mermaid .nodeLabel { font-size: 16px !important; }
+  .slide--diagram .mermaid .edgeLabel { font-family: var(--font-mono) !important; font-size: 13px !important; }
+  .slide--diagram .mermaid .node rect,
+  .slide--diagram .mermaid .node circle,
+  .slide--diagram .mermaid .node polygon { stroke-width: 2px; }
+
+  /* ============ SLIDE TYPE: SCORECARD ============
+     McKinsey hairline grid: 1px gap creates clean dividers without card borders. */
+  .slide--scorecard .slide__body {
+    justify-content: flex-start;
+  }
+
+  .slide__kpis {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(clamp(130px, 16vw, 190px), 1fr));
+    gap: 1px;
+    background: var(--border-bright);
+    border: 1px solid var(--border-bright);
+    border-radius: 8px;
+    overflow: hidden;
+    flex: 1;
+    min-height: 0;
+  }
+
+  .slide__kpi {
+    background: var(--surface);
+    padding: clamp(16px, 2.8vh, 34px) clamp(16px, 2.2vw, 28px);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    border-top: 3px solid transparent;
+    min-width: 0;
+  }
+  .slide__kpi--primary   { border-top-color: var(--accent); }
+  .slide__kpi--secondary { border-top-color: var(--accent-2, var(--text-dim)); }
+  .slide__kpi--neutral   { border-top-color: var(--border-bright); }
+
+  .slide__kpi-cat {
+    font-family: var(--font-mono);
+    font-size: clamp(8px, 0.85vw, 10px);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.8px;
+    color: var(--text-dim);
+    margin-bottom: clamp(8px, 1.5vh, 18px);
+  }
+
+  .slide__kpi-val-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    flex: 1;
+    min-height: 0;
+    flex-wrap: wrap;
+  }
+
+  .slide__kpi-val {
+    font-size: clamp(32px, 5.5vw, 68px);
+    font-weight: 800;
+    letter-spacing: -3px;
+    line-height: 0.9;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .slide__kpi-spark {
+    width: clamp(32px, 4vw, 52px);
+    height: clamp(18px, 2.5vh, 28px);
+    opacity: 0.6;
+    flex-shrink: 0;
+    overflow: visible;
+    margin-left: auto;
+    align-self: center;
+  }
+
+  .slide__kpi-sep {
+    height: 1px;
+    background: var(--border);
+    margin: clamp(10px, 1.5vh, 16px) 0 clamp(6px, 1vh, 10px);
+  }
+
+  .slide__kpi-label {
+    font-family: var(--font-mono);
+    font-size: clamp(8px, 0.85vw, 10px);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--text-dim);
+    line-height: 1.3;
+  }
+
+  /* ============ SCORECARD: CONSULTING LAYOUT ============
+     Featured financial panel (left) + stacked operational KPIs (right).
+     Left panel: headline metric with cost breakdown.
+     Right panel: three rows each showing baseline → target movement. */
+  .kpi-consulting {
+    display: grid;
+    grid-template-columns: minmax(200px, 36%) 1fr;
+    gap: 1px;
+    background: var(--border-bright);
+    border: 1px solid var(--border-bright);
+    border-radius: 10px;
+    overflow: hidden;
+    flex: 1;
+    min-height: 0;
+  }
+
+  .kpi-c--featured {
+    background: var(--accent-dim);
+    padding: clamp(20px, 3vh, 42px) clamp(20px, 2.5vw, 36px);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .kpi-c__stack {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    background: var(--border-bright);
+  }
+
+  .kpi-c--operational {
+    background: var(--surface);
+    padding: clamp(14px, 2.2vh, 28px) clamp(16px, 2.2vw, 30px);
+    display: flex;
+    flex-direction: column;
+    gap: clamp(5px, 0.8vh, 8px);
+    flex: 1;
+    min-height: 0;
+    justify-content: center;
+  }
+
+  .kpi-c__eyebrow {
+    font-family: var(--font-mono);
+    font-size: clamp(8px, 0.8vw, 10px);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--text-dim);
+    margin-bottom: clamp(4px, 0.6vh, 6px);
+  }
+
+  .kpi-c__headline {
+    font-size: clamp(52px, 7.5vw, 96px);
+    font-weight: 800;
+    letter-spacing: -4px;
+    line-height: 0.88;
+    color: var(--accent);
+    font-variant-numeric: tabular-nums;
+    margin-bottom: clamp(6px, 0.9vh, 10px);
+  }
+
+  .kpi-c__sublabel {
+    font-size: clamp(11px, 1.1vw, 14px);
+    color: var(--text-dim);
+    line-height: 1.4;
+  }
+
+  .kpi-c__sep {
+    height: 1px;
+    background: rgba(0, 64, 122, 0.15);
+    margin: clamp(14px, 2vh, 24px) 0;
+  }
+
+  .kpi-c__waterfall {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(8px, 1.2vh, 12px);
+  }
+
+  .kpi-c__wf-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 8px;
+    row-gap: 4px;
+  }
+
+  .kpi-c__wf-label {
+    font-family: var(--font-mono);
+    font-size: clamp(8px, 0.75vw, 9px);
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    grid-column: 1;
+  }
+
+  .kpi-c__wf-val {
+    font-family: var(--font-mono);
+    font-size: clamp(10px, 0.95vw, 12px);
+    font-weight: 600;
+    color: var(--text);
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+    grid-column: 2;
+    grid-row: 1 / 3;
+    align-self: center;
+  }
+
+  .kpi-c__wf-track {
+    grid-column: 1;
+    height: 3px;
+    background: rgba(0, 64, 122, 0.12);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .kpi-c__wf-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 2px;
+    opacity: 0.35;
+  }
+
+  .kpi-c__badge-row {
+    margin-top: auto;
+    padding-top: clamp(14px, 2vh, 22px);
+  }
+
+  /* Operational row: inline number + context + badge */
+  .kpi-c__inline {
+    display: flex;
+    align-items: center;
+    gap: clamp(10px, 1.4vw, 18px);
+  }
+
+  .kpi-c__val {
+    font-size: clamp(30px, 4vw, 52px);
+    font-weight: 800;
+    letter-spacing: -2px;
+    line-height: 1;
+    color: var(--accent);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    flex-shrink: 0;
+    min-width: clamp(64px, 8vw, 110px);
+  }
+
+  .kpi-c__val--secondary { color: var(--accent-2); }
+  .kpi-c__val--neutral   { color: var(--text-dim); }
+
+  .kpi-c__context {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(3px, 0.5vh, 5px);
+  }
+
+  .kpi-c__metric-name {
+    font-size: clamp(12px, 1.3vw, 16px);
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.2;
+  }
+
+  .kpi-c__compare {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .kpi-c__from,
+  .kpi-c__to {
+    font-family: var(--font-mono);
+    font-size: clamp(8px, 0.75vw, 9px);
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: var(--text-dim);
+  }
+
+  .kpi-c__to { color: var(--green); font-weight: 600; }
+
+  .kpi-c__arrow {
+    color: var(--text-dim);
+    flex-shrink: 0;
+    opacity: 0.6;
+  }
+
+  /* Payback timeline bar */
+  .kpi-c__timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .kpi-c__tl-track {
+    position: relative;
+    height: 4px;
+    background: var(--border-bright);
+    border-radius: 2px;
+  }
+
+  .kpi-c__tl-fill {
+    position: absolute;
+    top: 0; left: 0; bottom: 0;
+    background: var(--accent-2);
+    border-radius: 2px;
+    opacity: 0.55;
+  }
+
+  .kpi-c__tl-marker {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    background: var(--accent-2);
+    border: 2px solid var(--surface);
+    box-shadow: 0 0 0 1.5px var(--accent-2);
+  }
+
+  .kpi-c__tl-labels {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: clamp(7px, 0.65vw, 8px);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-dim);
+  }
+
+  @media (max-width: 768px) {
+    .kpi-consulting { grid-template-columns: 1fr; }
+    .kpi-c--featured { border-bottom: 1px solid var(--border-bright); }
+  }
+
+  /* ============ SLIDE TYPE: TABLE ============ */
+  .slide--table .slide__body { padding-bottom: clamp(12px, 1.8vh, 20px); }
+
+  .table-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    flex: 1;
+    min-height: 0;
+  }
+
+  .table-scroll { overflow-x: auto; height: 100%; }
+
+  .data-table { width: 100%; border-collapse: collapse; }
+
+  .data-table th {
+    background: var(--surface2);
+    font-family: var(--font-mono);
+    font-size: clamp(9px, 1.1vw, 12px);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-dim);
+    text-align: left;
+    padding: clamp(8px, 1.3vh, 14px) clamp(14px, 2vw, 22px);
+    border-bottom: 2px solid var(--border-bright);
+    white-space: nowrap;
+  }
+
+  .data-table td {
+    padding: clamp(8px, 1.2vh, 13px) clamp(14px, 2vw, 22px);
+    border-bottom: 1px solid var(--border);
+    font-size: clamp(13px, 1.6vw, 18px);
+    vertical-align: middle;
+    line-height: 1.4;
+  }
+  .data-table tbody tr:last-child td { border-bottom: none; }
+  .data-table tbody tr:nth-child(even) { background: var(--surface2); }
+  .data-table tbody tr { transition: background 0.12s; }
+  .data-table tbody tr:hover { background: var(--accent-dim); }
+  .data-table .col-num {
+    text-align: right;
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    font-size: clamp(12px, 1.4vw, 15px);
+  }
+
+  /* ============ SLIDE TYPE: ESTIMATION ============ */
+  .slide--estimation .slide__kpis {
+    flex: 0 0 auto;
+    margin-bottom: clamp(10px, 1.5vh, 18px);
+  }
+
+  .slide--estimation .table-wrap { flex: 1; min-height: 0; }
+
+  .est-total-col {
+    background: var(--surface-elevated);
+    font-family: var(--font-mono);
+    font-weight: 600;
+  }
+  th.est-total-col { background: var(--surface-elevated); }
+
+  .est-footer td {
+    background: var(--surface-elevated);
+    font-family: var(--font-mono);
+    font-size: clamp(10px, 1.1vw, 13px);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: none;
+    border-top: 2px solid var(--border-bright);
+  }
+  .est-footer .est-total-col { color: var(--accent); }
+
+  .slide--estimation .data-table th,
+  .slide--estimation .data-table td {
+    font-family: var(--font-mono);
+    font-size: clamp(10px, 1.1vw, 13px);
+  }
+
+  /* ============ SLIDE TYPE: CODE ============ */
+  .slide--code .slide__body {
+    align-items: center;
+    justify-content: center;
+  }
+
+  .slide__code-block {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: clamp(24px, 3.5vh, 44px) clamp(24px, 4vw, 48px);
+    max-width: 860px;
+    width: 100%;
+    position: relative;
+  }
+
+  .slide__code-filename {
+    position: absolute;
+    top: -12px; left: 22px;
+    font-family: var(--font-mono);
+    font-size: 11px; font-weight: 600;
+    padding: 3px 10px; border-radius: 4px;
+    background: var(--accent); color: var(--surface);
+  }
+
+  .slide__code-block pre { margin: 0; overflow-x: auto; }
+  .slide__code-block code {
+    font-family: var(--font-mono);
+    font-size: clamp(13px, 1.5vw, 17px);
+    line-height: 1.75;
+    color: var(--code-text);
+  }
+  .slide__code-block .hl { color: var(--accent-2, #e8820c); }
+  .slide__code-block .kw { color: #60a5fa; }
+  .slide__code-block .cm { color: var(--text-dim); }
+  .slide__code-block .st { color: #4ade80; }
+
+  /* ============ SLIDE TYPE: QUOTE ============ */
+  .slide--quote {
+    background-image: radial-gradient(ellipse at 50% 50%, var(--accent-dim) 0%, transparent 40%);
+  }
+
+  .slide--quote .slide__body {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: clamp(60px, 10vh, 120px) clamp(60px, 12vw, 200px);
+  }
+
+  .slide__quote-mark {
+    font-size: clamp(72px, 13vw, 160px);
+    line-height: 0.5;
+    opacity: 0.05;
+    font-family: Georgia, serif;
+    pointer-events: none;
+    margin-bottom: -16px;
+    color: var(--accent);
+  }
+
+  .slide--quote blockquote {
+    font-size: clamp(22px, 3.6vw, 44px);
+    font-weight: 600;
+    line-height: 1.35;
+    color: var(--text);
+  }
+
+  .slide--quote cite {
+    font-family: var(--font-mono);
+    font-size: clamp(10px, 1.2vw, 13px);
+    font-style: normal;
+    margin-top: clamp(16px, 2.5vh, 28px);
+    display: block;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+
+  /* ============ SLIDE TYPE: FULL-BLEED ============ */
+  .slide--bleed { justify-content: flex-end; }
+
+  .slide__bg {
+    position: absolute; inset: 0;
+    background-size: cover; background-position: center;
+    z-index: 0;
+  }
+
+  .slide__bg--gradient {
+    background: linear-gradient(135deg, #001a40 0%, #00407a 50%, #00264d 100%);
+  }
+
+  .slide__scrim {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.18) 50%, transparent 100%);
+    z-index: 1;
+  }
+
+  .slide--bleed .slide__content {
+    position: relative; z-index: 2;
+    padding: clamp(40px, 6vh, 80px) clamp(40px, 7vw, 100px);
+    color: #ffffff;
+  }
+  .slide--bleed .slide__action-title { color: #ffffff; font-size: clamp(22px, 3.2vw, 40px); }
+  .slide--bleed .slide__subtitle { color: rgba(255,255,255,0.65); margin-top: 12px; }
+  .slide--bleed .slide__label { color: rgba(255,255,255,0.5); }
+
+  /* ============ SLIDE TYPE: TIMELINE ============ */
+  .slide--timeline .slide__body {
+    padding-bottom: clamp(12px, 1.8vh, 20px);
+  }
+
+  .timeline {
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    flex: 1;
+    min-height: 0;
+    margin-top: clamp(16px, 2.5vh, 28px);
+  }
+
+  .timeline__track {
+    position: absolute;
+    top: 50%; left: 0; right: 0;
+    height: 1px;
+    background: var(--border-bright);
+    transform: translateY(-50%);
+    z-index: 0;
+  }
+
+  .timeline__item {
+    flex: 1;
+    display: grid;
+    grid-template-rows: 1fr auto 1fr;
+    justify-items: center;
+    min-width: 0;
+    padding: 0 clamp(6px, 0.8vw, 12px);
+    position: relative;
+    z-index: 1;
+  }
+
+  .timeline__item--above .timeline__content {
+    grid-row: 1; align-self: end;
+    margin-bottom: clamp(12px, 1.8vh, 20px); width: 100%;
+  }
+  .timeline__item--above .timeline__dot { grid-row: 2; }
+  .timeline__item--below .timeline__dot { grid-row: 2; }
+  .timeline__item--below .timeline__content {
+    grid-row: 3; align-self: start;
+    margin-top: clamp(12px, 1.8vh, 20px); width: 100%;
+  }
+
+  .timeline__dot {
+    width: clamp(12px, 1.4vw, 16px);
+    height: clamp(12px, 1.4vw, 16px);
+    border-radius: 50%;
+    background: var(--accent);
+    border: 3px solid var(--bg);
+    box-shadow: 0 0 0 2px var(--accent);
+    flex-shrink: 0;
+  }
+
+  .timeline__content {
+    background: var(--surface);
+    border: 1px solid var(--border-bright);
+    border-radius: 8px;
+    padding: clamp(12px, 2.2vh, 22px) clamp(12px, 1.8vw, 20px);
+    min-width: 0;
+    overflow-wrap: break-word;
+  }
+
+  .timeline__date {
+    font-family: var(--font-mono);
+    font-size: clamp(8px, 0.9vw, 11px);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: var(--accent);
+    margin-bottom: clamp(6px, 1vh, 10px);
+  }
+
+  .timeline__title {
+    font-size: clamp(13px, 1.5vw, 18px);
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: clamp(4px, 0.8vh, 8px);
+  }
+
+  .timeline__desc {
+    font-size: clamp(10px, 1.1vw, 13px);
+    color: var(--text-dim);
+    line-height: 1.55;
+  }
+
+  /* ============ SLIDE TYPE: MATRIX (NEW) ============
+     2×2 CSS grid with outer border, hairline quadrant separators,
+     axis labels on Y (rotated) and X. Items are chip tags inside each quadrant.
+     Top-right quadrant (Quick Wins) receives accent-dim tint. */
+  .slide--matrix .slide__body { padding-bottom: clamp(12px, 1.8vh, 20px); }
+
+  .matrix {
+    display: flex;
+    gap: clamp(8px, 1.2vw, 16px);
+    flex: 1;
+    min-height: 0;
+  }
+
+  .matrix__y-axis {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+    width: 28px;
+    padding: 4px 0;
+  }
+
+  .matrix__axis-label {
+    font-family: var(--font-mono);
+    font-size: clamp(8px, 0.85vw, 10px);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text-dim);
+    white-space: nowrap;
+  }
+
+  .matrix__axis-label--y {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+  }
+
+  .matrix__axis-end {
+    font-family: var(--font-mono);
+    font-size: clamp(8px, 0.85vw, 10px);
+    color: var(--text-dim);
+    opacity: 0.6;
+  }
+
+  .matrix__main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    gap: clamp(6px, 0.8vh, 10px);
+  }
+
+  .matrix__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    flex: 1;
+    min-height: 0;
+    border: 1px solid var(--border-bright);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .matrix__quadrant {
+    padding: clamp(10px, 1.8vh, 18px) clamp(12px, 1.8vw, 20px);
+    display: flex;
+    flex-direction: column;
+    background: var(--surface);
+  }
+
+  .matrix__quadrant--tr {
+    border-left: 1px solid var(--border-bright);
+    background: var(--accent-dim);
+  }
+
+  .matrix__quadrant--bl { border-top: 1px solid var(--border-bright); }
+
+  .matrix__quadrant--br {
+    border-left: 1px solid var(--border-bright);
+    border-top: 1px solid var(--border-bright);
+  }
+
+  .matrix__q-label {
+    font-family: var(--font-mono);
+    font-size: clamp(8px, 0.9vw, 11px);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text-dim);
+    margin-bottom: clamp(8px, 1.2vh, 14px);
+  }
+
+  .matrix__q-label--highlight { color: var(--accent); }
+
+  .matrix__items {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    align-content: flex-start;
+  }
+
+  .matrix__item {
+    background: var(--surface2);
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: clamp(8px, 0.9vw, 11px);
+    padding: 4px 9px;
+    border-radius: 4px;
+    border: 1px solid var(--border-bright);
+    white-space: nowrap;
+  }
+
+  .matrix__item--highlight {
+    background: var(--accent-dim);
+    color: var(--accent);
+    border-color: var(--accent-dim);
+    font-weight: 600;
+  }
+
+  .matrix__x-axis {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  /* ============ SLIDE TYPE: COMPARISON (NEW) ============
+     Extends data-table with winner column highlight and Harvey balls.
+     col--winner on both th and td tints that column with accent-dim. */
+  .slide--comparison .slide__body { padding-bottom: clamp(12px, 1.8vh, 20px); }
+
+  .comparison-table td, .comparison-table th { text-align: center; }
+  .comparison-table td:first-child, .comparison-table th:first-child {
+    text-align: left;
+    font-weight: 600;
+    color: var(--text);
+    font-size: clamp(12px, 1.4vw, 15px);
+  }
+
+  .col--winner {
+    background: var(--accent-dim) !important;
+    font-weight: 700;
+    color: var(--accent) !important;
+  }
+  .col--winner-marker {
+    font-family: var(--font-mono);
+    font-size: clamp(8px, 0.9vw, 10px);
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 0.5px;
+  }
+
+  /* ============ COMPONENT: HARVEY BALL ============
+     conic-gradient from -90deg (12 o'clock start, clockwise fill).
+     box-shadow inset creates the outer ring on top of any fill. */
+  .harvey-ball {
+    width: clamp(15px, 1.8vw, 20px);
+    height: clamp(15px, 1.8vw, 20px);
+    border-radius: 50%;
+    display: inline-block;
+    vertical-align: middle;
+    flex-shrink: 0;
+    box-shadow: inset 0 0 0 2px var(--accent);
+  }
+  .hb-0   { background: transparent; }
+  .hb-25  { background: conic-gradient(from -90deg, var(--accent) 90deg,  transparent 90deg); }
+  .hb-50  { background: conic-gradient(from -90deg, var(--accent) 180deg, transparent 180deg); }
+  .hb-75  { background: conic-gradient(from -90deg, var(--accent) 270deg, transparent 270deg); }
+  .hb-100 { background: var(--accent); }
+
+  /* ============ COMPONENT: RAG BADGE ============ */
+  .rag-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-family: var(--font-mono);
+    font-size: clamp(9px, 0.9vw, 11px);
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+    letter-spacing: 0.5px;
+  }
+  .rag-badge::before { content: '●'; font-size: 7px; }
+  .rag--green { color: var(--green); background: var(--green-dim); }
+  .rag--amber { color: var(--accent-2, #e8820c); background: rgba(232, 130, 12, 0.09); }
+  .rag--red   { color: var(--red);   background: var(--red-dim); }
+
+  /* ============ COMPONENT: INSIGHT BOX ============
+     Isolated "so what" callout. Inline in .slide__body, below bullets. */
+  .insight-box {
+    background: var(--accent-dim);
+    border-radius: 8px;
+    padding: clamp(12px, 1.8vh, 20px) clamp(14px, 2vw, 24px);
+    margin-top: clamp(12px, 2vh, 20px);
+  }
+
+  .insight-box__label {
+    font-family: var(--font-mono);
+    font-size: clamp(8px, 0.85vw, 10px);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.8px;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+
+  .insight-box__text {
+    font-size: clamp(14px, 1.7vw, 18px);
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--text);
+  }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 768px) {
+    .slide--content .slide__inner { grid-template-columns: 1fr; }
+    .slide--content .slide__aside { display: none; }
+    .slide--split .slide__panels { flex-direction: column; }
+    .slide--split .slide__panel + .slide__panel { border-left: none; border-top: 1px solid var(--border-bright); }
+    .slide__kpis { grid-template-columns: repeat(2, 1fr); }
+    .matrix { flex-direction: column; }
+    .matrix__y-axis { flex-direction: row; width: auto; height: 24px; }
+    .matrix__axis-label--y { writing-mode: initial; transform: none; }
+    .timeline { flex-direction: column; }
+    .timeline__track { top: 0; bottom: 0; left: 18px; width: 1px; height: auto; transform: none; }
+    .timeline__item, .timeline__item--above, .timeline__item--below {
+      display: flex; flex-direction: row; align-items: flex-start;
+      grid-template-rows: unset; gap: 14px; padding: 0 0 16px;
+    }
+    .timeline__item--above .timeline__content,
+    .timeline__item--below .timeline__content {
+      grid-row: unset; align-self: unset; margin: 0; width: auto; flex: 1;
+    }
+    .timeline__item--above .timeline__dot,
+    .timeline__item--below .timeline__dot { grid-row: unset; margin-top: 2px; }
+  }
+
+  @media (max-height: 700px) {
+    .slide__header { padding-top: clamp(14px, 2vh, 22px); padding-bottom: clamp(10px, 1.5vh, 16px); }
+    .slide__display { font-size: clamp(36px, 7.5vw, 68px); }
+  }
+
+  @media (max-height: 500px) {
+    .deck-dots { display: none; }
+    .slide__header { padding-top: 12px; padding-bottom: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="deck">
+
+  <!-- SLIDE 1: TITLE -->
+  <section class="slide slide--title slide--no-header slide--no-footer">
+    <div class="slide__body">
+      <div class="reveal">
+        <p class="slide__label" style="font-size:clamp(10px,1.1vw,13px);">ServiceNow Consulting Practice</p>
+      </div>
+      <h1 class="slide__display reveal" style="margin-top:clamp(12px,2vh,24px);">ServiceNow<br>Platform<br>Consolidation</h1>
+      <div class="reveal" style="margin-top:clamp(16px,2.5vh,32px);">
+        <p class="slide__subtitle">Acme Financial Services &middot; Strategic Review Q2 2026</p>
+      </div>
+      <p class="slide__meta reveal">Prepared by the TechLead Practice &middot; Confidential</p>
+    </div>
+  </section>
+
+  <!-- SLIDE 2: SECTION DIVIDER -->
+  <section class="slide slide--divider slide--no-header slide--no-footer">
+    <span class="slide__number">01</span>
+    <div class="slide__body">
+      <div>
+        <p class="slide__label reveal">Current State</p>
+        <h2 class="slide__action-title reveal" style="font-size:clamp(28px,5vw,52px); font-weight:800; margin-top:8px; -webkit-line-clamp:unset;">Why fragmentation is costing us today</h2>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 3: CONTENT -->
+  <section class="slide slide--content" data-source="IT landscape assessment, March 2026">
+    <div class="slide__header reveal">
+      <p class="slide__label">Current State Assessment</p>
+      <h2 class="slide__action-title">Five disparate ServiceNow instances create 3&times; the cost and 4&times; the operational complexity of a consolidated platform</h2>
+    </div>
+    <div class="slide__body">
+      <div class="slide__inner">
+        <div>
+          <ul class="slide__bullets">
+            <li class="reveal"><strong>Licensing.</strong> Five separate enterprise licences incur avoidable duplication — each renewal negotiated independently with no volume benefit</li>
+            <li class="reveal"><strong>Operations.</strong> Four platform teams maintain divergent configurations, delaying cross-domain automation by an average of 11 weeks</li>
+            <li class="reveal"><strong>Data integrity.</strong> No unified CMDB means CI records exist in 3&ndash;5 conflicting states, blocking accurate impact analysis during incidents</li>
+            <li class="reveal"><strong>Talent.</strong> Specialised skills are spread thin across instances; knowledge concentration risk sits at critical level for two of five teams</li>
+          </ul>
+          <div class="insight-box reveal">
+            <p class="insight-box__label">Key Finding</p>
+            <p class="insight-box__text">Fragmentation is organic, not architectural — consolidation removes cost without removing capability</p>
+          </div>
+        </div>
+        <div class="slide__aside reveal">
+          <svg viewBox="0 0 180 200" width="160" height="180">
+            <circle cx="90" cy="100" r="70" fill="none" stroke="var(--border-bright)" stroke-width="1.5"/>
+            <circle cx="50" cy="60"  r="18" fill="var(--red-dim)"  stroke="var(--red)"   stroke-width="1.5"/>
+            <circle cx="130" cy="60" r="18" fill="var(--red-dim)"  stroke="var(--red)"   stroke-width="1.5"/>
+            <circle cx="40"  cy="125" r="18" fill="var(--red-dim)" stroke="var(--red)"   stroke-width="1.5"/>
+            <circle cx="140" cy="125" r="18" fill="var(--red-dim)" stroke="var(--red)"   stroke-width="1.5"/>
+            <circle cx="90"  cy="90"  r="22" fill="var(--accent-dim)" stroke="var(--accent)" stroke-width="2"/>
+            <text x="90" y="94" text-anchor="middle" font-family="var(--font-mono)" font-size="9" fill="var(--accent)" font-weight="700">TARGET</text>
+            <text x="90" y="104" text-anchor="middle" font-family="var(--font-mono)" font-size="8" fill="var(--accent)">SINGLE</text>
+            <text x="90" y="165" text-anchor="middle" font-family="var(--font-mono)" font-size="9" fill="var(--text-dim)">5 INSTANCES TODAY</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer reveal"></footer>
+  </section>
+
+  <!-- SLIDE 4: SPLIT -->
+  <section class="slide slide--split" data-source="Architecture review board, April 2026">
+    <div class="slide__header reveal">
+      <p class="slide__label">Transformation</p>
+      <h2 class="slide__action-title">Consolidation delivers a platform that scales with the business, not against it</h2>
+    </div>
+    <div class="slide__body">
+      <div class="slide__panels">
+        <div class="slide__panel">
+          <p class="slide__label reveal" style="color:var(--red);">Current State &mdash; Fragmented</p>
+          <ul class="slide__bullets" style="margin-top:12px;">
+            <li class="reveal"><strong>5 instances</strong> across ITSM, ITOM, HR, SecOps, CSM &mdash; each with separate configurations</li>
+            <li class="reveal"><strong>No unified CMDB</strong> &mdash; CI data reconciled manually each quarter</li>
+            <li class="reveal"><strong>4 platform teams</strong> &mdash; duplicated effort, no shared capability model</li>
+            <li class="reveal"><strong>Patch cycles out of sync</strong> &mdash; security exposure window averages 34 days</li>
+            <li class="reveal"><strong>12-week integration lead time</strong> for any cross-domain automation</li>
+          </ul>
+        </div>
+        <div class="slide__panel">
+          <p class="slide__label reveal" style="color:var(--green);">Future State &mdash; Consolidated</p>
+          <ul class="slide__bullets" style="margin-top:12px;">
+            <li class="reveal"><strong>1 governed instance</strong> with domain-separated scopes &mdash; all modules, one licence</li>
+            <li class="reveal"><strong>Single source of truth CMDB</strong> &mdash; Discovery-fed, ownership-assigned</li>
+            <li class="reveal"><strong>Centre of Excellence</strong> &mdash; shared platform team, community of practice</li>
+            <li class="reveal"><strong>Aligned patch cadence</strong> &mdash; 72-hour security response SLA</li>
+            <li class="reveal"><strong>2-week integration delivery</strong> via IntegrationHub spoke library</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer reveal"></footer>
+  </section>
+
+  <!-- SLIDE 5: DIAGRAM -->
+  <section class="slide slide--diagram" data-source="Solution architecture, April 2026" data-exhibit="1">
+    <div class="slide__header reveal">
+      <p class="slide__label">Target Architecture</p>
+      <h2 class="slide__action-title">A single governed instance routes all service domains through a unified data layer and integration fabric</h2>
+    </div>
+    <div class="slide__body">
+      <p class="slide__exhibit reveal">Exhibit 1 &middot; Target State Architecture</p>
+      <div class="mermaid-wrap reveal">
+        <div class="zoom-controls">
+          <button onclick="zoomDiagram(this,1.2)" title="Zoom in">+</button>
+          <button onclick="zoomDiagram(this,0.8)" title="Zoom out">&minus;</button>
+          <button onclick="resetZoom(this)" title="Reset">&#8634;</button>
+          <button onclick="openDiagramFullscreen(this)" title="Open full size">&#x26F6;</button>
+        </div>
+        <pre class="mermaid">
+graph TD
+  Users["Users &amp; Staff"] --> Portal["Employee Center Portal"]
+  Portal --> SNOW["ServiceNow<br/>Single Instance"]
+  SNOW --> ITSM["ITSM"]
+  SNOW --> ITOM["ITOM / Discovery"]
+  SNOW --> HR["HR Service Delivery"]
+  SNOW --> SecOps["SecOps"]
+  ITSM & ITOM & HR & SecOps --> CMDB["Unified CMDB"]
+  SNOW --> MID["MID Server"]
+  MID --> SAP["SAP ERP"]
+  MID --> AD["Active Directory"]
+  MID --> Legacy["Legacy Systems"]
+
+  classDef primary fill:#00407a12,stroke:#00407a,stroke-width:2px
+  classDef secondary fill:#edf0f7,stroke:#c5cfe0,stroke-width:1.5px
+  classDef storage fill:#dcfce7,stroke:#16a34a,stroke-width:1.5px
+  classDef external fill:#edf0f7,stroke:#4d6680,stroke-width:1px
+
+  class Users,Portal primary
+  class SNOW,MID primary
+  class ITSM,ITOM,HR,SecOps secondary
+  class CMDB storage
+  class SAP,AD,Legacy external
+        </pre>
+      </div>
+    </div>
+    <footer class="slide__footer reveal"></footer>
+  </section>
+
+  <!-- SLIDE 6: SCORECARD -->
+  <section class="slide slide--scorecard" data-source="Business case model, April 2026">
+    <div class="slide__header reveal">
+      <p class="slide__label">Business Case</p>
+      <h2 class="slide__action-title">Consolidation delivers &dollar;2.4M in annual savings and a 65&percnt; reduction in mean time to resolve incidents</h2>
+    </div>
+    <div class="slide__body">
+      <div class="kpi-consulting reveal">
+
+        <!-- LEFT: Featured financial outcome with cost breakdown -->
+        <div class="kpi-c kpi-c--featured">
+          <div class="kpi-c__eyebrow">Financial Return</div>
+          <div class="kpi-c__headline">$2.4M</div>
+          <div class="kpi-c__sublabel">Annual savings post-consolidation</div>
+
+          <div class="kpi-c__sep"></div>
+
+          <div class="kpi-c__waterfall">
+            <div class="kpi-c__wf-row">
+              <div class="kpi-c__wf-label">Licence consolidation</div>
+              <div class="kpi-c__wf-val">$1.1M</div>
+              <div class="kpi-c__wf-track"><div class="kpi-c__wf-fill" style="width:46%"></div></div>
+            </div>
+            <div class="kpi-c__wf-row">
+              <div class="kpi-c__wf-label">Infrastructure reduction</div>
+              <div class="kpi-c__wf-val">$0.8M</div>
+              <div class="kpi-c__wf-track"><div class="kpi-c__wf-fill" style="width:33%"></div></div>
+            </div>
+            <div class="kpi-c__wf-row">
+              <div class="kpi-c__wf-label">Operations efficiency</div>
+              <div class="kpi-c__wf-val">$0.5M</div>
+              <div class="kpi-c__wf-track"><div class="kpi-c__wf-fill" style="width:21%"></div></div>
+            </div>
+          </div>
+
+          <div class="kpi-c__badge-row">
+            <span class="rag-badge rag--green">Business case validated</span>
+          </div>
+        </div>
+
+        <!-- RIGHT: Operational KPIs stacked, each showing baseline → target -->
+        <div class="kpi-c__stack">
+
+          <!-- MTTR -->
+          <div class="kpi-c kpi-c--operational">
+            <div class="kpi-c__eyebrow">Incident Performance</div>
+            <div class="kpi-c__inline">
+              <div class="kpi-c__val">65%</div>
+              <div class="kpi-c__context">
+                <div class="kpi-c__metric-name">MTTR Reduction</div>
+                <div class="kpi-c__compare">
+                  <span class="kpi-c__from">Baseline 4.2h</span>
+                  <svg class="kpi-c__arrow" width="14" height="8" viewBox="0 0 14 8" fill="none" aria-hidden="true">
+                    <path d="M0 4h12M8 1l4 3-4 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <span class="kpi-c__to">Target 1.5h</span>
+                </div>
+              </div>
+              <span class="rag-badge rag--green">Confirmed</span>
+            </div>
+          </div>
+
+          <!-- Uptime SLA -->
+          <div class="kpi-c kpi-c--operational">
+            <div class="kpi-c__eyebrow">Platform Availability</div>
+            <div class="kpi-c__inline">
+              <div class="kpi-c__val kpi-c__val--secondary">99.9%</div>
+              <div class="kpi-c__context">
+                <div class="kpi-c__metric-name">Uptime SLA</div>
+                <div class="kpi-c__compare">
+                  <span class="kpi-c__from">Current 99.2%</span>
+                  <svg class="kpi-c__arrow" width="14" height="8" viewBox="0 0 14 8" fill="none" aria-hidden="true">
+                    <path d="M0 4h12M8 1l4 3-4 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <span class="kpi-c__to">Target 99.9%</span>
+                </div>
+              </div>
+              <span class="rag-badge rag--amber">Committed</span>
+            </div>
+          </div>
+
+          <!-- Payback Period -->
+          <div class="kpi-c kpi-c--operational">
+            <div class="kpi-c__eyebrow">Return Timeline</div>
+            <div class="kpi-c__inline">
+              <div class="kpi-c__val kpi-c__val--neutral">8mo</div>
+              <div class="kpi-c__context">
+                <div class="kpi-c__metric-name">Investment Payback</div>
+                <div class="kpi-c__timeline">
+                  <div class="kpi-c__tl-track">
+                    <div class="kpi-c__tl-fill" style="width:62%"></div>
+                    <div class="kpi-c__tl-marker" style="left:62%"></div>
+                  </div>
+                  <div class="kpi-c__tl-labels">
+                    <span>Go-live</span>
+                    <span>8 months</span>
+                    <span>Year 1</span>
+                  </div>
+                </div>
+              </div>
+              <span class="rag-badge rag--amber">Projected</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer reveal"></footer>
+  </section>
+
+  <!-- SLIDE 7: TABLE -->
+  <section class="slide slide--table" data-source="Migration assessment, April 2026">
+    <div class="slide__header reveal">
+      <p class="slide__label">Migration Plan</p>
+      <h2 class="slide__action-title">A five-phase migration over 14 weeks sequenced by risk minimises disruption to live services</h2>
+    </div>
+    <div class="slide__body">
+      <div class="table-wrap reveal">
+        <div class="table-scroll">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Phase</th>
+                <th>Scope</th>
+                <th>Timeline</th>
+                <th>Dependencies</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>1. Discovery &amp; Design</strong></td>
+                <td>Catalogue all configurations, data models, integrations across 5 instances</td>
+                <td class="col-num">Wk 1&ndash;2</td>
+                <td>Instance access, stakeholder interviews</td>
+                <td><span class="rag-badge rag--green">On Track</span></td>
+              </tr>
+              <tr>
+                <td><strong>2. Target Build</strong></td>
+                <td>Provision consolidated instance, deploy domain separation, configure CMDB</td>
+                <td class="col-num">Wk 3&ndash;6</td>
+                <td>Infrastructure provisioning, licence agreement</td>
+                <td><span class="rag-badge rag--amber">Pending</span></td>
+              </tr>
+              <tr>
+                <td><strong>3. Data Migration</strong></td>
+                <td>Migrate CMDB, user records, SLAs, and catalogue items; validate parity</td>
+                <td class="col-num">Wk 7&ndash;9</td>
+                <td>Target build sign-off</td>
+                <td><span class="rag-badge rag--amber">Pending</span></td>
+              </tr>
+              <tr>
+                <td><strong>4. Integration Cutover</strong></td>
+                <td>Redirect MID Server, retire 3rd-party middleware, rewire SAP/AD spokes</td>
+                <td class="col-num">Wk 10&ndash;12</td>
+                <td>Data migration UAT pass</td>
+                <td><span class="rag-badge rag--amber">Pending</span></td>
+              </tr>
+              <tr>
+                <td><strong>5. Hypercare &amp; Decommission</strong></td>
+                <td>Run consolidated and legacy in parallel, triage defects, decommission legacy</td>
+                <td class="col-num">Wk 13&ndash;14</td>
+                <td>Cutover sign-off</td>
+                <td><span class="rag-badge rag--red">Not Started</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer reveal"></footer>
+  </section>
+
+  <!-- SLIDE 8: ESTIMATION -->
+  <section class="slide slide--estimation" data-source="Work breakdown structure v1.2, April 2026">
+    <div class="slide__header reveal">
+      <p class="slide__label">Effort Estimation</p>
+      <h2 class="slide__action-title">The consolidation requires 87 person-days across four specialist profiles, concentrated in the Build phase</h2>
+    </div>
+    <div class="slide__body">
+      <div class="slide__kpis reveal">
+        <div class="slide__kpi slide__kpi--primary">
+          <div class="slide__kpi-cat">Total Effort</div>
+          <div class="slide__kpi-val-row">
+            <div class="slide__kpi-val" style="color:var(--accent);">87<span style="font-size:0.38em;letter-spacing:0;margin-left:4px;font-weight:500;">days</span></div>
+          </div>
+          <div class="slide__kpi-sep"></div>
+          <div class="slide__kpi-label">Person-Days</div>
+        </div>
+        <div class="slide__kpi slide__kpi--secondary">
+          <div class="slide__kpi-cat">Phases</div>
+          <div class="slide__kpi-val-row">
+            <div class="slide__kpi-val" style="color:var(--accent-2,#e8820c);">5</div>
+          </div>
+          <div class="slide__kpi-sep"></div>
+          <div class="slide__kpi-label">Active Phases</div>
+        </div>
+        <div class="slide__kpi slide__kpi--neutral">
+          <div class="slide__kpi-cat">Profiles</div>
+          <div class="slide__kpi-val-row">
+            <div class="slide__kpi-val">4</div>
+          </div>
+          <div class="slide__kpi-sep"></div>
+          <div class="slide__kpi-label">Specialist Roles</div>
+        </div>
+      </div>
+      <div class="table-wrap reveal">
+        <div class="table-scroll">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Phase</th>
+                <th>Architect</th>
+                <th>Tech Lead</th>
+                <th>Developer</th>
+                <th>PM</th>
+                <th class="est-total-col">Total</th>
+                <th>Risk</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Discovery &amp; Design</td><td class="col-num">5d</td><td class="col-num">3d</td><td class="col-num">0d</td><td class="col-num">4d</td><td class="col-num est-total-col">12d</td><td><span class="rag-badge rag--green">Low</span></td></tr>
+              <tr><td>Target Build</td><td class="col-num">4d</td><td class="col-num">8d</td><td class="col-num">12d</td><td class="col-num">2d</td><td class="col-num est-total-col">26d</td><td><span class="rag-badge rag--amber">Medium</span></td></tr>
+              <tr><td>Data Migration</td><td class="col-num">2d</td><td class="col-num">6d</td><td class="col-num">10d</td><td class="col-num">2d</td><td class="col-num est-total-col">20d</td><td><span class="rag-badge rag--amber">Medium</span></td></tr>
+              <tr><td>Integration Cutover</td><td class="col-num">2d</td><td class="col-num">5d</td><td class="col-num">8d</td><td class="col-num">2d</td><td class="col-num est-total-col">17d</td><td><span class="rag-badge rag--red">High</span></td></tr>
+              <tr><td>Hypercare</td><td class="col-num">1d</td><td class="col-num">3d</td><td class="col-num">4d</td><td class="col-num">4d</td><td class="col-num est-total-col">12d</td><td><span class="rag-badge rag--green">Low</span></td></tr>
+            </tbody>
+            <tfoot>
+              <tr class="est-footer">
+                <td>Total</td><td class="col-num">14d</td><td class="col-num">25d</td><td class="col-num">34d</td><td class="col-num">14d</td><td class="col-num est-total-col">87d</td><td></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer reveal"></footer>
+  </section>
+
+  <!-- SLIDE 9: CODE -->
+  <section class="slide slide--code" data-source="IntegrationHub documentation, ServiceNow docs">
+    <div class="slide__header reveal">
+      <p class="slide__label">Integration Pattern</p>
+      <h2 class="slide__action-title">IntegrationHub action steps eliminate custom middleware and reduce integration lead time from 12 weeks to under 2</h2>
+    </div>
+    <div class="slide__body">
+      <div class="slide__code-block reveal" style="margin-top:clamp(8px,1.5vh,16px);">
+        <span class="slide__code-filename">integration-hub-action.js</span>
+        <pre><code><span class="cm">// IntegrationHub spoke — SAP incident sync</span>
+<span class="kw">var</span> action = <span class="hl">sn_ih.ActionWrapper</span>.getAction(<span class="st">'sap_create_notification'</span>);
+
+action.setInput(<span class="st">'incident_sys_id'</span>, current.sys_id);
+action.setInput(<span class="st">'priority'</span>,        current.priority.getDisplayValue());
+action.setInput(<span class="st">'assignment_group'</span>, current.assignment_group.getDisplayValue());
+
+<span class="kw">var</span> result = action.execute();
+
+<span class="kw">if</span> (result.getOutput(<span class="st">'status'</span>) === <span class="st">'success'</span>) {
+  current.work_notes = <span class="st">'SAP notification raised: '</span>
+    + result.getOutput(<span class="st">'notification_id'</span>);
+}</code></pre>
+      </div>
+    </div>
+    <footer class="slide__footer reveal"></footer>
+  </section>
+
+  <!-- SLIDE 10: QUOTE -->
+  <section class="slide slide--quote slide--no-header slide--no-footer">
+    <div class="slide__body">
+      <div class="slide__quote-mark reveal">&ldquo;</div>
+      <blockquote class="reveal">
+        The best architecture is the simplest one that fully meets the business need &mdash; nothing more.
+      </blockquote>
+      <cite class="reveal">&middot; ServiceNow Architecture Principle</cite>
+    </div>
+  </section>
+
+  <!-- SLIDE 11: MATRIX -->
+  <section class="slide slide--matrix" data-source="Initiative assessment workshop, April 2026">
+    <div class="slide__header reveal">
+      <p class="slide__label">Strategic Prioritisation</p>
+      <h2 class="slide__action-title">CMDB refresh and the self-service portal deliver the highest business return for the least implementation effort</h2>
+    </div>
+    <div class="slide__body">
+      <div class="matrix reveal">
+        <div class="matrix__y-axis">
+          <span class="matrix__axis-end">High</span>
+          <span class="matrix__axis-label matrix__axis-label--y">Business Impact</span>
+          <span class="matrix__axis-end">Low</span>
+        </div>
+        <div class="matrix__main">
+          <div class="matrix__grid">
+            <div class="matrix__quadrant matrix__quadrant--tl">
+              <span class="matrix__q-label">Strategic Bets</span>
+              <ul class="matrix__items">
+                <li class="matrix__item">AI-assisted triage</li>
+                <li class="matrix__item">Predictive ITOM</li>
+                <li class="matrix__item">SecOps automation</li>
+              </ul>
+            </div>
+            <div class="matrix__quadrant matrix__quadrant--tr">
+              <span class="matrix__q-label matrix__q-label--highlight">Quick Wins &#9733;</span>
+              <ul class="matrix__items">
+                <li class="matrix__item matrix__item--highlight">CMDB refresh</li>
+                <li class="matrix__item matrix__item--highlight">Self-service portal</li>
+                <li class="matrix__item matrix__item--highlight">Unified catalogue</li>
+                <li class="matrix__item">Knowledge base</li>
+              </ul>
+            </div>
+            <div class="matrix__quadrant matrix__quadrant--bl">
+              <span class="matrix__q-label">Deprioritise</span>
+              <ul class="matrix__items">
+                <li class="matrix__item">Custom reporting UI</li>
+                <li class="matrix__item">Legacy SOAP adapters</li>
+              </ul>
+            </div>
+            <div class="matrix__quadrant matrix__quadrant--br">
+              <span class="matrix__q-label">Fill-ins</span>
+              <ul class="matrix__items">
+                <li class="matrix__item">Email notification overhaul</li>
+                <li class="matrix__item">SLA dashboard refresh</li>
+                <li class="matrix__item">Approval workflow cleanup</li>
+              </ul>
+            </div>
+          </div>
+          <div class="matrix__x-axis">
+            <span class="matrix__axis-end">Low</span>
+            <span class="matrix__axis-label">Implementation Effort</span>
+            <span class="matrix__axis-end">High</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer reveal"></footer>
+  </section>
+
+  <!-- SLIDE 12: COMPARISON -->
+  <section class="slide slide--comparison" data-source="Vendor evaluation, April 2026">
+    <div class="slide__header reveal">
+      <p class="slide__label">Approach Evaluation</p>
+      <h2 class="slide__action-title">Phased consolidation (Approach B) provides the optimal balance of risk, cost efficiency, and reversibility</h2>
+    </div>
+    <div class="slide__body">
+      <div class="table-wrap reveal">
+        <div class="table-scroll">
+          <table class="data-table comparison-table">
+            <thead>
+              <tr>
+                <th>Evaluation Criteria</th>
+                <th>A &mdash; Big Bang</th>
+                <th class="col--winner">B &mdash; Phased <span class="col--winner-marker">&#10003; Recommended</span></th>
+                <th>C &mdash; Lift &amp; Shift</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Business risk</td>
+                <td><span class="harvey-ball hb-25" title="Poor"></span></td>
+                <td class="col--winner"><span class="harvey-ball hb-100" title="Excellent"></span></td>
+                <td><span class="harvey-ball hb-50" title="Fair"></span></td>
+              </tr>
+              <tr>
+                <td>Cost efficiency</td>
+                <td><span class="harvey-ball hb-50" title="Fair"></span></td>
+                <td class="col--winner"><span class="harvey-ball hb-100" title="Excellent"></span></td>
+                <td><span class="harvey-ball hb-25" title="Poor"></span></td>
+              </tr>
+              <tr>
+                <td>Speed to value</td>
+                <td><span class="harvey-ball hb-50" title="Fair"></span></td>
+                <td class="col--winner"><span class="harvey-ball hb-75" title="Good"></span></td>
+                <td><span class="harvey-ball hb-100" title="Excellent"></span></td>
+              </tr>
+              <tr>
+                <td>CMDB data quality</td>
+                <td><span class="harvey-ball hb-25" title="Poor"></span></td>
+                <td class="col--winner"><span class="harvey-ball hb-100" title="Excellent"></span></td>
+                <td><span class="harvey-ball hb-50" title="Fair"></span></td>
+              </tr>
+              <tr>
+                <td>Reversibility</td>
+                <td><span class="harvey-ball hb-0"  title="None"></span></td>
+                <td class="col--winner"><span class="harvey-ball hb-75" title="Good"></span></td>
+                <td><span class="harvey-ball hb-50" title="Fair"></span></td>
+              </tr>
+              <tr>
+                <td>Staff disruption</td>
+                <td><span class="harvey-ball hb-25" title="Poor"></span></td>
+                <td class="col--winner"><span class="harvey-ball hb-75" title="Good"></span></td>
+                <td><span class="harvey-ball hb-50" title="Fair"></span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div style="display:flex;gap:clamp(12px,2vw,24px);margin-top:clamp(10px,1.5vh,16px);flex-wrap:wrap;">
+        <span style="font-family:var(--font-mono);font-size:10px;color:var(--text-dim);display:flex;align-items:center;gap:6px;"><span class="harvey-ball hb-100" style="flex-shrink:0;"></span>Excellent</span>
+        <span style="font-family:var(--font-mono);font-size:10px;color:var(--text-dim);display:flex;align-items:center;gap:6px;"><span class="harvey-ball hb-75" style="flex-shrink:0;"></span>Good</span>
+        <span style="font-family:var(--font-mono);font-size:10px;color:var(--text-dim);display:flex;align-items:center;gap:6px;"><span class="harvey-ball hb-50" style="flex-shrink:0;"></span>Fair</span>
+        <span style="font-family:var(--font-mono);font-size:10px;color:var(--text-dim);display:flex;align-items:center;gap:6px;"><span class="harvey-ball hb-25" style="flex-shrink:0;"></span>Poor</span>
+        <span style="font-family:var(--font-mono);font-size:10px;color:var(--text-dim);display:flex;align-items:center;gap:6px;"><span class="harvey-ball hb-0" style="flex-shrink:0;"></span>None</span>
+      </div>
+    </div>
+    <footer class="slide__footer reveal"></footer>
+  </section>
+
+  <!-- SLIDE 13: TIMELINE -->
+  <section class="slide slide--timeline" data-source="Project plan v1.0, April 2026">
+    <div class="slide__header reveal">
+      <p class="slide__label">Delivery Timeline</p>
+      <h2 class="slide__action-title">Full consolidation is achievable within one quarter with clear phase gates and no extended parallel-run risk</h2>
+    </div>
+    <div class="slide__body">
+      <div class="timeline reveal">
+        <div class="timeline__track"></div>
+        <div class="timeline__item timeline__item--above">
+          <div class="timeline__content">
+            <div class="timeline__date">Week 1&ndash;2</div>
+            <div class="timeline__title">Discovery &amp; Design</div>
+            <div class="timeline__desc">Config catalogue, data model mapping, integration inventory across 5 instances</div>
+          </div>
+          <div class="timeline__dot"></div>
+        </div>
+        <div class="timeline__item timeline__item--below">
+          <div class="timeline__dot"></div>
+          <div class="timeline__content">
+            <div class="timeline__date">Week 3&ndash;6</div>
+            <div class="timeline__title">Target Build</div>
+            <div class="timeline__desc">Provision consolidated instance, domain separation, CMDB configuration</div>
+          </div>
+        </div>
+        <div class="timeline__item timeline__item--above">
+          <div class="timeline__content">
+            <div class="timeline__date">Week 7&ndash;9</div>
+            <div class="timeline__title">Data Migration</div>
+            <div class="timeline__desc">CI records, user data, SLAs, catalogue items — UAT parity validation</div>
+          </div>
+          <div class="timeline__dot"></div>
+        </div>
+        <div class="timeline__item timeline__item--below">
+          <div class="timeline__dot"></div>
+          <div class="timeline__content">
+            <div class="timeline__date">Week 10&ndash;12</div>
+            <div class="timeline__title">Integration Cutover</div>
+            <div class="timeline__desc">MID Server redirect, spoke rewiring, middleware retirement, smoke tests</div>
+          </div>
+        </div>
+        <div class="timeline__item timeline__item--above">
+          <div class="timeline__content">
+            <div class="timeline__date">Week 13&ndash;14</div>
+            <div class="timeline__title">Hypercare &amp; Decommission</div>
+            <div class="timeline__desc">Parallel run, defect triage, legacy instance decommission sign-off</div>
+          </div>
+          <div class="timeline__dot"></div>
+        </div>
+      </div>
+    </div>
+    <footer class="slide__footer reveal"></footer>
+  </section>
+
+  <!-- SLIDE 14: FULL-BLEED -->
+  <section class="slide slide--bleed slide--no-header slide--no-footer">
+    <div class="slide__bg slide__bg--gradient"></div>
+    <div class="slide__scrim"></div>
+    <div class="slide__content">
+      <p class="slide__label reveal">Recommended Next Steps</p>
+      <h2 class="slide__action-title reveal">Approve the business case and mobilise the consolidation team by end of April to hit the Q3 go-live target</h2>
+      <p class="slide__subtitle reveal" style="margin-top:16px;">Phased approach &middot; 14-week delivery &middot; $2.4M annual savings</p>
+    </div>
+  </section>
+
+</div><!-- /deck -->
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+
+  const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    look: 'classic',
+    themeVariables: {
+      primaryColor:         isDark ? '#172440' : '#edf0f7',
+      primaryBorderColor:   isDark ? '#3b82f6' : '#00407a',
+      primaryTextColor:     isDark ? '#e2eaf6' : '#0a1628',
+      secondaryColor:       isDark ? '#0e1e38' : '#e8f0ff',
+      secondaryBorderColor: isDark ? '#60a5fa' : '#2563eb',
+      secondaryTextColor:   isDark ? '#e2eaf6' : '#0a1628',
+      tertiaryColor:        isDark ? '#0f2820' : '#f0fdf4',
+      tertiaryBorderColor:  isDark ? '#4ade80' : '#16a34a',
+      tertiaryTextColor:    isDark ? '#e2eaf6' : '#0a1628',
+      lineColor:            isDark ? '#5a7aa0' : '#4d6680',
+      fontSize: '18px',
+      fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif",
+      noteBkgColor:         isDark ? '#172440' : '#edf0f7',
+      noteTextColor:        isDark ? '#e2eaf6' : '#0a1628',
+      noteBorderColor:      isDark ? '#3b82f6' : '#00407a',
+    }
+  });
+
+  function autoFit() {
+    document.querySelectorAll('.mermaid svg').forEach(function(svg) {
+      svg.removeAttribute('height');
+      svg.style.width = '100%';
+      svg.style.maxWidth = '100%';
+      svg.style.height = 'auto';
+      svg.parentElement.style.width = '100%';
+    });
+    document.querySelectorAll('.slide__kpi-val').forEach(function(el) {
+      if (el.scrollWidth > el.clientWidth) {
+        var s = el.clientWidth / el.scrollWidth;
+        el.style.transform = 'scale(' + s + ')';
+        el.style.transformOrigin = 'left top';
+      }
+    });
+  }
+
+  mermaid.run().then(function() {
+    autoFit();
+    new SlideEngine();
+  });
+</script>
+
+<script>
+  // Auto-inject source footnotes from data-source attribute
+  document.querySelectorAll('.slide[data-source]').forEach(function(slide) {
+    var footer = slide.querySelector('.slide__footer');
+    if (!footer) return;
+    var s = document.createElement('span');
+    s.className = 'slide__source';
+    s.textContent = 'Source: ' + slide.getAttribute('data-source');
+    footer.insertBefore(s, footer.firstChild);
+  });
+
+  // Mermaid zoom + pan + click-to-expand
+  var INITIAL_ZOOM = 1;
+  function zoomDiagram(b, f) { var w = b.closest('.mermaid-wrap'); var t = w.querySelector('.mermaid'); var c = parseFloat(t.dataset.zoom || INITIAL_ZOOM); var n = Math.min(Math.max(c * f, 0.5), 5); t.dataset.zoom = n; t.style.zoom = n; }
+  function resetZoom(b) { var w = b.closest('.mermaid-wrap'); var t = w.querySelector('.mermaid'); t.dataset.zoom = INITIAL_ZOOM; t.style.zoom = INITIAL_ZOOM; }
+  function openDiagramFullscreen(b) { openMermaidInNewTab(b.closest('.mermaid-wrap')); }
+  function openMermaidInNewTab(w) { var svg = w.querySelector('.mermaid svg'); if (!svg) return; var clone = svg.cloneNode(true); clone.style.zoom = ''; clone.style.transform = ''; var styles = getComputedStyle(document.documentElement); var bg = styles.getPropertyValue('--bg').trim() || '#ffffff'; var html = '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Diagram</title><style>body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;background:' + bg + ';padding:40px;box-sizing:border-box}svg{max-width:100%;max-height:90vh;height:auto}</style></head><body>' + clone.outerHTML + '</body></html>'; window.open(URL.createObjectURL(new Blob([html], { type: 'text/html' })), '_blank'); }
+  document.querySelectorAll('.mermaid-wrap').forEach(function(w) {
+    w.addEventListener('wheel', function(e) { if (!e.ctrlKey && !e.metaKey) return; e.preventDefault(); var t = w.querySelector('.mermaid'); var c = parseFloat(t.dataset.zoom || INITIAL_ZOOM); var f = e.deltaY < 0 ? 1.1 : 0.9; var n = Math.min(Math.max(c * f, 0.5), 5); t.dataset.zoom = n; t.style.zoom = n; }, { passive: false });
+    var sX, sY, sL, sT, sTime, didPan;
+    w.addEventListener('mousedown', function(e) { if (e.target.closest('.zoom-controls')) return; w.classList.add('is-panning'); sX = e.clientX; sY = e.clientY; sL = w.scrollLeft; sT = w.scrollTop; sTime = Date.now(); didPan = false; });
+    window.addEventListener('mousemove', function(e) { if (!w.classList.contains('is-panning')) return; var dx = e.clientX - sX, dy = e.clientY - sY; if (Math.abs(dx) > 5 || Math.abs(dy) > 5) didPan = true; w.scrollLeft = sL - dx; w.scrollTop = sT - dy; });
+    window.addEventListener('mouseup', function() { if (!w.classList.contains('is-panning')) return; w.classList.remove('is-panning'); if (!didPan && Date.now() - sTime < 300) openMermaidInNewTab(w); });
+  });
+
+  // SlideEngine
+  function SlideEngine() {
+    this.deck = document.querySelector('.deck');
+    this.slides = [].slice.call(document.querySelectorAll('.slide'));
+    this.current = 0;
+    this.total = this.slides.length;
+    this.buildChrome();
+    this.bindEvents();
+    this.observe();
+    this.update();
+  }
+  SlideEngine.prototype.buildChrome = function() {
+    var bar = document.createElement('div'); bar.className = 'deck-progress'; document.body.appendChild(bar); this.bar = bar;
+    var dots = document.createElement('div'); dots.className = 'deck-dots'; var self = this;
+    this.slides.forEach(function(_, i) { var d = document.createElement('button'); d.className = 'deck-dot'; d.title = 'Slide ' + (i + 1); d.onclick = function() { self.goTo(i); }; dots.appendChild(d); });
+    document.body.appendChild(dots); this.dots = [].slice.call(dots.children);
+    var ctr = document.createElement('div'); ctr.className = 'deck-counter'; ctr.setAttribute('aria-live', 'polite'); ctr.setAttribute('aria-atomic', 'true'); document.body.appendChild(ctr); this.counter = ctr;
+    var hints = document.createElement('div'); hints.className = 'deck-hints'; hints.textContent = '← ↑ → ↓ or scroll to navigate · F to fullscreen'; document.body.appendChild(hints); this.hints = hints;
+    this.hintTimer = setTimeout(function() { hints.classList.add('faded'); }, 4000);
+  };
+  SlideEngine.prototype.bindEvents = function() {
+    var self = this;
+    document.addEventListener('keydown', function(e) {
+      if (e.target.closest('.mermaid-wrap,.table-scroll,.code-scroll,input,textarea,[contenteditable]')) return;
+      if (['ArrowDown', 'ArrowRight', ' ', 'PageDown'].indexOf(e.key) > -1) { e.preventDefault(); self.next(); }
+      else if (['ArrowUp', 'ArrowLeft', 'PageUp'].indexOf(e.key) > -1) { e.preventDefault(); self.prev(); }
+      else if (e.key === 'Home') { e.preventDefault(); self.goTo(0); }
+      else if (e.key === 'End') { e.preventDefault(); self.goTo(self.total - 1); }
+      else if (e.key === 'f' || e.key === 'F') { self.toggleFullscreen(); }
+      self.fadeHints();
+    });
+    var tY;
+    this.deck.addEventListener('touchstart', function(e) { tY = e.touches[0].clientY; }, { passive: true });
+    this.deck.addEventListener('touchend', function(e) { var dy = tY - e.changedTouches[0].clientY; if (Math.abs(dy) > 50) { dy > 0 ? self.next() : self.prev(); } });
+  };
+  SlideEngine.prototype.observe = function() {
+    var self = this;
+    var obs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) { entry.target.classList.add('visible'); self.current = self.slides.indexOf(entry.target); self.update(); }
+      });
+    }, { threshold: 0.5 });
+    this.slides.forEach(function(s) { obs.observe(s); });
+  };
+  SlideEngine.prototype.goTo = function(i) { this.slides[Math.max(0, Math.min(i, this.total - 1))].scrollIntoView({ behavior: 'smooth' }); };
+  SlideEngine.prototype.next = function() { if (this.current < this.total - 1) this.goTo(this.current + 1); };
+  SlideEngine.prototype.prev = function() { if (this.current > 0) this.goTo(this.current - 1); };
+  SlideEngine.prototype.update = function() {
+    this.bar.style.width = ((this.current + 1) / this.total * 100) + '%';
+    var c = this.current; this.dots.forEach(function(d, i) { d.classList.toggle('active', i === c); });
+    this.counter.textContent = (this.current + 1) + ' / ' + this.total;
+  };
+  SlideEngine.prototype.fadeHints = function() { clearTimeout(this.hintTimer); this.hints.classList.add('faded'); };
+  SlideEngine.prototype.toggleFullscreen = function() {
+    if (!document.fullscreenElement) {
+      (document.documentElement.requestFullscreen || document.documentElement.webkitRequestFullscreen || document.documentElement.mozRequestFullScreen).call(document.documentElement);
+    } else {
+      (document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen).call(document);
+    }
+  };
+</script>
+
+<!-- ══════════════════════════════════════════════════════════════════════
+  ThemeSwitcher — floating design-system switcher, bottom-left corner.
+  10 presets: Consulting Blue + Consulting Night first (consulting defaults),
+  then 8 editorial/design presets from slide-deck.html.
+  Always include this script in generated consulting decks.
+══════════════════════════════════════════════════════════════════════ -->
+<script>
+(function(){
+  var PRESETS=[
+    {id:'consulting-blue',name:'Consulting Blue',dark:false,
+     bg:'#f4f7fc',accent:'#00407a',
+     fonts:'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap',
+     vars:{'--font-body':"'Plus Jakarta Sans',system-ui,sans-serif",'--font-mono':"'IBM Plex Mono','SF Mono',monospace",
+      '--bg':'#f4f7fc','--surface':'#fafcff','--surface2':'#edf0f7','--surface-elevated':'#fafcff',
+      '--border':'rgba(0,53,120,0.09)','--border-bright':'rgba(0,53,120,0.18)',
+      '--text':'#0a1628','--text-dim':'#4d6680',
+      '--accent':'#00407a','--accent-dim':'rgba(0,64,122,0.07)','--accent-2':'#e8820c',
+      '--code-bg':'#0a1628','--code-text':'#c2d8f0'}},
+    {id:'consulting-night',name:'Consulting Night',dark:true,
+     bg:'#0b1220',accent:'#3b82f6',
+     fonts:'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap',
+     vars:{'--font-body':"'Plus Jakarta Sans',system-ui,sans-serif",'--font-mono':"'IBM Plex Mono','SF Mono',monospace",
+      '--bg':'#0b1220','--surface':'#111d30','--surface2':'#172440','--surface-elevated':'#1e2d4e',
+      '--border':'rgba(59,130,246,0.10)','--border-bright':'rgba(59,130,246,0.20)',
+      '--text':'#e2eaf6','--text-dim':'#5a7aa0',
+      '--accent':'#3b82f6','--accent-dim':'rgba(59,130,246,0.10)','--accent-2':'#f59e0b',
+      '--code-bg':'#060d18','--code-text':'#c2d8f0'}},
+    {id:'midnight-editorial',name:'Midnight Editorial',dark:true,
+     bg:'#0f1729',accent:'#d4a73a',
+     fonts:'https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;600&display=swap',
+     vars:{'--font-body':"'Instrument Serif',Georgia,serif",'--font-mono':"'JetBrains Mono','SF Mono',monospace",
+      '--bg':'#0f1729','--surface':'#162040','--surface2':'#1d2b52','--surface-elevated':'#243362',
+      '--border':'rgba(200,180,140,0.08)','--border-bright':'rgba(200,180,140,0.16)',
+      '--text':'#e8e4d8','--text-dim':'#9a9484',
+      '--accent':'#d4a73a','--accent-dim':'rgba(212,167,58,0.1)','--accent-2':'#e8c4a0',
+      '--code-bg':'#0a0f1e','--code-text':'#d4d0c4'}},
+    {id:'warm-signal',name:'Warm Signal',dark:false,
+     bg:'#faf6f0',accent:'#c2410c',
+     fonts:'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Azeret+Mono:wght@400;600&display=swap',
+     vars:{'--font-body':"'Plus Jakarta Sans',system-ui,sans-serif",'--font-mono':"'Azeret Mono','SF Mono',monospace",
+      '--bg':'#faf6f0','--surface':'#ffffff','--surface2':'#f5ece0','--surface-elevated':'#fffdf5',
+      '--border':'rgba(60,40,20,0.08)','--border-bright':'rgba(60,40,20,0.16)',
+      '--text':'#2c2a25','--text-dim':'#7c756a',
+      '--accent':'#c2410c','--accent-dim':'rgba(194,65,12,0.08)','--accent-2':'#92400e',
+      '--code-bg':'#2c2520','--code-text':'#f5ece0'}},
+    {id:'terminal-mono',name:'Terminal Mono',dark:true,
+     bg:'#0a0e14',accent:'#50fa7b',
+     fonts:'https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;600;700&display=swap',
+     vars:{'--font-body':"'Geist Mono','SF Mono',Consolas,monospace",'--font-mono':"'Geist Mono','SF Mono',Consolas,monospace",
+      '--bg':'#0a0e14','--surface':'#12161e','--surface2':'#1a1f2a','--surface-elevated':'#222836',
+      '--border':'rgba(80,250,123,0.06)','--border-bright':'rgba(80,250,123,0.12)',
+      '--text':'#c8d6e5','--text-dim':'#5a6a7a',
+      '--accent':'#50fa7b','--accent-dim':'rgba(80,250,123,0.08)','--accent-2':'#8be9fd',
+      '--code-bg':'#060a10','--code-text':'#c8d6e5'}},
+    {id:'swiss-clean',name:'Swiss Clean',dark:false,
+     bg:'#ffffff',accent:'#0055ff',
+     fonts:'https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap',
+     vars:{'--font-body':"'DM Sans',system-ui,sans-serif",'--font-mono':"'Fira Code','SF Mono',monospace",
+      '--bg':'#ffffff','--surface':'#f8f8f8','--surface2':'#f0f0f0','--surface-elevated':'#ffffff',
+      '--border':'rgba(0,0,0,0.08)','--border-bright':'rgba(0,0,0,0.16)',
+      '--text':'#111111','--text-dim':'#666666',
+      '--accent':'#0055ff','--accent-dim':'rgba(0,85,255,0.06)','--accent-2':'#0099cc',
+      '--code-bg':'#18181b','--code-text':'#e4e4e7'}},
+    {id:'velvet-editorial',name:'Velvet Editorial',dark:true,
+     bg:'#160810',accent:'#c9956c',
+     fonts:'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Fira+Code:wght@400;500;600&display=swap',
+     vars:{'--font-body':"'Cormorant Garamond',Georgia,serif",'--font-mono':"'Fira Code','SF Mono',monospace",
+      '--bg':'#160810','--surface':'#211020','--surface2':'#2c1530','--surface-elevated':'#371a3c',
+      '--border':'rgba(200,148,108,0.08)','--border-bright':'rgba(200,148,108,0.18)',
+      '--text':'#f0e6ea','--text-dim':'#9a7585',
+      '--accent':'#c9956c','--accent-dim':'rgba(201,149,108,0.1)','--accent-2':'#e8c4b0',
+      '--code-bg':'#0e0508','--code-text':'#e8d4dc'}},
+    {id:'bauhaus',name:'Bauhaus',dark:false,
+     bg:'#f5f4ef',accent:'#d62828',
+     fonts:'https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap',
+     vars:{'--font-body':"'Space Grotesk',system-ui,sans-serif",'--font-mono':"'Space Mono','SF Mono',monospace",
+      '--bg':'#f5f4ef','--surface':'#ffffff','--surface2':'#ebebE4','--surface-elevated':'#ffffff',
+      '--border':'rgba(0,0,0,0.12)','--border-bright':'rgba(0,0,0,0.25)',
+      '--text':'#111111','--text-dim':'#555555',
+      '--accent':'#d62828','--accent-dim':'rgba(214,40,40,0.08)','--accent-2':'#f7b731',
+      '--code-bg':'#111111','--code-text':'#f5f4ef'}},
+    {id:'fog-minimalist',name:'Fog Minimalist',dark:false,
+     bg:'#f5f0eb',accent:'#7a8c7e',
+     fonts:'https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=Noto+Sans+Mono:wght@400;600&display=swap',
+     vars:{'--font-body':"'Source Serif 4',Georgia,serif",'--font-mono':"'Noto Sans Mono','SF Mono',monospace",
+      '--bg':'#f5f0eb','--surface':'#faf8f5','--surface2':'#ede8e3','--surface-elevated':'#fdfcfa',
+      '--border':'rgba(44,38,32,0.08)','--border-bright':'rgba(44,38,32,0.14)',
+      '--text':'#2c2620','--text-dim':'#8c8078',
+      '--accent':'#7a8c7e','--accent-dim':'rgba(122,140,126,0.1)','--accent-2':'#a0b0a4',
+      '--code-bg':'#1e1c18','--code-text':'#e8e4de'}},
+    {id:'elo-blue',name:'ELO Blue',dark:true,
+     bg:'#020c1e',accent:'#0db2ef',
+     fonts:'https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500;600&display=swap',
+     vars:{'--font-body':"'Bricolage Grotesque',system-ui,sans-serif",'--font-mono':"'IBM Plex Mono','SF Mono',monospace",
+      '--bg':'#020c1e','--surface':'#051828','--surface2':'#091f36','--surface-elevated':'#0d2544',
+      '--border':'rgba(13,178,239,0.08)','--border-bright':'rgba(13,178,239,0.18)',
+      '--text':'#e0eaf8','--text-dim':'#4d7aaa',
+      '--accent':'#0db2ef','--accent-dim':'rgba(13,178,239,0.10)','--accent-2':'#f5e400',
+      '--code-bg':'#020a16','--code-text':'#c0d8f0'}},
+  ];
+
+  function ThemeSwitcher(){
+    this.current=this._detect();
+    this._loaded={};
+    this._build();
+    this._apply(this.current,false);
+  }
+
+  ThemeSwitcher.prototype._detect=function(){
+    var v=getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
+    for(var i=0;i<PRESETS.length;i++){
+      if(PRESETS[i].vars['--accent']===v||PRESETS[i].accent===v)return i;
+    }
+    return 0;
+  };
+
+  ThemeSwitcher.prototype._build=function(){
+    var self=this;
+    var s=document.createElement('style');
+    s.textContent=[
+      '.ts-btn{position:fixed;bottom:clamp(12px,2vh,24px);left:clamp(12px,2vw,24px);z-index:200;width:40px;height:40px;border-radius:50%;border:1px solid rgba(128,128,128,0.25);background:rgba(255,255,255,0.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);cursor:pointer;display:flex;align-items:center;justify-content:center;color:rgba(0,0,0,0.5);transition:border-color .2s,transform .2s;box-shadow:0 2px 12px rgba(0,0,0,0.15);}',
+      '.ts-btn:hover{border-color:rgba(0,64,122,0.4);transform:scale(1.08);}',
+      '.ts-btn svg{pointer-events:none;}',
+      '.ts-panel{position:fixed;bottom:calc(clamp(12px,2vh,24px) + 52px);left:clamp(12px,2vw,24px);z-index:200;background:rgba(255,255,255,0.96);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(0,0,0,0.10);border-radius:14px;padding:12px;width:260px;box-shadow:0 8px 36px rgba(0,0,0,0.18);transform-origin:bottom left;transition:opacity .18s ease,transform .2s cubic-bezier(.16,1,.3,1);}',
+      '.ts-panel.ts-off{opacity:0;transform:scale(0.9) translateY(10px);pointer-events:none;}',
+      '.ts-head{font:700 9px/1 "IBM Plex Mono","SF Mono",monospace;text-transform:uppercase;letter-spacing:2px;color:rgba(0,0,0,0.35);margin-bottom:10px;padding:0 2px;}',
+      '.ts-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px;}',
+      '.ts-card{display:flex;align-items:center;gap:7px;padding:7px 8px;border-radius:8px;border:1px solid rgba(0,0,0,0.07);cursor:pointer;transition:border-color .15s,background .15s;background:rgba(0,0,0,0.01);}',
+      '.ts-card:hover{background:rgba(0,64,122,0.05);border-color:rgba(0,64,122,0.2);}',
+      '.ts-card.ts-on{border-color:rgba(0,64,122,0.35);background:rgba(0,64,122,0.05);}',
+      '.ts-sw{width:28px;height:28px;border-radius:6px;flex-shrink:0;border:1.5px solid rgba(0,0,0,0.10);position:relative;overflow:hidden;}',
+      '.ts-sw-bg{position:absolute;inset:0;}',
+      '.ts-sw-dot{position:absolute;bottom:3px;right:3px;width:8px;height:8px;border-radius:50%;border:1px solid rgba(0,0,0,0.18);}',
+      '.ts-nm{font:600 10px/1.3 "IBM Plex Mono","SF Mono",monospace;color:rgba(0,0,0,0.6);letter-spacing:-.1px;flex:1;min-width:0;}',
+      '.ts-card.ts-on .ts-nm{color:rgba(0,64,122,0.9);}',
+      '.ts-ck{flex-shrink:0;color:rgba(0,64,122,0.7);display:none;}',
+      '.ts-card.ts-on .ts-ck{display:block;}',
+    ].join('');
+    document.head.appendChild(s);
+
+    var btn=document.createElement('button');
+    btn.className='ts-btn';btn.title='Switch design system';
+    btn.setAttribute('aria-expanded','false');
+    btn.setAttribute('aria-controls','ts-panel');
+    btn.innerHTML='<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="13.5" r="2.5"/><circle cx="8.5" cy="18.5" r="2.5"/><circle cx="6" cy="8" r="2.5"/></svg>';
+    document.body.appendChild(btn);
+    this.btn=btn;
+
+    var panel=document.createElement('div');
+    panel.id='ts-panel';
+    panel.className='ts-panel ts-off';
+    var head=document.createElement('div');head.className='ts-head';head.textContent='Design System';
+    var grid=document.createElement('div');grid.className='ts-grid';
+    panel.appendChild(head);panel.appendChild(grid);
+    document.body.appendChild(panel);
+    this.panel=panel;
+
+    this.cards=PRESETS.map(function(p,idx){
+      var card=document.createElement('div');
+      card.className='ts-card'+(idx===self.current?' ts-on':'');
+      card.innerHTML=
+        '<div class="ts-sw"><div class="ts-sw-bg" style="background:'+p.bg+'"></div>'+
+        '<div class="ts-sw-dot" style="background:'+p.accent+'"></div></div>'+
+        '<span class="ts-nm">'+p.name+'</span>'+
+        '<svg class="ts-ck" width="11" height="11" viewBox="0 0 11 11"><polyline points="1.5,5.5 4.5,8.5 9.5,2.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+      card.addEventListener('click',function(){self._apply(idx,true);});
+      grid.appendChild(card);
+      return card;
+    });
+
+    btn.addEventListener('click',function(e){e.stopPropagation();var hidden=panel.classList.toggle('ts-off');btn.setAttribute('aria-expanded',hidden?'false':'true');});
+    document.addEventListener('click',function(e){if(!panel.contains(e.target)&&e.target!==btn)panel.classList.add('ts-off');});
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')panel.classList.add('ts-off');});
+  };
+
+  ThemeSwitcher.prototype._apply=function(idx,animate){
+    var p=PRESETS[idx],root=document.documentElement,self=this;
+    Object.keys(p.vars).forEach(function(k){root.style.setProperty(k,p.vars[k]);});
+    if(!this._loaded[p.id]){
+      var lk=document.createElement('link');lk.rel='stylesheet';lk.href=p.fonts;
+      document.head.appendChild(lk);this._loaded[p.id]=true;
+    }
+    this.cards.forEach(function(c,i){c.classList.toggle('ts-on',i===idx);});
+    if(animate){
+      var deck=document.querySelector('.deck');
+      if(deck){deck.style.transition='opacity .12s';deck.style.opacity='0.6';setTimeout(function(){deck.style.opacity='1';},120);}
+    }
+    this.current=idx;
+    this.panel.classList.add('ts-off');
+  };
+
+  document.addEventListener('DOMContentLoaded',function(){new ThemeSwitcher();});
+})();
+</script>
+
+</body>
+</html>

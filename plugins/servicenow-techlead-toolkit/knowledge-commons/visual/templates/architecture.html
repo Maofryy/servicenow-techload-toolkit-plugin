@@ -204,14 +204,15 @@
   .inner-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 12px;
+    gap: 16px;
   }
 
   .inner-card {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 12px 16px;
+    background: none;
+    border: none;
+    border-radius: 0;
+    border-top: 2px solid var(--border-bright);
+    padding: 10px 0 0;
   }
 
   .inner-card .title {
@@ -361,10 +362,9 @@
 
   /* ============ CALLOUT ============ */
   .callout {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-left: 3px solid var(--accent);
-    border-radius: 0 8px 8px 0;
+    background: var(--accent-dim);
+    border: 1px solid color-mix(in srgb, var(--accent) 20%, transparent);
+    border-radius: 8px;
     padding: 14px 18px;
     font-size: 13px;
     line-height: 1.6;
@@ -441,7 +441,7 @@
 <body>
 
 <h1>System Architecture</h1>
-<p class="subtitle">reference template &mdash; architecture diagram pattern</p>
+<p class="subtitle">reference template · architecture diagram pattern</p>
 
 <div class="diagram">
 
@@ -457,7 +457,7 @@
 
   <!-- Flow arrow -->
   <div class="flow-arrow" style="--i:1">
-    <svg viewBox="0 0 20 20"><path d="M10 4 L10 16 M6 12 L10 16 L14 12"/></svg>
+    <svg aria-hidden="true" viewBox="0 0 20 20"><path d="M10 4 L10 16 M6 12 L10 16 L14 12"/></svg>
     incoming events
   </div>
 
@@ -477,7 +477,7 @@
   </div>
 
   <div class="flow-arrow" style="--i:3">
-    <svg viewBox="0 0 20 20"><path d="M10 4 L10 16 M6 12 L10 16 L14 12"/></svg>
+    <svg aria-hidden="true" viewBox="0 0 20 20"><path d="M10 4 L10 16 M6 12 L10 16 L14 12"/></svg>
     pipeline entry
   </div>
 
@@ -531,7 +531,7 @@
   </div>
 
   <div class="flow-arrow" style="--i:5">
-    <svg viewBox="0 0 20 20"><path d="M10 4 L10 16 M6 12 L10 16 L14 12"/></svg>
+    <svg aria-hidden="true" viewBox="0 0 20 20"><path d="M10 4 L10 16 M6 12 L10 16 L14 12"/></svg>
     stored and queryable
   </div>
 
@@ -551,7 +551,7 @@
   </div>
 
   <div class="flow-arrow" style="--i:7">
-    <svg viewBox="0 0 20 20"><path d="M10 4 L10 16 M6 12 L10 16 L14 12"/></svg>
+    <svg aria-hidden="true" viewBox="0 0 20 20"><path d="M10 4 L10 16 M6 12 L10 16 L14 12"/></svg>
     consumed by
   </div>
 
@@ -585,7 +585,7 @@
 
   <!-- Callout — recessed depth for secondary info -->
   <div class="callout section section--recessed" style="--i:11">
-    <strong>Multi-tenant</strong> &mdash; Each agent gets an isolated database at
+    <strong>Multi-tenant:</strong> Each agent gets an isolated database at
     <code>{agentDir}/intelligence/feedback.db</code> with per-agent config overlay
     and credential isolation.
   </div>

@@ -105,7 +105,6 @@
     padding: clamp(40px, 6vh, 80px) clamp(40px, 8vw, 120px);
     isolation: isolate;
     opacity: 0;
-    will-change: opacity;
     scroll-snap-stop: always;
     transition:
       opacity          0.6s cubic-bezier(0.16, 1, 0.3, 1),
@@ -846,16 +845,16 @@
 
   <!-- SLIDE 1: TITLE -->
   <section class="slide slide--title">
-    <svg class="slide__decor" style="top:0;right:0;" width="120" height="120" viewBox="0 0 120 120">
+    <svg class="slide__decor" aria-hidden="true" style="top:0;right:0;" width="120" height="120" viewBox="0 0 120 120">
       <line x1="120" y1="0" x2="120" y2="40" stroke="var(--accent)" stroke-width="2" opacity="0.15"/>
       <line x1="80" y1="0" x2="120" y2="0" stroke="var(--accent)" stroke-width="2" opacity="0.15"/>
     </svg>
-    <svg class="slide__decor" style="bottom:0;left:0;" width="120" height="120" viewBox="0 0 120 120">
+    <svg class="slide__decor" aria-hidden="true" style="bottom:0;left:0;" width="120" height="120" viewBox="0 0 120 120">
       <line x1="0" y1="80" x2="0" y2="120" stroke="var(--accent)" stroke-width="2" opacity="0.15"/>
       <line x1="0" y1="120" x2="40" y2="120" stroke="var(--accent)" stroke-width="2" opacity="0.15"/>
     </svg>
     <div class="reveal">
-      <p class="slide__subtitle" style="margin-bottom:clamp(16px,2vh,32px);">Engineering Review &mdash; Q1 2026</p>
+      <p class="slide__subtitle" style="margin-bottom:clamp(16px,2vh,32px);">Engineering Review · Q1 2026</p>
     </div>
     <h1 class="slide__display reveal">API Gateway Redesign</h1>
     <div class="reveal">
@@ -882,7 +881,7 @@
           <li class="reveal">All traffic routes through one Node.js process</li>
           <li class="reveal">Rate limiting is per-instance, not distributed</li>
           <li class="reveal">Auth validation adds 40ms per request</li>
-          <li class="reveal">No circuit breaking &mdash; cascade failures hit everything</li>
+          <li class="reveal">No circuit breaking: cascade failures hit everything</li>
         </ul>
       </div>
       <div class="slide__aside reveal">
@@ -1059,7 +1058,7 @@ graph LR
     <blockquote class="reveal">
       The fastest request is the one that never leaves the edge.
     </blockquote>
-    <cite class="reveal">&mdash; Edge Computing Principle</cite>
+    <cite class="reveal">· Edge Computing Principle</cite>
   </section>
 
   <!-- SLIDE 11: FULL-BLEED -->
@@ -1296,7 +1295,7 @@ graph LR
     var dots=document.createElement('div');dots.className='deck-dots';var self=this;
     this.slides.forEach(function(_,i){var d=document.createElement('button');d.className='deck-dot';d.title='Slide '+(i+1);d.onclick=function(){self.goTo(i);};dots.appendChild(d);});
     document.body.appendChild(dots);this.dots=[].slice.call(dots.children);
-    var ctr=document.createElement('div');ctr.className='deck-counter';document.body.appendChild(ctr);this.counter=ctr;
+    var ctr=document.createElement('div');ctr.className='deck-counter';ctr.setAttribute('aria-live','polite');ctr.setAttribute('aria-atomic','true');document.body.appendChild(ctr);this.counter=ctr;
     var hints=document.createElement('div');hints.className='deck-hints';hints.textContent='\u2190 \u2191 \u2192 \u2193 or scroll to navigate \u00b7 F to fullscreen';document.body.appendChild(hints);this.hints=hints;
     this.hintTimer=setTimeout(function(){hints.classList.add('faded');},4000);
   };
@@ -1475,12 +1474,15 @@ graph LR
     // Toggle button
     var btn=document.createElement('button');
     btn.className='ts-btn';btn.title='Switch design system (all 8 presets)';
+    btn.setAttribute('aria-expanded','false');
+    btn.setAttribute('aria-controls','ts-panel');
     btn.innerHTML='<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="13.5" r="2.5"/><circle cx="8.5" cy="18.5" r="2.5"/><circle cx="6" cy="8" r="2.5"/></svg>';
     document.body.appendChild(btn);
     this.btn=btn;
 
     // Panel
     var panel=document.createElement('div');
+    panel.id='ts-panel';
     panel.className='ts-panel ts-off';
     var head=document.createElement('div');head.className='ts-head';head.textContent='Design System';
     var grid=document.createElement('div');grid.className='ts-grid';
@@ -1501,7 +1503,7 @@ graph LR
       return card;
     });
 
-    btn.addEventListener('click',function(e){e.stopPropagation();panel.classList.toggle('ts-off');});
+    btn.addEventListener('click',function(e){e.stopPropagation();var hidden=panel.classList.toggle('ts-off');btn.setAttribute('aria-expanded',hidden?'false':'true');});
     document.addEventListener('click',function(e){if(!panel.contains(e.target)&&e.target!==btn)panel.classList.add('ts-off');});
     document.addEventListener('keydown',function(e){if(e.key==='Escape')panel.classList.add('ts-off');});
   };

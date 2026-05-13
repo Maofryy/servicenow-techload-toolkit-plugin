@@ -19,7 +19,9 @@
       "Bash(python3 -c ' *)",
       "Bash(python3 -m scripts.aggregate_benchmark '/mnt/c/Users/benha/Documents/Work/Claude Skills/TechLead Plugin/wbs-estimation-workspace/iteration-1' --skill-name wbs-estimation)",
       "Bash(python3 -m json.tool)",
-      "Bash(python3 *)"
+      "Bash(python3 *)",
+      "Bash(node *)",
+      "Skill(impeccable:impeccable)"
     ]
   }
 }

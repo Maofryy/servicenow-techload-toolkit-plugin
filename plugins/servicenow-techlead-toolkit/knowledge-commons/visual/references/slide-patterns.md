@@ -6,6 +6,40 @@ CSS patterns, JS engine, slide type layouts, transitions, navigation chrome, and
 
 **Before generating**, also read `./css-patterns.md` for shared patterns (Mermaid zoom controls, overflow protection, depth tiers, status badges) and `./libraries.md` for Mermaid theming, Chart.js, and font pairings. Those patterns apply to slides too — this file adds slide-specific patterns on top.
 
+## Choosing a Preset and Theme
+
+Before picking a preset, write one sentence describing the physical scene: who is in the room, what is on their screen, what ambient light surrounds them, what is their emotional state. The sentence must force the dark/light answer without ambiguity. If it doesn't, add detail until it does.
+
+Examples:
+- "SRE scanning incident severity on a large monitor at 2am in a dim NOC" → dark, high contrast, **Terminal Mono**
+- "Product manager presenting Q2 roadmap in a bright conference room to the steering committee" → light, structured, **Swiss Clean** or **ELO Light**
+- "Consultant pitching a ServiceNow migration to a client CIO in a boardroom" → **ELO Blue** (dark, authoritative)
+- "TechLead walking the dev team through an architecture review in a casual office" → **Midnight Editorial** or **Fog Minimalist**
+
+Preset selection rules:
+- **ELO Blue**: any ELO client deliverable (pitch, pre-sales, cadrage, project review)
+- **ELO Light (Calcaire)**: ELO client deliverable where the client requested a lighter, more document-like format
+- **Midnight Editorial**: internal design reviews, architecture walkthroughs, editorial content
+- **Swiss Clean** or **Warm Signal**: light-environment presentations, external training, public talks
+- **Terminal Mono**: technical deep-dives, code-heavy reviews, internal engineering sessions
+- **Bauhaus Constructivist**: strategic vision decks, executive roadmaps needing strong visual structure
+- **Velvet Editorial** or **Fog Minimalist**: when the content calls for restraint and long-form reading comfort
+
+**Never default to ELO Blue for non-ELO content.** Write the scene sentence first — let it force the answer.
+
+## Color Commitment Level
+
+Before generating, pick one level — this determines how much surface the accent color covers across the deck:
+
+| Level | Coverage | When to use |
+|---|---|---|
+| **Restrained** | Accent ≤ 10% of visible surface | Technical decks, internal reviews, information-dense content |
+| **Committed** | One saturated color carries 30–60% | Brand pitches, executive summaries, any ELO client deck |
+| **Full palette** | 3–4 named color roles, each deliberate | Campaign decks, data-rich PM slides, roadmaps with status colors |
+| **Drenched** | The surface IS the color | Full-bleed hero slides and title slides only |
+
+The chosen preset implies a starting level — ELO Blue → Committed, Swiss Clean → Restrained, Bauhaus → Full palette — but you can override per slide type deliberately.
+
 ## Planning a Deck from a Source Document
 
 When converting a plan, spec, review, or any structured document into slides, follow this process before writing any HTML. Skipping it leads to polished-looking decks that silently drop 30–40% of the source material.
@@ -2652,7 +2686,7 @@ const PRESETS = [
             "--surface2": "#e2dfd7",
             "--surface-elevated": "#f8f7f3",
             "--panel-secondary-bg": "#faf9f5",
-            "--panel-secondary-border": "4px solid #0db2ef",
+            "--panel-secondary-accent": "#0db2ef", /* use for top borders or bg tints — never border-left/right */
             "--border": "rgba(5,53,116,0.09)",
             "--border-bright": "rgba(5,53,116,0.18)",
             "--text": "#030d1e",
@@ -2788,7 +2822,7 @@ Blockers are rendered as red risks — no separate "blockers" field. Severity de
 
 **Done column:** Show a large count summary (stories completed + total points) rather than individual cards. Done is history, not active work.
 
-**Blocked cards:** Add `kb-card--blocked` class (red 3px left border) to any card with an active blocker. Include blocker reason inline in the points/meta field.
+**Blocked cards:** Add `kb-card--blocked` class to any card with an active blocker. Use a red tinted background (`background: color-mix(in srgb, #dc2626 8%, var(--surface))`) and a red top border (`border-top: 2px solid #dc2626`) — never a left border accent. Include blocker reason inline in the points/meta field.
 
 **Card limit:** Show at most 5–6 cards per column. If more, show top cards and a "+ N more" label.
 

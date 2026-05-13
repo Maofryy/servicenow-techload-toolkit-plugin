@@ -261,10 +261,9 @@
 
   /* ============ CALLOUT ============ */
   .callout {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-left: 3px solid var(--primary);
-    border-radius: 0 10px 10px 0;
+    background: var(--primary-dim);
+    border: 1px solid color-mix(in srgb, var(--primary) 20%, transparent);
+    border-radius: 10px;
     padding: 16px 20px;
     font-size: 13px;
     line-height: 1.6;
@@ -360,7 +359,14 @@
 
 <script type="module">
   import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
-  import elkLayouts from 'https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk/dist/mermaid-layout-elk.esm.min.mjs';
+
+  // Load ELK only if a diagram source requests it via %%{init: {layout:'elk'}}%%
+  const sources = document.querySelectorAll('.diagram-source');
+  const needsElk = Array.from(sources).some(s => /layout['":\s]+elk/i.test(s.textContent));
+  if (needsElk) {
+    const { default: elkLayouts } = await import('https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk/dist/mermaid-layout-elk.esm.min.mjs');
+    mermaid.registerLayoutLoaders(elkLayouts);
+  }
 
   const config = {
     fitPadding: 28,
@@ -391,7 +397,7 @@
     startOnLoad: false,
     theme: 'base',
     look: 'classic',
-    layout: 'elk',
+    layout: needsElk ? 'elk' : 'dagre',
     themeVariables: {
       fontFamily: "'Bricolage Grotesque', system-ui, sans-serif",
       fontSize: '16px',
@@ -599,6 +605,16 @@
           label.textContent = 'Error: No SVG';
           return;
         }
+
+        // Accessible description
+        if (!svgNode.querySelector('title')) {
+          const titleEl = document.createElementNS('http://www.w3.org/2000/svg', 'title');
+          titleEl.id = 'diagram-title-' + id;
+          titleEl.textContent = document.title || 'Diagram';
+          svgNode.insertBefore(titleEl, svgNode.firstChild);
+        }
+        svgNode.setAttribute('role', 'img');
+        svgNode.setAttribute('aria-labelledby', 'diagram-title-' + id);
 
         const size = readSvgNaturalSize(svgNode);
         svgW = size.w;

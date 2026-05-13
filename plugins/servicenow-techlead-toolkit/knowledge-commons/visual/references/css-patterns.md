@@ -2,6 +2,38 @@
 
 Reusable patterns for layout, connectors, theming, and visual effects in self-contained HTML diagrams.
 
+## Color Token Strategy
+
+Define palette tokens in OKLCH. It produces perceptually uniform swatches and lets you adjust lightness/chroma without blowout at the extremes.
+
+Rule: reduce chroma as lightness approaches 0 or 100. High chroma at extremes looks garish.
+Never pure black (`oklch(0% 0 0)`) or pure white (`oklch(100% 0 0)`); tint every neutral toward the brand hue (chroma 0.005–0.01 is enough to feel intentional).
+
+```css
+/* Example OKLCH token set — blue-tinted neutral palette */
+:root {
+  --bg:      oklch(97% 0.008 240);   /* near-white, blue-tinted */
+  --surface: oklch(99% 0.005 240);
+  --text:    oklch(18% 0.012 240);   /* near-black, blue-tinted */
+  --accent:  oklch(55% 0.18 240);    /* saturated mid-blue */
+}
+```
+
+Hex is acceptable for preset values that must be copy-paste stable (ThemeSwitcher JS, CDN fallbacks). For any color you derive or adapt at runtime, prefer OKLCH.
+
+### Color Commitment Level
+
+Before generating, pick one level — it determines how much of the surface the accent covers:
+
+| Level | Coverage | When to use |
+|---|---|---|
+| **Restrained** | Accent ≤ 10% of visible surface | Diagrams, technical pages, information-dense content |
+| **Committed** | One saturated color carries 30–60% | Brand pages, executive summaries, client pitches |
+| **Full palette** | 3–4 named color roles, each deliberate | Campaign pages, data-rich dashboards, roadmaps |
+| **Drenched** | The surface IS the color | Hero sections, full-bleed moments only |
+
+The chosen aesthetic implies a starting level — Editorial and Blueprint → Restrained, brand pages → Committed or higher. Override per section deliberately.
+
 ## Theme Setup
 
 Always define both light and dark palettes via custom properties. Start with whichever fits the chosen aesthetic, ensure both work.
@@ -105,9 +137,12 @@ The fundamental building block. A colored card representing a system component, 
   position: relative;
 }
 
-/* Colored accent border (left or top) */
+/* Accent via top border or background tint — never border-left/right accent */
 .ve-card--accent-a {
-  border-left: 3px solid var(--node-a);
+  border-top: 2px solid var(--node-a);
+}
+.ve-card--tinted-a {
+  background: color-mix(in srgb, var(--node-a) 6%, var(--surface));
 }
 
 /* --- Depth tiers: vary card depth to signal importance --- */
@@ -1014,6 +1049,16 @@ Position the parent container as `position: relative` to scope the SVG overlay.
 
 ## Animations
 
+### Motion Rules
+
+- Never animate CSS layout properties (width, height, padding, margin, top, left). Animate `transform` and `opacity` only.
+- Ease out with exponential curves: `cubic-bezier(0.16, 1, 0.3, 1)` (ease-out-quart) or `cubic-bezier(0.22, 1, 0.36, 1)` (ease-out-quint). No bounce. No elastic.
+- Stagger delays: 60–80ms between sibling elements. Never more than 120ms or the last items feel laggy.
+
+### Typography Hierarchy
+
+Minimum 1.25× scale ratio between hierarchy steps. Flat scales (e.g., 16 / 18 / 20px) produce no visible hierarchy — they read as a size accident, not a system. Prefer distinct jumps: 13 / 16 / 22 / 32 / 48.
+
 ### Staggered Fade-In on Load
 
 Define the keyframe once, then stagger via a `--i` CSS variable set per element. This approach works regardless of DOM nesting or interleaved non-animated elements (unlike `nth-child` which breaks when siblings aren't all the same type).
@@ -1458,11 +1503,23 @@ Opening paragraph styled distinctly from body text.
 Key insights pulled out for emphasis. Use sparingly — one or two per article maximum.
 
 ```css
-/* Border left — most versatile */
+/* Oversized quotation mark — more distinctive than a side stripe */
 .pullquote {
   margin: 48px 0;
-  padding-left: 24px;
-  border-left: 3px solid var(--accent);
+  padding: 0 0 0 8px;
+  position: relative;
+}
+.pullquote::before {
+  content: '\201C';
+  position: absolute;
+  left: -0.1em;
+  top: -0.25em;
+  font-size: 5em;
+  line-height: 1;
+  color: var(--accent);
+  opacity: 0.18;
+  font-family: Georgia, serif;
+  pointer-events: none;
 }
 .pullquote p {
   font-size: 22px;
@@ -1594,30 +1651,42 @@ hr {
 
 ### Callout Boxes
 
-For warnings, tips, notes, and key takeaways.
+For warnings, tips, notes, and key takeaways. Use tinted background + thin full border — never a `border-left` accent stripe.
 
 ```css
 .callout {
-  padding: 16px 20px;
-  border-radius: 8px;
-  border-left: 4px solid var(--callout-border);
+  padding: 1rem 1.25rem;
+  border-radius: 6px;
   background: var(--callout-bg);
+  border: 1px solid color-mix(in srgb, var(--callout-border) 25%, transparent);
   margin: 24px 0;
 }
 
 .callout--info {
   --callout-border: var(--accent);
-  --callout-bg: color-mix(in srgb, var(--accent) 10%, transparent);
+  --callout-bg: color-mix(in srgb, var(--accent) 8%, transparent);
 }
 
 .callout--warning {
   --callout-border: var(--amber);
-  --callout-bg: color-mix(in srgb, var(--amber) 10%, transparent);
+  --callout-bg: color-mix(in srgb, var(--amber) 8%, transparent);
 }
 
 .callout--success {
   --callout-border: var(--green);
-  --callout-bg: color-mix(in srgb, var(--green) 10%, transparent);
+  --callout-bg: color-mix(in srgb, var(--green) 8%, transparent);
+}
+
+.callout__label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--callout-border);
 }
 
 .callout__title {

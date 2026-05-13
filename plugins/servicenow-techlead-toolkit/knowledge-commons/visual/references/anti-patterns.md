@@ -59,6 +59,18 @@ These patterns are explicitly forbidden. They signal "AI-generated template" and
 
 **Required:** Code blocks use a simple header with filename or language label. KPI cards vary by importance — hero numbers for the primary metric, subdued treatment for supporting metrics. Pick aesthetics with natural constraints: Blueprint (must feel technical/precise), Editorial (must have generous whitespace and serif typography), Paper/ink (must feel warm and informal).
 
+## Structural Anti-Patterns (Match and Refuse)
+
+If you are about to write any of the following, stop and rewrite the element with a different structure.
+
+**Side-stripe borders.** `border-left` or `border-right` greater than 1px as a colored accent on cards, callout boxes, list items, or slide columns. Never intentional — it is the most common AI-generated layout tell. Alternatives: full border, background tint (`color-mix(in srgb, var(--accent) 8%, transparent)`), leading icon/number, or nothing.
+
+**The hero-metric template.** Big number + small label + supporting stats + gradient accent background. SaaS dashboard cliché — every metric in a deck cannot be a KPI hero. Reserve for the single most important number per slide; use subdued treatment for supporting metrics.
+
+**Identical card grids.** Same border-radius, same shadow, same padding, repeated endlessly. Cards with no visual hierarchy read as an itemized list that was lazily boxed. Vary: size, depth tier (elevated / default / recessed), typographic treatment, or drop the cards entirely.
+
+**Glassmorphism as default.** Backdrop-filter blur + rgba surface used decoratively. Rare and purposeful only — e.g., a modal over a full-bleed background image. Never a page-level aesthetic.
+
 ## The Slop Test
 
 Before delivering, apply this test: **Would a developer looking at this page immediately think "AI generated this"?** The telltale signs:
@@ -70,5 +82,16 @@ Before delivering, apply this test: **Would a developer looking at this page imm
 5. Cyan-magenta-pink color scheme on dark background
 6. Perfectly uniform card grid with no visual hierarchy
 7. Three-dot code block chrome
+8. Side-stripe border accents (`border-left` > 1px) on more than one element
+9. Every metric styled as a hero KPI (big number + gradient accent)
 
 If two or more of these are present, the page is slop. Regenerate with a different aesthetic direction — Editorial, Blueprint, Paper/ink, or a specific IDE theme. These constrained aesthetics are harder to mess up because they have specific visual requirements that prevent defaulting to generic patterns.
+
+### Slide-Specific Slop Test
+
+Before delivering a deck, check:
+1. Title slide is not just text on a CSS gradient — it has a real image, a designed typographic composition, or a strong geometric treatment
+2. Not every metric slide uses the "big number + small label + gradient behind the number" template
+3. Callout boxes do not have colored left-border stripes — use tinted background + icon instead
+4. Slide-to-slide rhythm varies — no 5 consecutive content slides with identical split layout
+5. The font pairing is not system-ui or Inter — check `--font-body` in the rendered HTML
