@@ -1,0 +1,7 @@
+{
+  "name": "snow-launcher",
+  "version": "0.1.0",
+  "author": { "name": "Maori" },
+  "description": "Barre de lancement des skills ServiceNow au-dessus du prompt",
+  "types": "./types/index.d.ts"
+}

@@ -1,6 +1,6 @@
 # Teaching Moment Comment Template
 
-Use this format for every Critical or Warning issue in a code review. The goal is to leave the developer better than you found them — not just to fix the immediate issue.
+Optional layout for the code-review skill when a finding deserves a longer explanation. The goal is to leave the developer better than you found them — not just to fix the immediate issue.
 
 ---
 

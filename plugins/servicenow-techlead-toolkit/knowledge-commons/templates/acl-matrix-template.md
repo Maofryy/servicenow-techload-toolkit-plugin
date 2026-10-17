@@ -1,6 +1,6 @@
 # ACL Security Matrix — Template
 
-Use this structure for Layer 2 of the ACL Logic Architect output. Produce one table per table in the export.
+Optional reference for the security-review skill: one possible shape for a roles × operations matrix, one table per audited table. Use as a reference.
 
 ---
 

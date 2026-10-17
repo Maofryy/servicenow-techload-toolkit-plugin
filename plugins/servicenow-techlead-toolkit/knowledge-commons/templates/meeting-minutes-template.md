@@ -1,6 +1,6 @@
 # Meeting Minutes Template
 
-Standard output format for the Meeting Scribe skill.
+Reference layout for meeting minutes (communication skill). Use as a reference, not a mould.
 Adapt all fields in [brackets] to the specific meeting.
 This template is designed to be copy-pasted into an email without reformatting.
 

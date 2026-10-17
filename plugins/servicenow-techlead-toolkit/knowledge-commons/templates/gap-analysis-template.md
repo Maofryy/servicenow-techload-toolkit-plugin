@@ -1,6 +1,6 @@
 # Gap Analysis Template
 
-Use this template when running a requirement through the stress-tester. Work through each section systematically before producing the Clarification Request.
+Checklist for the requirement-shaper skill. Use it to think through a requirement before writing the client questions; it is not an output format.
 
 ---
 

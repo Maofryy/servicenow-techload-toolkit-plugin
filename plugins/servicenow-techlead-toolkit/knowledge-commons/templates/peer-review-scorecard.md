@@ -1,6 +1,6 @@
 # Peer Review Scorecard
 
-Use this rubric to score a submitted script or artifact. Each section is scored 1–5. A merged artifact should score ≥4 in all sections, or have documented exceptions for anything below.
+Optional rubric for the code-review skill, when the user wants a formal gate. Each section is scored 1–5; a merged artifact should score ≥4 in all sections, or have documented exceptions.
 
 ---
 

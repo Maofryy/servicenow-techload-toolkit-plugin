@@ -1,16 +1,23 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "servicenow-techload-toolkit-plugin",
-  "description": "ServiceNow TechLead Toolkit — ten specialized skills for the full ServiceNow delivery lifecycle",
+  "description": "ServiceNow TechLead Toolkit — ten skills for the ServiceNow delivery lifecycle, reading the live instance through sn-utils",
   "owner": {
     "name": "Maori"
   },
   "plugins": [
     {
       "name": "servicenow-techlead-toolkit",
-      "description": "Ten specialized skills covering the full ServiceNow delivery lifecycle: design challenging, requirement stress-testing, platform blueprinting, code review, executive communication, written communication drafting, meeting documentation, effort estimation, visual diagrams, and slide decks.",
+      "description": "Ten skills covering the ServiceNow delivery lifecycle: requirement shaping, solution design (build spec, ADR, DAT), CSDM modelling, quick estimates, code review, security review, ATF test generation, written communication, visual explainers and HTML slide decks. Reads the live instance through the sn-utils MCP.",
       "source": "./plugins/servicenow-techlead-toolkit",
       "category": "development",
+      "homepage": "https://github.com/Maofryy/servicenow-techload-toolkit-plugin"
+    },
+    {
+      "name": "snow-launcher",
+      "description": "Experimental: button bar above the prompt to launch the ServiceNow TechLead skills (/snow toggles it). Requires Claude Code >= 2.1.287.",
+      "source": "./plugins/snow-launcher",
+      "category": "productivity",
       "homepage": "https://github.com/Maofryy/servicenow-techload-toolkit-plugin"
     }
   ]

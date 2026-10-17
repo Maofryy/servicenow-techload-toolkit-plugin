@@ -1,6 +1,6 @@
 # ACL Gap & Risk Report — Template
 
-Use this structure for Layer 3 of the ACL Logic Architect output. Produce one report per table in the export. Omit any severity section that has no findings.
+Optional reference for the security-review skill: one possible shape for a gap report, one block per table. Use as a reference, omit any severity section that has no findings.
 
 ---
 

@@ -1,7 +1,7 @@
 # Communication Templates
 
 Reusable skeletons for structured communication mediums.
-Used by the Communication Drafter skill at runtime. Adapt all fields in [brackets] to context.
+Reference skeletons for the communication skill. Use as a reference; adapt all fields in [brackets] to context and drop what does not apply.
 
 ---
 
