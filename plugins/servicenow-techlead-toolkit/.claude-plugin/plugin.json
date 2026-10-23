@@ -1,7 +1,7 @@
 {
   "name": "servicenow-techlead-toolkit",
-  "version": "1.0.0",
-  "description": "ServiceNow Tech Lead toolkit — ten skills that read the live instance through sn-utils: requirement shaping, solution design (build spec / ADR / DAT), CSDM modelling, quick estimates in man-days, code review, security review, ATF test generation, written communication, visual explainers and HTML slide decks.",
+  "version": "1.1.0",
+  "description": "ServiceNow Tech Lead toolkit — eleven skills that read the live instance through sn-utils: requirement shaping, solution design (build spec / ADR / DAT section), DAT writing (branded .docx), CSDM modelling, quick estimates in man-days, code review, security review, ATF test generation, written communication, visual explainers and HTML slide decks.",
   "author": {
     "name": "Maori"
   },

@@ -1,6 +1,6 @@
 # ServiceNow TechLead Toolkit — Claude Code Plugin Marketplace
 
-A Claude Code plugin marketplace containing the ServiceNow Tech Lead toolkit: ten skills for the ServiceNow delivery lifecycle, from a raw client need to the slide deck that presents it. The skills read the live instance through the **sn-utils** MCP and never write to it unless explicitly asked.
+A Claude Code plugin marketplace containing the ServiceNow Tech Lead toolkit: eleven skills for the ServiceNow delivery lifecycle, from a raw client need to the slide deck that presents it. The skills read the live instance through the **sn-utils** MCP and never write to it unless explicitly asked.
 
 ## Install
 
@@ -18,6 +18,7 @@ claude plugins install servicenow-techlead-toolkit@servicenow-techload-toolkit-p
 | Framing and design | `requirement-shaper` | A raw need, mail or rough story has to become a challenged, OOB-first user story with testable criteria, out-of-scope and client questions |
 | | `solution-design` | The need is clear and you want the technical answer: build spec, ADR (flow vs BR, extend task or not…) or a DAT section |
 | | `csdm-assistant` | Mapping a client's landscape to CSDM objects, auditing the CMDB for CSDM gaps, or building a maturity roadmap by process |
+| | `dat-writer` | A full DAT (Dossier d'Architecture Technique) has to be written from project context material, as an ELO-branded .docx with traceability and open questions |
 | Estimation | `chiffrage-rapide` | An order of magnitude in J/H for a feature or a small lot, with assumptions, risks and confidence (full WBS lives in the dedicated app) |
 | Quality and security | `code-review` | A script, business rule, widget or update set needs a constructive review with corrected code |
 | | `security-review` | Who can see, change or trigger what: ACLs, portal, client-callable scripts, REST, integrations, sensitive data |
@@ -50,7 +51,7 @@ claude plugins update servicenow-techlead-toolkit
 plugins/
   servicenow-techlead-toolkit/
     .claude-plugin/plugin.json   # Plugin manifest
-    skills/                      # Ten skills (SKILL.md per skill)
+    skills/                      # Eleven skills (SKILL.md per skill)
     knowledge-commons/           # Shared references — used as references, never as moulds
       standards/                 # technical-standards, oob-module-index, acl-fundamentals, sizing-reference
       templates/                 # Design, requirement, review, ACL and communication references

@@ -23,7 +23,8 @@ Produce the design document the situation calls for, and only that one. Three sh
 - **ADR**: one decision, the real options, the criteria that matter, the decision, its
   consequences and the conditions under which it should be revisited. Fits on a page.
 - **DAT section**: context, application architecture, integrations, security, data and CSDM,
-  operations, non-functional requirements, written for the client's architecture board.
+  operations, non-functional requirements, written for the client's architecture board. A full
+  DAT built from context documents and delivered as a branded .docx belongs to `dat-writer`.
 
 ## What you know
 

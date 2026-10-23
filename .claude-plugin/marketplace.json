@@ -1,14 +1,14 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "servicenow-techload-toolkit-plugin",
-  "description": "ServiceNow TechLead Toolkit — ten skills for the ServiceNow delivery lifecycle, reading the live instance through sn-utils",
+  "description": "ServiceNow TechLead Toolkit — eleven skills for the ServiceNow delivery lifecycle, reading the live instance through sn-utils",
   "owner": {
     "name": "Maori"
   },
   "plugins": [
     {
       "name": "servicenow-techlead-toolkit",
-      "description": "Ten skills covering the ServiceNow delivery lifecycle: requirement shaping, solution design (build spec, ADR, DAT), CSDM modelling, quick estimates, code review, security review, ATF test generation, written communication, visual explainers and HTML slide decks. Reads the live instance through the sn-utils MCP.",
+      "description": "Eleven skills covering the ServiceNow delivery lifecycle: requirement shaping, solution design (build spec, ADR, DAT section), DAT writing (branded .docx), CSDM modelling, quick estimates, code review, security review, ATF test generation, written communication, visual explainers and HTML slide decks. Reads the live instance through the sn-utils MCP.",
       "source": "./plugins/servicenow-techlead-toolkit",
       "category": "development",
       "homepage": "https://github.com/Maofryy/servicenow-techload-toolkit-plugin"
